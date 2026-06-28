@@ -19,9 +19,15 @@ class DiagnosticRegistry extends DisposableProvider {
 	 **/
 	final importRegex = [
 
+		~/^sys\.(.*)/ => "Mods are not allowed to access system (Use companion apps to bypass this)",
+		~/^Sys/ => "Mods are not allowed to access system (Use companion apps to bypass this)",
         ~/^cpp.Lib/ => "Attaching binaried to FNF is disabled within mods",
         ~/^haxe.Unserializer/ => "Mods are not allowed to resolve classes on their own",
-        ~/^flixel.util.FlxSave/ => "There was a one very scary method..",
+        ~/^lime.utils.AssetLibrary/ => "AssetLibrary.__fromManifest() can access blacklisted packages apparently.",
+        ~/^funkin.mobile.util.AdMobUtil/ => "Trying to disable ads? Revoking internet permission might work (or just playing offline).",
+        ~/^funkin.mobile.util.InAppPurchasesUtil/ => "In-App purchases are not supported for mods.",
+        ~/^funkin.mobile.util.InAppReviewUtil/ => "Not available for mods. You can always tell the player to rate this game 5 stars on the store!",
+        // ~/^flixel.util.FlxSave/ => "There was a one very scary method..",
         ~/^extension\.(.*)/ => "Android extensions are disabled within mods",
         ~/^lime.system.(JNI|CFFI|System)/ => "Attaching binaried to FNF is disabled within mods",
         ~/^openfl.Lib/ => "Mods are not allowed to resolve classes on their own",
@@ -35,12 +41,13 @@ class DiagnosticRegistry extends DisposableProvider {
         // `funkin.util.macro.*`
         // CompiledClassList's get function allows access to sys and Newgrounds classes
             // None of the classes are suitable for mods anyway
-        ~/^io.newgrounds.\.(.*)/ => "Use 'NewgroundsClient' (sandboxed) if you need \"read\" access to NG data",
-        // `sys.*`
+        ~/^io.newgrounds\.(.*)/ => "Use 'NewgroundsClient' (sandboxed) if you need \"read\" access to NG data",
+        ~/^extension\.(.*)/ => "Native extension reference. There is likely a utility class for what you're trying to achieve!",
         // Access to system utilities such as the file system.
-        ~/^sys\.(.*)/ => "Mods are not allowed to access system (Use companion apps to bypass this)",
-        ~/^Sys/ => "Mods are not allowed to access system (Use companion apps to bypass this)",
         ~/^funkin.util.macro\.(.*)/ => "Some bypasses used this class, so it's banned from use in mods",
+        ~/^funkin.external.android.CallbackUtil/ => "External classes for android that bridge to private JNI methods & callbacks",
+        ~/^funkin.external.android.DataFolderUtil/ => "External classes for android that bridge to private JNI methods & callbacks",
+        ~/^funkin.external.android.JNIUtil/ => "External classes for android that bridge to private JNI methods & callbacks",
 
     ];
 
