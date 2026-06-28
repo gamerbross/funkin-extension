@@ -3,7 +3,6 @@ package runner;
 import haxe.Json;
 import runner.vslice.HaxeSyntaxParser;
 import runner.server.DebugServer;
-import vscode.DebugAdapter;
 import runner.vslice.FunkinPaths;
 import sys.FileSystem;
 import vscode.debugProtocol.DebugProtocol.InitializeRequestArguments;
@@ -121,9 +120,9 @@ class FunkinDebugger extends DebugSession  {
 	override function launchRequest(response:LaunchResponse, args:LaunchRequestArguments) {
 		final args:FNFLaunchRequestArguments = cast args;
 		launchArgs = args;
-		if (launchArgs.trace) {
-			haxe.Log.trace = traceToOutput;
-		}
+		// if (launchArgs.trace) {
+		// 	haxe.Log.trace = traceToOutput;
+		// }
 
 
 		final env = new haxe.DynamicAccess();
@@ -132,7 +131,7 @@ class FunkinDebugger extends DebugSession  {
 		// for (key in args.haxeExecutable.env.keys())
 		// 	env[key] = args.haxeExecutable.env[key];
 
-		server = new DebugServer();
+		server = new DebugServer(launchArgs.trace);
 		server.start();
 
 		// function onConnected(socket) {

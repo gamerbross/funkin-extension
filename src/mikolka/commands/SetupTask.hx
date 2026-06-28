@@ -61,39 +61,40 @@ class SetupTask {
 		var haxelib_repo = Process.resolveCommand("haxelib config").replace("\n", "");
 		var obj = new FunkinLibrariesInstall(writeLine, haxelib_repo, "9908c8be32d154c3ab820315702bf60af80ac026");
 		var regexp = new FullReplaceTask(haxePatchesPath, haxelib_repo);
-		#if COMPILER_DEBUG_INSTALL
-		Interaction.requestConfirmation("DEBUG", "Do you want to skip lib install?", () -> {
-			ctx.appendManyTasks([new CodePatcher(haxelib_repo).patchFnfCode, regexp.task]);
-			ctx.appendTask((__resolve, __deny, ctx) -> {
-				writeLine("[SETUP] Setup done!");
-				__resolve();
+		var cfg = new VsCodeConfig();
+		if(cfg.DEBUG){
+			Interaction.requestConfirmation("DEBUG", "Do you want to skip lib install?", () -> {
+				ctx.appendManyTasks([new CodePatcher(haxelib_repo).patchFnfCode, regexp.task]);
+				ctx.appendTask((__resolve, __deny, ctx) -> {
+					writeLine("[SETUP] Setup done!");
+					__resolve();
+				});
+				resolve();
+			}, () -> {
+				ctx.appendManyTasks([
+					obj.installFunkin,
+					obj.installLibrariesFromHmm(haxelib_repo),
+					new CodePatcher(haxelib_repo).patchFnfCode,
+					regexp.task
+				]);
+				ctx.appendTask((__resolve, __deny, ctx) -> {
+					writeLine("[SETUP] Setup done!");
+					__resolve();
+				});
+				resolve();
 			});
-			resolve();
-		}, () -> {
+		} else {
 			ctx.appendManyTasks([
-				obj.installFunkin,
-				obj.installLibrariesFromHmm(haxelib_repo),
-				new CodePatcher(haxelib_repo).patchFnfCode,
-				regexp.task
-			]);
-			ctx.appendTask((__resolve, __deny, ctx) -> {
-				writeLine("[SETUP] Setup done!");
-				__resolve();
-			});
-			resolve();
-		});
-		#else
-		ctx.appendManyTasks([
-				obj.installFunkin,
-				obj.installLibrariesFromHmm(haxelib_repo),
-				new CodePatcher(haxelib_repo).patchFnfCode,
-				regexp.task
-			]);
-			ctx.appendTask((__resolve, __deny, ctx) -> {
-				writeLine("[SETUP] Setup done!");
-				__resolve();
-			});
-			resolve();
-		#end
+					obj.installFunkin,
+					obj.installLibrariesFromHmm(haxelib_repo),
+					new CodePatcher(haxelib_repo).patchFnfCode,
+					regexp.task
+				]);
+				ctx.appendTask((__resolve, __deny, ctx) -> {
+					writeLine("[SETUP] Setup done!");
+					__resolve();
+				});
+				resolve();
+		}
 	}
 }

@@ -15,8 +15,11 @@ using StringTools;
 class DebugServer {
     private final server:Server;
     private var connectedDebugger:Connection;
-    public function new() {
+    var allowTrace:Bool;
+
+    public function new(_trace:Bool) {
         // This would start the debug server
+        this.allowTrace = _trace;
 		server = Net.createServer(onConnected);
         server.maxConnections = 1;
     }
@@ -30,7 +33,7 @@ class DebugServer {
             connectedDebugger?.close();
             connectedDebugger = null;
         }
-        connectedDebugger = new Connection(socket);
+        connectedDebugger = new Connection(socket,allowTrace);
     }
 
     public function softRestartGame() {

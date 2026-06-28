@@ -10,6 +10,10 @@ class VsCodeConfig {
     public var MOD_NAME(get,null):String;
     function get_MOD_NAME():String {
         return projectConfig.get("funkinCompiler.modName","workbench");
+    }        
+    public var DEBUG(get,null):Bool;
+    function get_DEBUG():Bool {
+        return projectConfig.get("funkinCompiler.debug",false);
     }    
 
     public var GAME_PATH(get,set):String;

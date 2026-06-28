@@ -8,6 +8,7 @@ class Connection {
 
 	var buffer:Buffer;
 	var index:Int;
+	var allowTrace:Bool;
 
 	var nextMessageLength:Int;
 	var pending:Map<Int, Message->Void> = [];
@@ -15,8 +16,9 @@ class Connection {
 
 	static inline final DEFAULT_BUFFER_SIZE = 4096;
 
-	public function new(socket) {
+	public function new(socket,_trace:Bool) {
 		this.socket = socket;
+		this.allowTrace = _trace;
 		buffer = Buffer.alloc(DEFAULT_BUFFER_SIZE);
 		index = 0;
 		nextMessageLength = -1;
@@ -62,7 +64,7 @@ class Connection {
 			index -= nextMessageLength;
 			nextMessageLength = -1;
 
-			// trace('Received response: $bytes');
+			if(allowTrace) trace('Received response: $bytes');
 			final json = haxe.Json.parse(bytes);
 			onMessage(json);
 		}
@@ -89,7 +91,7 @@ class Connection {
 			pending.set(id, callback);
 
 		final cmd = haxe.Json.stringify(event);
-		trace('Sending command: $cmd');
+		if(allowTrace) trace('Sending command: $cmd');
 
 		final body = Buffer.from(cmd, "utf-8");
 		final header = Buffer.alloc(2);

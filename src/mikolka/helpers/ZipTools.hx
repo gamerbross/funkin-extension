@@ -13,12 +13,14 @@ import sys.FileSystem;
 
 class ZipTools {
     public static function makeZipArchive(target_to_archive:String,result_out:Output) {
-        var zip = new haxe.zip.Writer(result_out);
 		var nodes = getZipFileEntries(target_to_archive);
 		nodes.add(createIgnoreNode());
-
-		zip.write(nodes);
+		bundleZipNodes(nodes,result_out);
     }
+	public static function bundleZipNodes(nodes:List<Entry>,result_out:Output){
+		var zip = new haxe.zip.Writer(result_out);
+		zip.write(nodes);
+	}
     public static function getZipFileEntries(dir:String, entries:List<Entry> = null, inDir:Null<String> = null) {
 		if (entries == null)
 			entries = new List<Entry>();

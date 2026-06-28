@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"description": "A simple extension to develop mods and content made for the game \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
 	"categories": [
 		"Programming Languages",
@@ -60,6 +60,11 @@
 						"description": "Name of the mod folder to compile your mod into.",
 						"type": "string",
 						"default": "workbench"
+					},
+					"funkinCompiler.debug": {
+						"description": "Enable debug utilities and additional output.",
+						"type": "boolean",
+						"default": "false"
 					},
 					"funkinCompiler.haxelibPath": {
 						"description": "A path to the haxelib folder used by the compiler. Use the setup command to initialise this field (unless you already have one initialised).",

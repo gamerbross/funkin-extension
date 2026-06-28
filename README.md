@@ -31,7 +31,7 @@
   Opening such mod will allow you to either make quick edits more easily, or develop your existing mod (If you decide against migrating it to a project)
 
   As no code pre-processing is done here, some suggestions given by haxe might be wrong, so watch out!
-- #### As an tool to contribute the the Friday Night Funkin "assets" repository (mode 3)
+- #### As a tool to contribute the the Friday Night Funkin "assets" repository (mode 3)
 
   If you feel like contributing your time to the development of the game, opening "assets" folder with this extension will provide you with the same tooling as if you were making a mod.
 

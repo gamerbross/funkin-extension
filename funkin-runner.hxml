@@ -2,7 +2,6 @@
 --macro include("runner")
 -D analyzer-optimize
 -D js-es=6
--lib vscode 
 -lib vscode-debugadapter 
 -js bin/funkin-runner.js 
 --main runner.Main

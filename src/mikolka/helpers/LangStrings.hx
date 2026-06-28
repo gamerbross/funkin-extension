@@ -12,9 +12,13 @@ class LangStrings {
 	public static inline final MSG_EXPORT_MOD_VERSION:String = "What version number should be used for this mod version? Leave blank to use the current one";
 
     public static inline final STARTUP_SETUP_MISSING:String = 
-        "Looks like you don't have Funkin Compiler initialised. Would you like to do it now?";
+        "Looks like you don't have Funkin Compiler initialised. Would you like to do it now?";    
+    public static inline final STARTUP_SETUP_MISSING_TITLE:String = 
+        "Startup warning";
     public static inline final STARTUP_SETUP_DIFFERENT_HAXELIB:String = 
         "Looks like you don't have Funkin Compiler's haxelib folder set. Would you like to set it now?";
+
+    public static inline final UTILS_SELECT_WORKSPACE_FOLDER = "Select a folder...";
         
     public static inline final MSG_SETUP_CHECKING_CURL:String = "[SETUP] Checking curl..";
     public static inline final MSG_SETUP_CHECKING_HAXE:String = "[SETUP] Checking haxe..";

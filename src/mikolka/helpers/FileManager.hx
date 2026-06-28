@@ -44,6 +44,7 @@ class FileManager {
 		File.copy(from, to);
 	}
 
+	#if vscode
 	/**
 		Converts given target to the path from the current workspace folder,
 		If not opened, request a user to select one.
@@ -65,7 +66,7 @@ class FileManager {
 				onResult(folder.uri.fsPath);
 			case folders:
 				final options = {
-					placeHolder: "Select a folder to set up an FNF project into...",
+					placeHolder: LangStrings.UTILS_SELECT_WORKSPACE_FOLDER,
 				}
 				Vscode.window.showWorkspaceFolderPick(options).then(function(folder) {
 					if (folder == null)
@@ -74,6 +75,7 @@ class FileManager {
 				});
 		}
 	}
+	#end
 	public static function copyRec(from:String, to:String):Void {
 		FileSystem.createDirectory(from);
 		FileManager.scanDirectory(from, s -> {

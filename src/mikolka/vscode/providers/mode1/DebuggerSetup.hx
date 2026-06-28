@@ -1,5 +1,6 @@
 package mikolka.vscode.providers.mode1;
 
+import mikolka.config.FunkCfg;
 import vscode.Disposable;
 import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.helpers.FunkinPaths;
@@ -103,7 +104,7 @@ class DebuggerSetup extends DisposableProvider {
 		if (base.args == null)
 			base.args = [];
 		if (base.trace == null)
-			base.trace = true;
+			base.trace = new VsCodeConfig().DEBUG;
 		if (base.attachDebugger == null)
 			base.attachDebugger = true;
 		if (base.cwd == null)

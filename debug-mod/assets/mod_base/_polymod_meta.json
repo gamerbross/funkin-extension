@@ -1,0 +1,12 @@
+{
+  "title": "Funkin Compiler - Debug server",
+  "description": "A companion mod to communicate with the game on runtime",
+  "contributors": [
+    {
+      "name": "Mikolka9144"
+    }
+  ],
+  "api_version": "0.8.5",
+  "mod_version": "1.0.0",
+  "license": "MIT"
+}
