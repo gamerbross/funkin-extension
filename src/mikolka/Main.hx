@@ -7,7 +7,6 @@ import mikolka.vscode.providers.StartupInit;
 import mikolka.vscode.providers.mode1.TaskRegistry;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
 import mikolka.vscode.providers.VsHaxeProvider;
-import mikolka.vscode.providers.ComandRegistry;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
 class Main {

@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import mikolka.config.VsCodeConfig;
 import sys.FileSystem;
 import haxe.io.Path;
 import sys.io.File;

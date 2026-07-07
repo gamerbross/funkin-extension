@@ -87,8 +87,13 @@
 			},
 			{
 				"command": "mikolka.setHaxelib",
-				"category": "Funkin compiler",
+				"category": "Funkin Compiler Haxelibs",
 				"title": "Set haxelib"
+			},
+			{
+				"command": "mikolka.haxelib.inspect",
+				"category": "Funkin Compiler Haxelibs",
+				"title": "Open Installed haxelibs"
 			}
 		],
 		"jsonValidation": [
