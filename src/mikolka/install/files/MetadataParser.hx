@@ -22,7 +22,7 @@ class MetadataParser {
     public static function readHaxelibMetadata(haxelibTarget:String):Null<Metadata> {
         var metadata_path = Path.join([haxelibTarget,"metadata.json"]);
         if(!FileSystem.exists(metadata_path)) return null;
-        var obj:Metadata = Json.parse(File.getContent());
+        var obj:Metadata = Json.parse(File.getContent(metadata_path));
         return obj;
     }
 

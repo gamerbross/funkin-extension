@@ -1,8 +1,7 @@
 package mikolka;
 
 import mikolka.helpers.ModeManager.FilePatternMode;
-import mikolka.vscode.definitions.DisposableProvider;
-import vscode.Disposable;
+import mikolka.vscode.providers.commands.*;
 import mikolka.vscode.providers.StartupInit;
 import mikolka.vscode.providers.mode1.TaskRegistry;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
@@ -50,15 +49,25 @@ class Main {
 			}
 		));
 		modules.activateGlobal = context -> {
-			var diagnostics = new DiagnosticRegistry(context);
 			var startup = new StartupInit(context);
-			var haxeIntegration = new VsHaxeProvider(context);
-			var debugger = new DebuggerSetup(context);
+
+			var result = [
+				new DiagnosticRegistry(context), 
+				startup,
+
+				new CommandRegistry(context),
+				new NewCommand(context),
+				new SetHaxelibCommand(context),
+				new SetupCommand(context),
+
+				new VsHaxeProvider(context),
+				new DebuggerSetup(context)
+			];
+
 			startup.runStartupChecks();
-			return [diagnostics, startup,haxeIntegration,debugger];
+			return result;
 		}
 
-		var command = new CommandRegistry(context);
 		modules.scanForModeChanges(context);
 	}
 }

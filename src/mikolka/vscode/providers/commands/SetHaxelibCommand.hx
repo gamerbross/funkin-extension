@@ -10,23 +10,31 @@ import mikolka.config.FcpkgManager;
 class SetHaxelibCommand extends DisposableCommand {
 
     var fcpkg:FcpkgManager;
+    var cfg:VsCodeConfig;
     public function new(context:vscode.ExtensionContext) {
 		super(context);
-        fcpkg = new FcpkgManager();
+        fcpkg = new FcpkgManager(context);
+        cfg = new VsCodeConfig();
         addDisposable(makeCommand("setHaxelib", context, command_setHaxelib));
     }
     function command_setHaxelib() {
-        var cfg = new VsCodeConfig();
         var folder_list = fcpkg.getInstalledHaxelibs();
         if(folder_list.length == 0)
             Interaction.displayError("No Fcpkg package was installed!");
-        else if (folder_list == 1) 
+        else if (folder_list.length == 1) 
             setHaxelibFolder(folder_list[0]);
         else {
-            var base_list:Array<ListItem> = makeHaxelibList();
+            var base_list:Array<ListItem> = makeHaxelibList(folder_list);
             if(cfg.HAXELIB_PATH != "") 
-                base_list.insert(0,{label: "Use previous",id: "last",onSelect:setConfigHaxelib});
-            ListPicker.pickItem("Select haxelib to set",base_list,setHaxelibFolder);
+                base_list.insert(0,{
+                    label: "Use previous",
+                    id: "last",
+                    onSelect:setConfigHaxelib,
+                    detail: cfg.HAXELIB_PATH
+                });
+            if(cfg.DEBUG) 
+                trace(base_list);
+            ListPicker.pickHaxelibFolder(base_list,setHaxelibFolder,setHaxelibPath);
         }
 		
     }
@@ -49,15 +57,16 @@ class SetHaxelibCommand extends DisposableCommand {
         
     }
     function setConfigHaxelib() {
-        setHaxelibPath(new VsCodeConfig().HAXELIB_PATH);
+        setHaxelibPath(cfg.HAXELIB_PATH);
     }
     function setHaxelibPath(full_path:String) {
-        var cfg = new VsCodeConfig();
         var result = Process.setHaxelibPath(full_path);
 		if (!result)
 			Interaction.displayError("Failed to set haxelib path!");
 		else{
             cfg.HAXELIB_PATH = full_path;
+            trace(full_path);
+            trace(cfg.HAXELIB_PATH);
 			Vscode.commands.executeCommand("haxe.restartLanguageServer");
         }
     }

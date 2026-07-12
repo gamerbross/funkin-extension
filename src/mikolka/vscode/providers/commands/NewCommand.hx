@@ -1,6 +1,7 @@
 package mikolka.vscode.providers.commands;
 
 import mikolka.vscode.definitions.DisposableCommand;
+import vscode.Uri;
 
 class NewCommand extends DisposableCommand {
     var scaffold_path:String;

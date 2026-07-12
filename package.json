@@ -70,6 +70,11 @@
 						"description": "A path to the haxelib folder used by the compiler. Use the setup command to initialise this field (unless you already have one initialised).",
 						"type": "string",
 						"default": ""
+					},
+					"funkinCompiler.fcpkgSources": {
+						"description": "List of sources providing fcPkg manifests",
+						"type": "array",
+						"default": [""]
 					}
 				}
 			}

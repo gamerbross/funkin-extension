@@ -1,11 +1,18 @@
 package mikolka.vscode.ui;
 
+import vscode.QuickInputButton;
 import vscode.QuickPickItem;
 import js.lib.Promise;
 import vscode.Uri;
 import vscode.ThemeIcon;
 import js.lib.Promise.Thenable;
 
+using mikolka.utils.UIUtils;
+
+typedef QuickInputActionBtn = {
+	> QuickInputButton,
+	action:()->Void
+} 
 class Interaction {
 
 	public static function displayError(msg:String):Thenable<Any> {
@@ -33,30 +40,14 @@ class Interaction {
 			,next:(inputPath:String) -> Void,onCancel:Void -> Void){
 		var box = Vscode.window.createInputBox();
 		var acceptedValue = false;
-		box.buttons = [{
-			tooltip: "Browse",
-			iconPath: ThemeIcon.Folder
-		}];
 		box.prompt = prompt;
 		box.value = initialValue;
 		box.placeholder = "Enter a path to a file (or use the folder button to pick one)";
-		box.onDidTriggerButton(e -> {
-			if(e.tooltip == "Browse"){
-				box.busy = true;
-				Vscode.window.showOpenDialog({
-					canSelectFolders: false,
-					canSelectFiles: true,
-					filters: {
-						fileFormatName:[fileExtension]
-					}
-				}).then(folders -> {
-					if (folders != null && folders.length > 0) {
-						box.value = folders[0].fsPath;
-					}
-					box.busy = false;
-				});
-			}
-		});
+		box.configureSelectFileButton("Pick a file",{
+			'${fileFormatName}': [fileExtension]
+		},true,s -> {
+			box.value = s;
+		},true);
 		box.onDidAccept(e -> {
 			acceptedValue = true;
 			next(box.value);
@@ -74,27 +65,12 @@ class Interaction {
 	public static function requestDirectory(prompt:String,initialValue:String,next:(inputPath:String) -> Void,onCancel:Void -> Void) {
 		var box = Vscode.window.createInputBox();
 		var acceptedValue = false;
-		box.buttons = [{
-			tooltip: "Browse",
-			iconPath: ThemeIcon.Folder
-		}];
 		box.prompt = prompt;
 		box.value = initialValue;
 		box.placeholder = "Enter a path to a directory (or use the folder button to pick one)";
-		box.onDidTriggerButton(e -> {
-			if(e.tooltip == "Browse"){
-				box.busy = true;
-				Vscode.window.showOpenDialog({
-					canSelectFolders: true,
-					canSelectFiles: false
-				}).then(folders -> {
-					if (folders != null && folders.length > 0) {
-						box.value = folders[0].fsPath;
-					}
-					box.busy = false;
-				});
-			}
-		});
+		box.configureSelectFileButton("Pick a folder",null,false,s -> {
+			box.value = s;
+		},true);
 		box.onDidAccept(e -> {
 			acceptedValue = true;
 			next(box.value);
@@ -120,5 +96,4 @@ class Interaction {
 			else Interaction.displayError("Action aborted!");
 		});
 	}
-
 }
