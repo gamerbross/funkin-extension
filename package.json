@@ -74,7 +74,7 @@
 					"funkinCompiler.fcpkgSources": {
 						"description": "List of sources providing fcPkg manifests",
 						"type": "array",
-						"default": [""]
+						"default": ["https://raw.githubusercontent.com/FunkinCompiler/official-vslice-cdn/refs/heads/master/sources.json"]
 					}
 				}
 			}
@@ -82,7 +82,7 @@
 		"commands": [
 			{
 				"command": "mikolka.setup",
-				"category": "Funkin compiler",
+				"category": "Funkin FCPKG",
 				"title": "Setup haxelib"
 			},
 			{
@@ -92,12 +92,12 @@
 			},
 			{
 				"command": "mikolka.setHaxelib",
-				"category": "Funkin Compiler Haxelibs",
+				"category": "Funkin FCPKG",
 				"title": "Set haxelib"
 			},
 			{
 				"command": "mikolka.haxelib.inspect",
-				"category": "Funkin Compiler Haxelibs",
+				"category": "Funkin FCPKG",
 				"title": "Open Installed haxelibs"
 			}
 		],

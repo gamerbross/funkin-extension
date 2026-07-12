@@ -20,7 +20,8 @@ typedef ListItem = {
 
 typedef FcpkgManifest = {
 	> QuickPickItem,
-	url:String
+	url:String,
+	position:Int
 }
 
 class ListPicker {
@@ -62,30 +63,34 @@ class ListPicker {
 		ext.title = title;
 
 		var remoteRequests = new VsCodeConfig().FCPKG_SOURCES.map(s -> new Http(s));
-		if (remoteRequests.length > 0)
+		if (remoteRequests.length > 0){
 			ext.busy = true;
-		var remainingSources = remoteRequests.length;
-
-		for (http in remoteRequests) {
-			http.onError = msg -> {
-				remainingSources -= 1;
-				trace(msg);
-			}
-			http.onData = data -> {
-				try {
-					trace(data);
-					var list:Array<FcpkgManifest> = Json.parse(data);
-					ext.items = ext.items.concat(list);
-					ext.show();
-				} catch (x:Exception) {
-					trace(x.details());
+			ext.totalSteps = remoteRequests.length;
+			ext.step = 0;
+	
+			for (http in remoteRequests) {
+				http.onError = msg -> {
+					ext.step += 1;
+					trace('For source ${http.url}:  ${msg}');
 				}
-				remainingSources -= 1;
-				if (remainingSources <= 0)
-					ext.busy = false;
+				http.onData = data -> {
+					try {
+						var list:Array<FcpkgManifest> = Json.parse(data);
+						var newList = ext.items.concat(list);
+						newList.sort((s1,s2) -> s2.position-s1.position);
+						ext.items = newList;
+						ext.show();
+						
+					} catch (x:Exception) {
+						trace('For source ${http.url}:  ${x.details()}');
+					}
+					ext.step += 1;
+					if (ext.step >= ext.totalSteps)
+						ext.busy = false;
+				}
+	
+				http.request();
 			}
-
-			http.request();
 		}
         ext.onDidAccept(_ -> {
             if(ext.selectedItems.length == 0){

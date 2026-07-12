@@ -87,7 +87,7 @@ class SetupCommand extends DisposableCommand {
 	function downloadFcpkg(remote_source:Uri, onComplete:(fcpkgPath:String) -> Void) {
 		var name = Path.withoutDirectory(remote_source.path);
 		var agent = "Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0";
-		var haxelib_path = Path.join([fcpkg.getHaxelibRootPath(), name]);
+		var haxelib_path = Path.join([fcpkg.getHaxelibRootPath(), Path.withoutExtension(name)]);
 		FileSystem.createDirectory(haxelib_path);
 
 		writeLine("Downloading fcpkg...");
