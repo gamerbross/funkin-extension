@@ -51,16 +51,16 @@ class SetupCommand extends DisposableCommand {
 	}
 
 	function chip_done(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
+		fcpkg.clearTempFcpkg();
 		writeLine("[SETUP] Setup done!");
 		resolve();
 	}
 
 	function installFcpkg(ctx:TaskChips, path:String) {
 		var haxelib_name = Path.withoutExtension(Path.withoutDirectory(path));
-		var cfg = new VsCodeConfig();
 		var haxelib_path = Path.join([fcpkg.getHaxelibRootPath(), haxelib_name]);
 		var environmentTesting = new MiscEnvChecks(writeLine);
-		cfg.HAXELIB_PATH = haxelib_path;
+		VsCodeConfig.instance.HAXELIB_PATH = haxelib_path;
 
 		FileSystem.createDirectory(haxelib_path);
 		Process.setHaxelibPath(haxelib_path);
@@ -71,9 +71,9 @@ class SetupCommand extends DisposableCommand {
 				ZipTools.extractZip(File.read(path), haxelib_path);
 				var manifest = new ManifestParser(haxelib_path);
 				var installTasks = manifest.buildTaskList(writeLine);
-				if (cfg.DEBUG) {
+				if (VsCodeConfig.instance.DEBUG) {
 					writeLine('[DEBUG] Built ${installTasks.length} install tasks.');
-					writeLine('[DEBUG] Starting from stage ${manifest.manifest.installStage}');
+					writeLine('[DEBUG] Starting from stage ${manifest.installStage}');
 				}
 				_ctx.appendManyTasks(installTasks);
 				_resolve();
@@ -85,19 +85,18 @@ class SetupCommand extends DisposableCommand {
 	}
 
 	function downloadFcpkg(remote_source:Uri, onComplete:(fcpkgPath:String) -> Void) {
-		var name = Path.withoutDirectory(remote_source.path);
-		var agent = "Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0";
-		var haxelib_path = Path.join([fcpkg.getHaxelibRootPath(), Path.withoutExtension(name)]);
-		FileSystem.createDirectory(haxelib_path);
+		var name = Path.withoutExtension(Path.withoutDirectory(remote_source.path));
+		var agent = '"Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0"';
+		var command = 'curl -o ${name}.fcpkg -A ${agent} "${remote_source.toString()}"';
 
-		writeLine("Downloading fcpkg...");
-		Process.runCommand('curl -o temp.fcpkg -A ${agent} "${remote_source.toString()}"', haxelib_path, writeLine,
-			onComplete.bind(Path.join([haxelib_path, "temp.fcpkg"])));
+		var download_path = fcpkg.getFcpkgTempPath();
+
+		writeLine("Downloading fcpkg >\n   "+command);
+		Process.runCommand(command, download_path, writeLine,
+			onComplete.bind(Path.join([download_path, '${name}.fcpkg'])));
 	}
 
 	function pickHaxelibRepo(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		var cfg = new VsCodeConfig();
-
 		trace("Request setup");
 		ListPicker.pickFcpkgUri("Select fcpkg package to install", target -> {
 			if (target == null)

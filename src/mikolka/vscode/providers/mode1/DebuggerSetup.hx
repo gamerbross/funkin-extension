@@ -49,7 +49,7 @@ class DebuggerSetup extends DisposableProvider {
 				else if (hasCwd)
 					return null;
 				else {
-					var vscodeCfg = new VsCodeConfig();
+					var vscodeCfg = VsCodeConfig.instance;
 					Interaction.requestDirectory("Select FNF instance to launch", vscodeCfg.GAME_PATH, inputPath -> {
 						vscodeCfg.GAME_PATH = inputPath;
 						Interaction.displayInformation("Path updated! Try launching the game again.");
@@ -104,11 +104,11 @@ class DebuggerSetup extends DisposableProvider {
 		if (base.args == null)
 			base.args = [];
 		if (base.trace == null)
-			base.trace = new VsCodeConfig().DEBUG;
+			base.trace = VsCodeConfig.instance.DEBUG;
 		if (base.attachDebugger == null)
 			base.attachDebugger = true;
 		if (base.cwd == null)
-			base.cwd = new VsCodeConfig().GAME_PATH;
+			base.cwd = VsCodeConfig.instance.GAME_PATH;
 		trace(base.preLaunchTask);
 		if (base.preLaunchTask == Lib.undefined)
 			base.preLaunchTask = "Funk: Compile current V-Slice mod";

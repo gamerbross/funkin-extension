@@ -3,8 +3,10 @@ package mikolka.config;
 import vscode.WorkspaceConfiguration;
 
 class VsCodeConfig {
+    public static var instance:VsCodeConfig = new VsCodeConfig();
+    
     var projectConfig:WorkspaceConfiguration;
-    public function new() {
+    private function new() {
         projectConfig = Vscode.workspace.getConfiguration();
     }
     public var MOD_NAME(get,null):String;

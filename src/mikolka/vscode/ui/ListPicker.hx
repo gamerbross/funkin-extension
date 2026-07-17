@@ -62,7 +62,7 @@ class ListPicker {
         ext.ignoreFocusOut = true;
 		ext.title = title;
 
-		var remoteRequests = new VsCodeConfig().FCPKG_SOURCES.map(s -> new Http(s));
+		var remoteRequests = VsCodeConfig.instance.FCPKG_SOURCES.map(s -> new Http(s));
 		if (remoteRequests.length > 0){
 			ext.busy = true;
 			ext.totalSteps = remoteRequests.length;
@@ -76,6 +76,7 @@ class ListPicker {
 				http.onData = data -> {
 					try {
 						var list:Array<FcpkgManifest> = Json.parse(data);
+						trace(list);
 						var newList = ext.items.concat(list);
 						newList.sort((s1,s2) -> s2.position-s1.position);
 						ext.items = newList;

@@ -1,5 +1,6 @@
 package mikolka.programs;
 
+import mikolka.config.MetadataParser.Metadata;
 import mikolka.vscode.ui.Interaction;
 import mikolka.helpers.FileManager;
 import sys.FileSystem;
@@ -8,27 +9,18 @@ import haxe.io.Path;
 using StringTools;
 
 class Hxc {
-	// Once enabled strips "package" line at the beginning of each file
-	// (you still need that line even if you disable that)
-	public static var stripPackage:Bool = false;
 
-	// Allows you to utilise haxe's safe casts, like "cast (obj,type)"
-	public static var convertCasts:Bool = true;
-
-	// Fixes imports not being recognised by polymod (especially enums)
-	public static var convertImports:Bool = true;
-
-	// Allows you to utilise mock calls to polymod to fix missing mothod error
-	public static var mockPolymodCalls:Bool = true;
 
 	var src_path:String;
 	var mod_export_path:String;
 	var writeLine:String -> Void;
+	var config:Metadata;
 
-	public function new(src_path:String, mod_export_path:String,writeLine:String -> Void) {
+	public function new(src_path:String, mod_export_path:String,config:Metadata,writeLine:String -> Void) {
 		this.src_path = src_path;
 		this.mod_export_path = mod_export_path; // baseGane_modDir, Mod_Directory
 		this.writeLine = writeLine;
+		this.config = config;
 	}
 
 	public function processDirectory() {
@@ -48,12 +40,12 @@ class Hxc {
 			return;
 		}
 
-		var result = stripPackage ? filter.replace(content, "") : content;
-		if (convertCasts)
+		var result = config.stripPackage ? filter.replace(content, "") : content;
+		if (config.convertCasts)
 			result = ~/cast *\((.*),.*\)/g.replace(result, "$1"); // strip casts (polymod doesn't need them)
-		if (convertImports)
+		if (config.convertImports)
 			result = ~/import +([a-zA-z.]*)\.[A-Z]\w+\.([A-Z]\w+);/g.replace(result, "import $1.$2;");
-		if (mockPolymodCalls)
+		if (config.mockPolymodCalls)
 			result = ~/\.polymodExecFunc *\((.*),(\W*\[.*\]\W*)\)/g.replace(result, ".scriptCall($1,$2)");
 
 		var filePackage = filter.matched(1).split(".");

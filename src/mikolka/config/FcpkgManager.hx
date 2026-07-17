@@ -15,6 +15,16 @@ class FcpkgManager {
 		if(!FileSystem.exists(path)) FileSystem.createDirectory(path);
 		return path;
 	}
+    public function getFcpkgTempPath():String{
+		var path = Path.join([ctx.globalStorageUri.fsPath,"temp"]);
+		if(!FileSystem.exists(path)) FileSystem.createDirectory(path);
+		return path;
+	}
+    public function clearTempFcpkg(){
+		var path = Path.join([ctx.globalStorageUri.fsPath,"temp"]);
+		if(FileSystem.exists(path)) FileManager.deleteDirRecursively(path);
+		return path;
+	}
     /**
     * Get names of the installed haxelibs in the extension's registry.
     **/
@@ -23,4 +33,6 @@ class FcpkgManager {
         var base_list = FileSystem.readDirectory(base_path);
         return base_list.filter(s -> FileSystem.isDirectory(Path.join([base_path,s])));
     }
+
+
 }

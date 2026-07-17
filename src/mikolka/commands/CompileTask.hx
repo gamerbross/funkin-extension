@@ -1,5 +1,7 @@
 package mikolka.commands;
 
+import mikolka.config.MetadataParser;
+import mikolka.install.files.ManifestParser;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
 import mikolka.helpers.FunkinPaths;
 import mikolka.config.FunkCfg;
@@ -74,8 +76,9 @@ class CompileTask {
 		}
 		FileManager.deleteDirRecursively(cfg.export_mod_path);
 		FileManager.copyRec(cfg.mod_assets, cfg.export_mod_path);
+		var hxManifest = MetadataParser.readActiveMetadata(); 
 		var fnfc = new Fnfc(cfg.fnfc_assets, cfg.export_mod_path, cfg.writeLine);
-		var hxc = new Hxc(cfg.hxc_source, cfg.export_mod_path, cfg.writeLine);
+		var hxc = new Hxc(cfg.hxc_source, cfg.export_mod_path, hxManifest ,cfg.writeLine);
 		fnfc.processDirectory();
 		hxc.processDirectory();
 	}

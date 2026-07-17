@@ -2,7 +2,7 @@ package mikolka.vscode.providers.commands;
 
 import mikolka.vscode.definitions.DisposableCommand;
 import mikolka.config.VsCodeConfig;
-import mikolka.install.files.MetadataParser;
+import mikolka.config.MetadataParser;
 import mikolka.vscode.ui.ListPicker.ListItem;
 import haxe.io.Path;
 import mikolka.config.FcpkgManager;
@@ -14,7 +14,7 @@ class SetHaxelibCommand extends DisposableCommand {
     public function new(context:vscode.ExtensionContext) {
 		super(context);
         fcpkg = new FcpkgManager(context);
-        cfg = new VsCodeConfig();
+        cfg = VsCodeConfig.instance;
         addDisposable(makeCommand("setHaxelib", context, command_setHaxelib));
     }
     function command_setHaxelib() {

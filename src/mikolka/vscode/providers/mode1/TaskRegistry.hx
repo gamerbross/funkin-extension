@@ -34,7 +34,7 @@ class TaskRegistry extends DisposableProvider {
 			var manifest:FunkTaskDefinition = cast resolvedDefinition;
 
 			// Pulling the config in case the tasks missed those
-			var vscodeConfig = new VsCodeConfig();
+			var vscodeConfig = VsCodeConfig.instance;
 			if (manifest.modName == null || manifest.modName == "")
 				manifest.modName = vscodeConfig.MOD_NAME;
 

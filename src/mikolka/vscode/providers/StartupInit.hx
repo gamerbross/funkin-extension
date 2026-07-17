@@ -15,7 +15,7 @@ class StartupInit extends DisposableProvider {
         super(context);
     }
     public function runStartupChecks() {
-        var cfg = new VsCodeConfig();
+        var cfg = VsCodeConfig.instance;
         if(cfg.HAXELIB_PATH == null || cfg.HAXELIB_PATH == ""){
             // Haxelib not inited
             Vscode.window.showWarningMessage(LangStrings.STARTUP_SETUP_MISSING_TITLE,{
