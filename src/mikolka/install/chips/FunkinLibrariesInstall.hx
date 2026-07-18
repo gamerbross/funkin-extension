@@ -22,14 +22,17 @@ class FunkinLibrariesInstall {
 	var funkin_commit:String = null;
 
 	// https://codeload.github.com/FunkinCrew/Funkin/zip/
-	public function installFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
+	public function downloadFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
 		installLibraryFromGithub("FunkinCrew/Funkin",funkin_commit,"funkin",() ->{
 			trace("FNF resolved promise "+localCwd);
-			FileManager.moveRec(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
-			FileSystem.rename(Path.join([localCwd,"funkin","git","Main.hx"]),Path.join([localCwd,"funkin","git","funkin","Main.hx"]));
-			trace("FNF done");
 			resolve();
 		},deny);
+	}
+	public function configureFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
+		FileManager.moveRec(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
+		FileSystem.rename(Path.join([localCwd,"funkin","git","Main.hx"]),Path.join([localCwd,"funkin","git","funkin","Main.hx"]));
+		trace("FNF done");
+		resolve();
 	}
 
 	public function installLibrariesFromHmm(haxelib_repo:String):ChipTask {
@@ -60,7 +63,7 @@ class FunkinLibrariesInstall {
 		runSetupCommand('haxelib install ${libraryName} ${version} --always --quiet --skip-dependencies', resolve);
 	}
 	function installLibraryFromGithub(repoName:String,commitHash:String,libraryName:String,resolve:Void->Void, deny:String->Void) {
-		runSetupCommand('curl -o temp.zip -A "Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0" "https://codeload.github.com/${repoName}/zip/${commitHash}"',() -> {
+		runSetupCommand('curl -o temp.zip "https://codeload.github.com/${repoName}/zip/${commitHash}"',() -> {
 			ZipTools.extractZip(File.read(Path.join([localCwd,"temp.zip"])),Path.join([localCwd,libraryName]));
 			FileSystem.deleteFile(Path.join([localCwd,"temp.zip"]));
 

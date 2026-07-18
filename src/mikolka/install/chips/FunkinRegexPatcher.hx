@@ -1,5 +1,7 @@
 package mikolka.install.chips;
 
+import mikolka.install.files.ManifestParser.Manifest;
+import haxe.DynamicAccess;
 import haxe.io.Path;
 import mikolka.install.backend.TaskChips;
 import sys.io.File;
@@ -13,11 +15,11 @@ using StringTools;
 class FunkinRegexPatcher
 {
     var full_code_path:String;
-    var regex_rules:Map<String,String>;
+    var regex_rules:DynamicAccess<String>;
     var regex_exclude:Array<String>;
-    public function new(haxelib_path:String,regex_rules:Map<String,String>,regex_exclude:Array<String>) {
+    public function new(haxelib_path:String,funkinPatchRules:DynamicAccess<String>,regex_exclude:Array<String>) {
         this.full_code_path = Path.join([haxelib_path,"funkin","git","funkin"]);
-        this.regex_rules = regex_rules;
+        this.regex_rules = funkinPatchRules;
         this.regex_exclude = regex_exclude;
     }
   public function patchFnfCode(resolve:Void->Void, deny:String->Void,ctx:TaskChips)

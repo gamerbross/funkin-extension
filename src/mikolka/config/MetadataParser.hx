@@ -1,5 +1,6 @@
 package mikolka.config;
 
+import haxe.DynamicAccess;
 import haxe.io.Path;
 import sys.io.File;
 import sys.FileSystem;
@@ -22,13 +23,10 @@ typedef Metadata = {
 
 	// Allows you to utilise mock calls to polymod to fix missing method error
 	mockPolymodCalls:Bool,
-    importBlacklist:Map<String,String>
+    importBlacklist:DynamicAccess<String>
 }
 
 class MetadataParser {
-    private static final BLACKLIST:Map<String,String> = [
-
-    ]
     public static function readHaxelibMetadata(haxelibTarget:String):Null<Metadata> {
         var metadata_path = Path.join([haxelibTarget,"metadata.json"]);
         if(!FileSystem.exists(metadata_path)) return null;
@@ -45,10 +43,17 @@ class MetadataParser {
             convertImports: true,
             convertCasts: true,
             stripPackage: false,
-            importBlacklist = new Map();
+            importBlacklist: new DynamicAccess<String>()
         };
         var result = base.mergeWithJson(readHaxelibMetadata(path)); 
         trace(result);
+        return result;
+    }
+    public static function extractRegexRules(obj:Metadata) {
+        var result = new Map<EReg,String>();
+        for (key => value in obj.importBlacklist) {
+            result.set(new EReg(key,""),value);
+        }
         return result;
     }
 }

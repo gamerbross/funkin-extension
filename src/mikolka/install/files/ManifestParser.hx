@@ -1,5 +1,6 @@
 package mikolka.install.files;
 
+import haxe.DynamicAccess;
 import mikolka.install.backend.TaskChips.ChipTask;
 import haxe.Exception;
 import haxe.ValueException;
@@ -16,14 +17,14 @@ typedef Manifest = {
     version:String,
     funkinReferenceTag:Null<String>,
     fullReplaceableFiles:Null<String>,
-    funkinPatchRules:Null<StringMap<String>>,
+    funkinPatchRules:Null<DynamicAccess<String>>,
     funkinPatchExclude:Null<Array<String>>,
     haxelibRemoveFolders:Null<Array<String>>,
     // 0 Draft
     // 1 Funkin downloaded
-    // 2 Funkin configured
-    // 3 Haxelibs downloaded
-    // 4 Haxelibs configured
+    // 2 Haxelibs downloaded
+    // 3 Haxelibs configured
+    // 4 Funkin configured
     // 5 Regex patched applied
     // 6 Replaces applied
     installStage:Null<Int>
@@ -33,9 +34,9 @@ typedef Manifest = {
 class ManifestParser {
     static var STAGE_DRAFT = 0;
     static var STAGE_FNF_DOWNLOADED = 1;
-    static var STAGE_FNF_READY = 2;
-    static var STAGE_HAXELIB_DOWNLOADED = 3;
-    static var STAGE_HAXELIB_READY = 4;
+    static var STAGE_HAXELIB_DOWNLOADED = 2;
+    static var STAGE_HAXELIB_READY = 3;
+    static var STAGE_FNF_READY = 4;
     static var STAGE_REGEX_PATCH_DONE = 5;
     static var STAGE_FILE_PATCH_DONE = 6;
     static var STAGE_COMPLETE = 6;
@@ -58,19 +59,22 @@ class ManifestParser {
         if(manifest == null) return [];
 
         var nodes = new Array<ChipTask>();
-        if(manifest.installStage < STAGE_HAXELIB_READY){
+        if(manifest.installStage < STAGE_FNF_READY){
             var obj = new FunkinLibrariesInstall(writeLine, haxelib_repo, manifest.funkinReferenceTag);
             if(manifest.installStage < STAGE_FNF_DOWNLOADED) 
-                nodes.push(obj.installFunkin);
+                nodes.push(obj.downloadFunkin);
             if(manifest.installStage < STAGE_HAXELIB_DOWNLOADED) 
-                nodes.push(obj.installLibrariesFromHmm(haxelib_repo));            
+                nodes.push(obj.installLibrariesFromHmm(haxelib_repo));              
             if(manifest.installStage < STAGE_HAXELIB_READY) {
                 var dirNode = new DirectoryRemovalChip(manifest.haxelibRemoveFolders,haxelib_repo);
                 nodes.push(dirNode.task);
-            }
-            nodes.push(FileTaskChips.consumeHmmFIle(haxelib_repo));
-            
-        }
+    
+                nodes.push(FileTaskChips.consumeHmmFIle(haxelib_repo));
+                
+            }        
+            nodes.push(obj.configureFunkin);
+
+        }       
         if(manifest.installStage < STAGE_REGEX_PATCH_DONE){
             var codePatch = new FunkinRegexPatcher(haxelib_repo,manifest.funkinPatchRules,manifest.funkinPatchExclude);
             nodes.push(codePatch.patchFnfCode);

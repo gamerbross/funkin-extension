@@ -86,8 +86,7 @@ class SetupCommand extends DisposableCommand {
 
 	function downloadFcpkg(remote_source:Uri, onComplete:(fcpkgPath:String) -> Void) {
 		var name = Path.withoutExtension(Path.withoutDirectory(remote_source.path));
-		var agent = '"Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0"';
-		var command = 'curl -o ${name}.fcpkg -A ${agent} "${remote_source.toString()}"';
+		var command = 'curl -o ${name}.fcpkg "${remote_source.toString()}"';
 
 		var download_path = fcpkg.getFcpkgTempPath();
 
