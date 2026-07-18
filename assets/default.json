@@ -1,0 +1,35 @@
+{
+    "version":"1.0.0",
+    "name":"Funkin 0.8.5",
+    
+    "mockPolymodCalls": true,
+    "convertImports": true,
+    "convertCasts": true,
+    "stripPackage": false,
+    
+    "importBlacklist": 	{
+		"^sys\\.(.*)":  "Mods are not allowed to access system (Use companion apps to bypass this)",
+		"^Sys":  "Mods are not allowed to access system (Use companion apps to bypass this)",
+        "^cpp.Lib":  "Attaching binaried to FNF is disabled within mods",
+        "^haxe.Unserializer":  "Mods are not allowed to resolve classes on their own",
+        "^lime.utils.AssetLibrary":  "AssetLibrary.__fromManifest() can access blacklisted packages apparently.",
+        "^funkin.mobile.util.AdMobUtil":  "Trying to disable ads? Revoking internet permission might work (or just playing offline).",
+        "^funkin.mobile.util.InAppPurchasesUtil":  "In-App purchases are not supported for mods.",
+        "^funkin.mobile.util.InAppReviewUtil":  "Not available for mods. You can always tell the player to rate this game 5 stars on the store!",
+        "^lime.system.(JNI|CFFI|System)":  "Attaching binaried to FNF is disabled within mods",
+        "^openfl.Lib":  "Mods are not allowed to resolve classes on their own",
+        "^openfl.system.ApplicationDomain":  "Mods are not allowed to resolve classes on their own",
+        "^openfl.net.SharedObject":  "Mods are not allowed to resolve classes on their own",
+        "^openfl.desktop.NativeProcess":  "Spawning processes is disallowd within mods. Launch FNF with a companion app if you need external system access.",
+        "^funkin.util.macro.EnvironmentConfigMacro":  "Reading build secrets is disallowed",
+        "^polymod\\.(.*)":  "Use 'PolymodHandler' if you need access to mod list",
+        "^hscript\\.(.*)":  "Interpreting custom haxe code is disallowed",
+        "^io.newgrounds\\.(.*)":  "Use 'NewgroundsClient' (sandboxed) if you need \"read\" access to NG data",
+        "^extension\\.(.*)":  "Native extension reference. There is likely a utility class for what you're trying to achieve!",
+        "^funkin.util.macro\\.(.*)":  "Some bypasses used this class, so it's banned from use in mods",
+        "^funkin.external.android.CallbackUtil":  "External classes for android that bridge to private JNI methods & callbacks",
+        "^funkin.external.android.DataFolderUtil":  "External classes for android that bridge to private JNI methods & callbacks",
+        "^funkin.external.android.JNIUtil":  "External classes for android that bridge to private JNI methods & callbacks"
+
+    }
+}

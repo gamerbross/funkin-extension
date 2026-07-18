@@ -1,5 +1,7 @@
 package mikolka.vscode.providers;
 
+import sys.FileSystem;
+import sys.io.File;
 import mikolka.vscode.definitions.DisposableProvider;
 import haxe.io.Path;
 import mikolka.helpers.Process;
@@ -11,8 +13,10 @@ using StringTools;
  * This class manages the startup of the Funkin compiler
  */
 class StartupInit extends DisposableProvider {
+    var ctx:vscode.ExtensionContext;
     public function new(context:vscode.ExtensionContext) {
         super(context);
+        ctx = context;
     }
     public function runStartupChecks() {
         var cfg = VsCodeConfig.instance;
@@ -26,8 +30,10 @@ class StartupInit extends DisposableProvider {
             });
             return;
         }
+
         var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand("haxelib config").replace("\n", ""));
         var user_repo = Path.removeTrailingSlashes(cfg.HAXELIB_PATH);
+
         if(haxelib_repo != user_repo){
              Vscode.window.showWarningMessage(LangStrings.STARTUP_SETUP_DIFFERENT_HAXELIB,"Yes","No").then(s ->{
                 if(s == "Yes") {
@@ -35,6 +41,11 @@ class StartupInit extends DisposableProvider {
                 };
             });
             return;
+        }
+        else{
+            var metadata_path = Path.join([haxelib_repo,"metadata.json"]);
+            if(!FileSystem.exists(metadata_path))
+                File.copy(ctx.asAbsolutePath("./assets/default.json",metadata_path))
         }
         Vscode.window.showInformationMessage("Funkin Compiler is now running!");
         //

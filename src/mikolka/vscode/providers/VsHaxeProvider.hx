@@ -1,5 +1,6 @@
 package mikolka.vscode.providers;
 
+import mikolka.config.MetadataParser;
 import mikolka.config.VsCodeConfig;
 import sys.FileSystem;
 import haxe.io.Path;
@@ -31,7 +32,13 @@ class VsHaxeProvider extends DisposableProvider {
         var cancelHook = haxeApi.registerDisplayArgumentsProvider("Funkin",{
             description: "Activates Autocompletion using FNF source code",
             activate: provideArguments -> {
-                var hxml = File.getContent(context.asAbsolutePath("assets/funkin-index.hxml"));
+                var current_manifest = MetadataParser.readActiveMetadata();
+                var hxml_path = current_manifest.hxmlFile != null 
+                    ? Path.join([VsCodeConfig.instance.HAXELIB_PATH,current_manifest.hxmlFile])
+                    : context.asAbsolutePath("assets/funkin-index.hxml");
+                if(VsCodeConfig.instance.DEBUG) 
+                    trace(hxml_path);
+                var hxml = File.getContent(hxml_path);
                 provideArguments(haxeApi.parseHxmlToArguments(hxml));
             },
             deactivate: () -> {}

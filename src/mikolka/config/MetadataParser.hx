@@ -11,6 +11,7 @@ typedef Metadata = {
     name:String,
     version:String,
     description:String,
+    hxmlFile:Null<String>,
     // Once enabled strips "package" line at the beginning of each file
 	// (you still need that line even if you disable that)
 	stripPackage:Bool,
@@ -43,6 +44,7 @@ class MetadataParser {
             convertImports: true,
             convertCasts: true,
             stripPackage: false,
+            hxmlFile:null,
             importBlacklist: new DynamicAccess<String>()
         };
         var result = base.mergeWithJson(readHaxelibMetadata(path)); 
