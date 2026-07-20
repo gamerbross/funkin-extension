@@ -12,11 +12,12 @@ class ClassReplaceChip {
         this.haxelib_path = haxelib_path;
     }
     public function task(resolve:Void->Void, deny:String->Void,ctx:TaskChips) {
-        FileManager.scanDirectory(haxePatchesPath,onFile,(x) ->{});
+        var full_path = Path.join([haxelib_path,haxePatchesPath]);
+        FileManager.scanDirectory(full_path,onFile,(x) ->{});
         resolve();
     }
     private function onFile(filename:String) {
         trace(filename);
-        File.saveContent(Path.join([haxelib_path,filename]), File.getContent(Path.join([haxePatchesPath,filename])));
+        File.saveContent(Path.join([haxelib_path,filename]), File.getContent(Path.join([haxelib_path,haxePatchesPath,filename])));
     }
 }

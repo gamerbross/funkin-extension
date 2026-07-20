@@ -19,7 +19,7 @@ typedef Manifest = {
     fullReplaceableFiles:Null<String>,
     funkinPatchRules:Null<DynamicAccess<String>>,
     funkinPatchExclude:Null<Array<String>>,
-    haxelibRemoveFolders:Null<Array<String>>,
+    haxelibRemoveFolders:Array<String>,
     // 0 Draft
     // 1 Funkin downloaded
     // 2 Haxelibs downloaded
@@ -39,7 +39,7 @@ class ManifestParser {
     static var STAGE_FNF_READY = 4;
     static var STAGE_REGEX_PATCH_DONE = 5;
     static var STAGE_FILE_PATCH_DONE = 6;
-    static var STAGE_COMPLETE = 6;
+    static var STAGE_COMPLETE = 7;
 
     var manifest:Null<Manifest>;
     var haxelib_repo:String;
@@ -68,12 +68,11 @@ class ManifestParser {
             if(manifest.installStage < STAGE_HAXELIB_READY) {
                 var dirNode = new DirectoryRemovalChip(manifest.haxelibRemoveFolders,haxelib_repo);
                 nodes.push(dirNode.task);
-    
                 nodes.push(FileTaskChips.consumeHmmFIle(haxelib_repo));
                 
             }        
             nodes.push(obj.configureFunkin);
-
+            
         }       
         if(manifest.installStage < STAGE_REGEX_PATCH_DONE){
             var codePatch = new FunkinRegexPatcher(haxelib_repo,manifest.funkinPatchRules,manifest.funkinPatchExclude);
@@ -82,6 +81,7 @@ class ManifestParser {
         if(manifest.installStage < STAGE_FILE_PATCH_DONE){
             var regexp = new ClassReplaceChip(this.manifest.fullReplaceableFiles, haxelib_repo);
             nodes.push(regexp.task);
+            nodes.push(FileTaskChips.consumeInstallFiles(haxelib_repo,manifest.fullReplaceableFiles));
         }
         return nodes;
     }

@@ -15,4 +15,14 @@ class FileTaskChips {
             resolve();
         }
     }
+    public static function consumeInstallFiles(haxelib_path:String,fullReplace_path:Null<String>) {
+        return (resolve:Void->Void, deny:String->Void,ctx:TaskChips) ->{
+            var install_file_path = Path.join([haxelib_path,"install.json"]);
+            if(FileSystem.exists(install_file_path))
+                FileSystem.deleteFile(install_file_path);
+            if(fullReplace_path != null)
+                FileManager.deleteDirRecursively(Path.join([haxelib_path,fullReplace_path]));
+            resolve();
+        }
+    }
 }

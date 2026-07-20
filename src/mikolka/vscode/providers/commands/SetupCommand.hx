@@ -28,10 +28,12 @@ class SetupCommand extends DisposableCommand {
 		trace(txt);
 		commandOutput.appendLine(txt);
 	}
-
+	private function showConsoleOutput(initMsg:String) {
+		commandOutput.show();
+		writeLine(initMsg);
+	}
 	private function command_setup() {
 		// var console = Out
-		commandOutput.show();
 		var taskResult = TaskChips.runChips([pickHaxelibRepo]);
 		taskResult.then(onSetupDone, onSetupFail);
 	}
@@ -102,6 +104,7 @@ class SetupCommand extends DisposableCommand {
 				deny("No haxelib folder was set");
 			else if (target.scheme == "file") {
 				var path = target.fsPath;
+				showConsoleOutput('Installing fcpkg from ${path}');
 				if (!FileSystem.exists(path)) {
 					deny("This fcpkg does not exist!");
 				} else {
@@ -109,10 +112,12 @@ class SetupCommand extends DisposableCommand {
 					resolve();
 				}
 			} else {
+				showConsoleOutput('Downloading fcpkg from ${target.toString()}');
 				downloadFcpkg(target, fcpkgPath -> {
 					if (!FileSystem.exists(fcpkgPath)) {
 						deny("Could not download the package!");
 					} else {
+						writeLine("Downloaded. Installing...");
 						installFcpkg(ctx, fcpkgPath);
 						resolve();
 					}

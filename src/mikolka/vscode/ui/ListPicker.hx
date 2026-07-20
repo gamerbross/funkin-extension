@@ -105,8 +105,8 @@ class ListPicker {
         });
         ext.configureSelectFileButton("Select .fcpkg file",{"Funkin Compiler package":["fcpkg"]},true,fsPath -> {
             var result = Uri.file(fsPath);
-			onResult(result);
 			ext.dispose();
+			onResult(result);
         },false);
 		ext.show();
 	}

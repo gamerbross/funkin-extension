@@ -1,5 +1,6 @@
 package mikolka.vscode.providers.commands;
 
+import haxe.Exception;
 import mikolka.vscode.definitions.DisposableCommand;
 import mikolka.config.VsCodeConfig;
 import mikolka.config.MetadataParser;
@@ -21,8 +22,6 @@ class SetHaxelibCommand extends DisposableCommand {
         var folder_list = fcpkg.getInstalledHaxelibs();
         if(folder_list.length == 0)
             Interaction.displayError("No Fcpkg package was installed!");
-        else if (folder_list.length == 1) 
-            setHaxelibFolder(folder_list[0]);
         else {
             var base_list:Array<ListItem> = makeHaxelibList(folder_list);
             if(cfg.HAXELIB_PATH != "") 
@@ -41,7 +40,13 @@ class SetHaxelibCommand extends DisposableCommand {
     function makeHaxelibList(folders:Array<String>):Array<ListItem> {
         return folders.map(folder_name -> {
             var full_path = Path.join([fcpkg.getHaxelibRootPath(),folder_name]);
-            var meta = MetadataParser.readHaxelibMetadata(full_path);
+            var meta:Metadata = null;
+            try{
+                meta = MetadataParser.readHaxelibMetadata(full_path);
+            }
+            catch(x:Exception){
+                trace(x.details());
+            }
             var x:ListItem = {
                 id: folder_name,
                 label: meta?.name ?? folder_name,

@@ -13,8 +13,7 @@ class MiscEnvChecks {
 	public function testEnvironment(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
 		ctx.appendManyTasks([
 			checkHaxe, 
-			checkCurl,
-			checkIfHaxelibIsPure
+			checkCurl
 		]);
 		resolve();
 	}
@@ -34,16 +33,4 @@ class MiscEnvChecks {
 			resolve();
 	}
 
-	public function checkIfHaxelibIsPure(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		writeLine("[SETUP] Checking haxelib..");
-		if (!Process.isPureHaxelib()) {
-			Interaction.requestConfirmation(LangStrings.SETUP_HAXELIB_ERROR_TITLE, LangStrings.SETUP_HAXELIB_ERROR, () -> {
-				writeLine("Continuing!");
-				resolve();
-			}, () -> {
-				deny("Funkin setup aborted!");
-			});
-		} else
-			resolve();
-	}
 }

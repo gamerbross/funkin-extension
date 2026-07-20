@@ -45,7 +45,7 @@ class StartupInit extends DisposableProvider {
         else{
             var metadata_path = Path.join([haxelib_repo,"metadata.json"]);
             if(!FileSystem.exists(metadata_path))
-                File.copy(ctx.asAbsolutePath("./assets/default.json",metadata_path))
+                File.copy(ctx.asAbsolutePath("./assets/default.json"),metadata_path);
         }
         Vscode.window.showInformationMessage("Funkin Compiler is now running!");
         //

@@ -30,6 +30,8 @@ class FunkinLibrariesInstall {
 	}
 	public function configureFunkin(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
 		FileManager.moveRec(Path.join([localCwd,"funkin","git","source"]),Path.join([localCwd,"funkin","git"]));
+		FileManager.deleteDirRecursively(Path.join([localCwd,"funkin","git","source"]));
+
 		FileSystem.rename(Path.join([localCwd,"funkin","git","Main.hx"]),Path.join([localCwd,"funkin","git","funkin","Main.hx"]));
 		trace("FNF done");
 		resolve();
@@ -75,9 +77,9 @@ class FunkinLibrariesInstall {
 				trace("Extracting "+repoName);
 				var folderName = fsRead[0];
 				FileSystem.rename(Path.join([localCwd,libraryName,folderName]),Path.join([localCwd,libraryName,"git"]));
-				if(DEV_LIBRARIES.contains(libraryName)) 
-					File.saveContent(Path.join([localCwd,libraryName,".dev"]), Path.join([localCwd,libraryName,'git/src']));
-				else File.saveContent(Path.join([localCwd,libraryName,".current"]),"git");
+				// if(DEV_LIBRARIES.contains(libraryName)) 
+				// 	File.saveContent(Path.join([localCwd,libraryName,".dev"]), Path.join([localCwd,libraryName,'git/src']));
+				File.saveContent(Path.join([localCwd,libraryName,".current"]),"git");
 				trace("Installed "+repoName);
 				resolve();
 			}

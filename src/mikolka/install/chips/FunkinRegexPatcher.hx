@@ -40,9 +40,10 @@ class FunkinRegexPatcher
     var content = File.getContent(fullPath);
     trace(fullPath);
 
-    for (x in regex_rules.keys())
+    for (regex_content in regex_rules.keys())
     {
-      content = x.replace(content, regex_rules[x]);
+      var eregItem = new EReg(regex_content,"gm");
+      content = eregItem.replace(content, regex_rules.get(regex_content));
     }
     File.saveContent(fullPath, content);
   }

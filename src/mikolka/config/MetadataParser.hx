@@ -1,5 +1,6 @@
 package mikolka.config;
 
+import haxe.Exception;
 import haxe.DynamicAccess;
 import haxe.io.Path;
 import sys.io.File;
@@ -47,9 +48,17 @@ class MetadataParser {
             hxmlFile:null,
             importBlacklist: new DynamicAccess<String>()
         };
-        var result = base.mergeWithJson(readHaxelibMetadata(path)); 
-        trace(result);
-        return result;
+        try{
+            var loaded_metadata = readHaxelibMetadata(path);
+            var result = base.mergeWithJson(loaded_metadata); 
+            if(VsCodeConfig.instance.DEBUG) trace(result);
+            return result;
+        }
+        catch(x:Exception){
+            Interaction.displayError("Failed to read metadata for current FcPkg: "+x.message);
+            return base;
+        }
+
     }
     public static function extractRegexRules(obj:Metadata) {
         var result = new Map<EReg,String>();
