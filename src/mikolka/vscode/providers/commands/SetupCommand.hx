@@ -88,12 +88,9 @@ class SetupCommand extends DisposableCommand {
 
 	function downloadFcpkg(remote_source:Uri, onComplete:(fcpkgPath:String) -> Void) {
 		var name = Path.withoutExtension(Path.withoutDirectory(remote_source.path));
-		var command = 'curl -o ${name}.fcpkg "${remote_source.toString()}"';
-
 		var download_path = fcpkg.getFcpkgTempPath();
 
-		writeLine("Downloading fcpkg >\n   "+command);
-		Process.runCommand(command, download_path, writeLine,
+		Process.runCurl(remote_source.toString(),'${name}.fcpkg', download_path, writeLine,
 			onComplete.bind(Path.join([download_path, '${name}.fcpkg'])));
 	}
 

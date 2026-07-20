@@ -90,4 +90,9 @@ class FunkinLibrariesInstall {
 		var cwd = localCwd ?? Sys.getCwd();
 		Process.runCommand(cmd, cwd, writeLine, next);
 	}
+	function runCurlCommand(source:String,target:String, next:Void->Void) {
+		writeLine('   > curl -L -o ${target} ${source}');
+		var cwd = localCwd ?? Sys.getCwd();
+		Process.runCurl(source,target, cwd, writeLine, next);
+	}
 }

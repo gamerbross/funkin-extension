@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"description": "A simple extension to develop mods and content made for the game \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
 	"categories": [
 		"Programming Languages",
@@ -74,7 +74,7 @@
 					"funkinCompiler.fcpkgSources": {
 						"description": "List of sources providing fcPkg manifests",
 						"type": "array",
-						"default": ["https://raw.githubusercontent.com/FunkinCompiler/official-vslice-cdn/refs/heads/master/sources.json"]
+						"default": ["https://raw.githubusercontent.com/FunkinCompiler/fcpkg-cdn/refs/heads/master/full-sources.json"]
 					}
 				}
 			}
