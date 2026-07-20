@@ -50,7 +50,8 @@ class SetHaxelibCommand extends DisposableCommand {
             var x:ListItem = {
                 id: folder_name,
                 label: meta?.name ?? folder_name,
-                description: meta?.description
+                description: meta?.description,
+                detail: full_path
             };
             return x;
         });

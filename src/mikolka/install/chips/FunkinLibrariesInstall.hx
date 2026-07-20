@@ -65,7 +65,7 @@ class FunkinLibrariesInstall {
 		runSetupCommand('haxelib install ${libraryName} ${version} --always --quiet --skip-dependencies', resolve);
 	}
 	function installLibraryFromGithub(repoName:String,commitHash:String,libraryName:String,resolve:Void->Void, deny:String->Void) {
-		runSetupCommand('curl -o temp.zip "https://codeload.github.com/${repoName}/zip/${commitHash}"',() -> {
+		runCurlCommand('https://codeload.github.com/${repoName}/zip/${commitHash}','temp.zip',() -> {
 			ZipTools.extractZip(File.read(Path.join([localCwd,"temp.zip"])),Path.join([localCwd,libraryName]));
 			FileSystem.deleteFile(Path.join([localCwd,"temp.zip"]));
 
