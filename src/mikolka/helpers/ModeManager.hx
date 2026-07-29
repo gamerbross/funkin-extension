@@ -46,8 +46,6 @@ class FilePatternMode implements IMode {
 }
 
 class ModeManager {
-	public var isModeActive(get, never):Bool;
-	public function get_isModeActive() return mapLength(_activeModes) > 0;
 
 	private var _modes:Map<String, IMode> = new Map();
 	private var _activeModes:Map<String, Array<DisposableProvider>> = new Map();
@@ -59,6 +57,9 @@ class ModeManager {
 
 	public function registerMode(mode:IMode):Void {
 		_modes.set(mode.id(), mode);
+	}
+	public function isModeActive(mode:String):Bool {
+		return _modes.exists(mode);
 	}
 
 	public function scanForModeChanges(context:vscode.ExtensionContext):Void {

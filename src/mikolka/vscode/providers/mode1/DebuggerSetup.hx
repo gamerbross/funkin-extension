@@ -111,7 +111,7 @@ class DebuggerSetup extends DisposableProvider {
 			base.cwd = VsCodeConfig.instance.GAME_PATH;
 		trace(base.preLaunchTask);
 		if (base.preLaunchTask == Lib.undefined)
-			base.preLaunchTask = "Funk: Compile current V-Slice mod";
+			base.preLaunchTask = Main.modules.isModeActive(Main.FUNK_PROJECT) ? "Funk: Compile current V-Slice mod" : "";
 
 		var isCwdRelative = StringTools.startsWith(base.cwd, ".");
 		if (isCwdRelative)

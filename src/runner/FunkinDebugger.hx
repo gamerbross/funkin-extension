@@ -1,5 +1,7 @@
 package runner;
 
+import runner.targets.desktop.LocalPlatform;
+import runner.targets.TargetPlatform;
 import haxe.Json;
 import runner.vslice.HaxeSyntaxParser;
 import runner.server.DebugServer;
@@ -20,23 +22,11 @@ import vscode.debugProtocol.DebugProtocol;
 using Lambda;
 using StringTools;
 
-typedef FNFLaunchRequestArguments = LaunchRequestArguments & {
-	final cwd:String;
-	final cmd_prefix:String;
-	final execName:String;
-	final args:Array<String>;
-	//final stopOnEntry:Bool;
-	// final haxeExecutable:{
-	// 	final executable:String;
-	// 	final env:DynamicAccess<String>;
-	// };
-	//final mergeScopes:Bool;
-	//final showGeneratedVariables:Bool;
-	final trace:Bool; // if set to true sends trace messages as DebugSession.OutputEvents
-}
+
 
 class FunkinDebugger extends DebugSession  {
 
+	private var platform:TargetPlatform;
 	public function new() {
 		super();
 	}
@@ -72,10 +62,6 @@ class FunkinDebugger extends DebugSession  {
 			action(loop);
 		}
 		loop();
-	}
-
-	function exit() {
-		sendEvent(new vscode.debugAdapter.DebugSession.TerminatedEvent(false));
 	}
 
 
@@ -120,14 +106,15 @@ class FunkinDebugger extends DebugSession  {
 	override function launchRequest(response:LaunchResponse, args:LaunchRequestArguments) {
 		final args:FNFLaunchRequestArguments = cast args;
 		launchArgs = args;
+		platform = new LocalPlatform(args);
+		platform.onExit = () -> {
+			sendEvent(new vscode.debugAdapter.DebugSession.TerminatedEvent(false));
+		}
 		// if (launchArgs.trace) {
 		// 	haxe.Log.trace = traceToOutput;
 		// }
 
 
-		final env = new haxe.DynamicAccess();
-		for (key in js.Node.process.env.keys())
-			env[key] = js.Node.process.env[key];
 		// for (key in args.haxeExecutable.env.keys())
 		// 	env[key] = args.haxeExecutable.env[key];
 
@@ -143,14 +130,10 @@ class FunkinDebugger extends DebugSession  {
 
 
 		// }
-		final cwd = args.cwd;
-		final execName = args.execName;
-		final cmd_prefix = args.cmd_prefix;
+
 		
-		final executable_cwd = FunkinPaths.getExecutableFolderPath(args.cwd);
-		DebugFiles.makeSupportMod(args.cwd); // This creates a support mod
-		spawnProcess('$cmd_prefix ./$execName',executable_cwd,env);
-	
+		platform.installDebugServerMod();
+		platform.start();
 		executePostLaunchActions(function() {
 				sendEvent(new vscode.debugAdapter.DebugSession.InitializedEvent());
 				sendResponse(response);
@@ -160,35 +143,6 @@ class FunkinDebugger extends DebugSession  {
 		});
 
 	}
-
-
-	public function spawnProcess(cmd:String,cwd:String,env:Null<haxe.DynamicAccess<String>>) {	
-		Sys.println(cwd+" >>> " + cmd);
-		//final port = server.address().port;
-			
-		// Vscode.debug.startDebugging(null,{
-		// 	{
-		// 		type: type,
-		// 		name: name,
-		// 		request: request
-		// 	}
-		// });
-		var proc = ChildProcess.spawn(cmd,null,{
-			cwd: cwd,
-			env: env,
-			stdio: Pipe,
-			shell: true
-		});
-		proc.stdout.on(ReadableEvent.Data, onStdout);
-		proc.stderr.on(ReadableEvent.Data, onStderr);
-		proc.on(ChildProcessEvent.Exit, (_, _) -> exit());
-		
-		onProcessTerminate = () ->{
-			proc.kill();
-		};
-		return proc;
-	}
-
 
 	function onStdout(data:Buffer) {
 		sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(data.toString("utf-8"), Stdout));
@@ -233,17 +187,6 @@ class FunkinDebugger extends DebugSession  {
 		}
 		msg += "\n";
 		sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(msg));
-	}
-
-	function shellEscapeCommand(command:String):String {
-		if (!~/[^a-zA-Z0-9_.:\/\\-]/.match(command)) {
-			return command;
-		}
-		if (command.startsWith('"') && command.endsWith('"')) {
-			return command;
-		}
-
-		return '"' + command.replace('"', '\\"') + '"';
 	}
 
 }
