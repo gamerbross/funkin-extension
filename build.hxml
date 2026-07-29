@@ -1,6 +1,6 @@
 # This is only for VSCode to let me write code in peace
 # Use the other 2 to compile
--cp src/mikolka
+-cp src
 -cp src/funkin-runner
 -D analyzer-optimize
 -D haxe-next
@@ -8,4 +8,5 @@
 -lib vshaxe
 -lib vscode-debugadapter 
 # -D COMPILER_DEBUG_INSTALL
-Main
+-main mikolka.Main
+-js vs-extension-js-file.js

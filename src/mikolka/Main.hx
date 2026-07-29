@@ -14,6 +14,8 @@ class Main {
 	public static final FUNKIN_ASSETS = "mode3";
 	public static var modules:ModeManager;
 
+	static function main() {}
+
 	@:expose("activate")
 	static function activate(context:vscode.ExtensionContext) {
 		trace("Active");
