@@ -3,7 +3,8 @@ package mikolka;
 import mikolka.helpers.ModeManager.FilePatternMode;
 import mikolka.vscode.providers.commands.*;
 import mikolka.vscode.providers.StartupInit;
-import mikolka.vscode.providers.mode1.TaskRegistry;
+import mikolka.vscode.providers.tasks.AdbTask;
+import mikolka.vscode.providers.tasks.FunkTask;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
 import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
@@ -25,8 +26,8 @@ class Main {
 			"funk.cfg",
 			context -> {
 				trace("Mode1 activate");
-				var tasks = new TaskRegistry(context);
-				return [tasks];
+				
+				return [];
 			},
 			providers -> trace("Mode1 deactivated")
 		));
@@ -63,7 +64,10 @@ class Main {
 				new SetupCommand(context),
 
 				new VsHaxeProvider(context),
-				new DebuggerSetup(context)
+				new DebuggerSetup(context),
+
+				new AdbTask(context),
+				new FunkTask(context),
 			];
 
 			startup.runStartupChecks();

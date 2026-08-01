@@ -10,7 +10,8 @@ import vscode.EventEmitter;
 typedef TerminalOptions = {
     dimensions:TerminalDimensions,
     token:CancellationToken,
-    writeLine:(String) -> Void
+    writeLine:(String) -> Void,
+    onComplete:Void -> Void
 }
 class OutputTerminal  {
     /**
@@ -22,6 +23,11 @@ class OutputTerminal  {
         var writeEmitter = new EventEmitter<String>();
         var exitEmitter = new EventEmitter<Int>();
         var token = new CancellationTokenSource();
+        var completeAction = () ->{
+            exitEmitter.fire(0);
+            token.dispose();
+            token = null;
+        };
         return {
             onDidWrite: writeEmitter.event,
             onDidClose: exitEmitter.event,
@@ -30,13 +36,13 @@ class OutputTerminal  {
                 action({
                     dimensions: initialDimensions,
                     token: token.token,
-                    writeLine: makeWriterCallback(writeEmitter)
+                    writeLine: makeWriterCallback(writeEmitter),
+                    onComplete: completeAction
                 });
-                exitEmitter.fire(0);
-                token.dispose();
+                if(token != null) completeAction();
             },
             close: () -> {
-                token.cancel();
+                token?.cancel();
                 trace("TODO: implement this");
             }
         };

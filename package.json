@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.7.0",
+	"version": "0.7.1",
 	"description": "A simple extension to develop mods and content made for the game \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
 	"categories": [
 		"Programming Languages",
@@ -43,6 +43,7 @@
 		"bin",
 		"assets",
 		"node_modules",
+		"debug-mod",
 		"LICENSE.md"
 	],
 	"main": "bin/main.js",
@@ -220,6 +221,24 @@
 						"description": "If false, the mod will be only compiled in the 'export' folder without copying it oner to your V-Slice instance. Neat!"
 					}
 				}
+			},
+			{
+				"type": "funk-mobile",
+				"required": [
+					"modName",
+					"packageName"
+				],
+				"properties": {
+					"modName": {
+						"type": "string",
+						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!"
+					},
+					"packageName": {
+						"type": "string",
+						"default": "me.funkin.fnf",
+						"description": "The package name of FNF mobile to copy the files into. Custom FNF instances not fully implemented yet!"
+					}
+				}
 			}
 		],
 		"debuggers": [
@@ -254,6 +273,11 @@
 								"type": "boolean",
 								"description": "Traces some other output.",
 								"default": true
+							},							
+							"isMobile": {
+								"type": "boolean",
+								"description": "If true, rund the debugger on the connected android device instead (via adb)",
+								"default": false
 							},
 							"attachDebugger": {
 								"type": "boolean",

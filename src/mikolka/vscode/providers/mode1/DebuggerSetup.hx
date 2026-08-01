@@ -15,6 +15,7 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
 	var cmd_prefix:String;
 	var execName:String;
 	var args:Array<String>;
+	var isMobile:Bool;
 	// final stopOnEntry:Bool;
 	// final haxeExecutable:{
 	// 	final executable:String;
@@ -122,7 +123,13 @@ class DebuggerSetup extends DisposableProvider {
 	}
 
 	private inline function validateConfig(cfg:FNFLaunchRequestArguments):Bool {
-		var execDirPath = Path.join([FunkinPaths.getExecutableFolderPath(cfg.cwd), cfg.execName]);
-		return FileSystem.exists(execDirPath);
+		if(cfg.isMobile){
+			//TODO Should we add validation?
+			return true;
+		}
+		else{
+			var execDirPath = Path.join([FunkinPaths.getExecutableFolderPath(cfg.cwd), cfg.execName]);
+			return FileSystem.exists(execDirPath);
+		}
 	}
 }

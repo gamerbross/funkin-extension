@@ -1,4 +1,4 @@
-package mikolka.vscode.providers.mode1;
+package mikolka.vscode.providers.tasks;
 
 import vscode.Disposable;
 import mikolka.vscode.definitions.DisposableProvider;
@@ -8,7 +8,7 @@ import js.lib.Promise.Thenable;
 import haxe.io.Path;
 import mikolka.commands.CompileTask;
 import vscode.Pseudoterminal;
-import mikolka.vscode.definitions.FunkTaskDefinition;
+import mikolka.vscode.definitions.tasks.FunkTaskDefinition;
 import vscode.ProviderResult;
 import vscode.CancellationToken;
 import vscode.TaskProvider;
@@ -19,7 +19,7 @@ import vscode.CustomExecution;
 /**
  * This class manages all tasks provided by this extension
  */
-class TaskRegistry extends DisposableProvider {
+class FunkTask extends DisposableProvider {
 
 	// This configures the code for the task
 	/**
@@ -72,7 +72,7 @@ class TaskRegistry extends DisposableProvider {
 
 		//Register task provider
 		var disposeHook = Vscode.tasks.registerTaskProvider("funk", {
-			resolveTask: TaskRegistry.resolveTask,
+			resolveTask: FunkTask.resolveTask,
 			provideTasks: token -> {
 				return [defaultTask,exportTask];
 			}
@@ -80,24 +80,6 @@ class TaskRegistry extends DisposableProvider {
 		super(context,disposeHook);
 	}
 
-	/**
-	 * Resolves a task that has no {@linkcode Task.execution execution} set. Tasks are
-	 * often created from information found in the `tasks.json`-file. Such tasks miss
-	 * the information on how to execute them and a task provider must fill in
-	 * the missing information in the `resolveTask`-method. This method will not be
-	 * called for tasks returned from the above `provideTasks` method (LIAR!!!) 
-	 *
-	 * A valid default implementation for the
-	 * `resolveTask` method is to return `undefined`.
-	 *
-	 * Note that when filling in the properties of `task`, you _must_ be sure to
-	 * use the exact same `TaskDefinition` and not create a new one. Other properties
-	 * may be changed.
-	 *
-	 * @param task The task to resolve.
-	 * @param token A cancellation token.
-	 * @return The resolved task
-	 */
 	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task> {
 		trace("Resolving partial task");
 

@@ -28,12 +28,20 @@ class DebugServer {
             trace("Debug server active");
 		});
     }
+
+    public dynamic function onEvent(event:Message) {
+
+    }
+
     private function onConnected(socket:Socket) {
         if(socket != null || socket != Lib.undefined){
+            trace("Closing previous debug session...");
             connectedDebugger?.close();
             connectedDebugger = null;
         }
+        trace('>>> Got connection (from ${socket.remoteAddress})');
         connectedDebugger = new Connection(socket,allowTrace);
+        connectedDebugger.onEvent = onEvent;
     }
 
     public function softRestartGame() {

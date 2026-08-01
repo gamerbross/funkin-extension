@@ -1,4 +1,4 @@
-package mikolka.vscode.definitions;
+package mikolka.vscode.definitions.tasks;
 
 import vscode.TaskDefinition;
 

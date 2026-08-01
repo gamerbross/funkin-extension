@@ -1,5 +1,6 @@
 package runner;
 
+import runner.targets.android.AndroidPlatform;
 import runner.targets.desktop.LocalPlatform;
 import runner.targets.TargetPlatform;
 import haxe.Json;
@@ -22,35 +23,24 @@ import vscode.debugProtocol.DebugProtocol;
 using Lambda;
 using StringTools;
 
-
-
-class FunkinDebugger extends DebugSession  {
-
+class FunkinDebugger extends DebugSession {
 	private var platform:TargetPlatform;
+
 	public function new() {
 		super();
 	}
 
 	override function initializeRequest(response:InitializeResponse, args:InitializeRequestArguments) {
-		//response.body.supportsSetVariable = true;
+		// response.body.supportsSetVariable = true;
 		response.body.supportsEvaluateForHovers = true;
 		response.body.supportsCompletionsRequest = true;
-		//response.body.supportsConditionalBreakpoints = true;
-		//response.body.supportsExceptionOptions = true;
-		// response.body.exceptionBreakpointFilters = [
-		// 	{filter: "all", label: "All Exceptions"},
-		// 	{filter: "uncaught", label: "Uncaught Exceptions"}
-		// ];
-		// response.body.supportsFunctionBreakpoints = true;
-		// response.body.supportsConfigurationDoneRequest = true;
-		// response.body.supportsCompletionsRequest = true;
 		response.body.supportsRestartRequest = true;
 		sendResponse(response);
 		postLaunchActions = [];
 	}
 
 	var server:DebugServer;
-	var onProcessTerminate:() ->Void;
+	var onProcessTerminate:() -> Void;
 	var postLaunchActions:Array<(() -> Void)->Void>;
 	var launchArgs:FNFLaunchRequestArguments;
 
@@ -64,7 +54,6 @@ class FunkinDebugger extends DebugSession  {
 		loop();
 	}
 
-
 	override function restartRequest(response:RestartResponse, args:RestartArguments) {
 		// This is a flag for our helper mod
 		server.softRestartGame();
@@ -73,52 +62,66 @@ class FunkinDebugger extends DebugSession  {
 
 	override function evaluateRequest(response:EvaluateResponse, args:EvaluateArguments) {
 		var command = args.expression;
-		server.sendCmdCommand(command,struct -> {
+		server.sendCmdCommand(command, struct -> {
 			response.success = struct.wasSuccess;
-			if(response.success){
+			if (response.success) {
 				response.body = {result: struct.data, variablesReference: 0};
-			}
-			else{
+			} else {
 				response.message = struct.data;
 			}
 			sendResponse(response);
 		});
 	}
-	override function completionsRequest(response:CompletionsResponse, args:CompletionsArguments) {		
+
+	override function completionsRequest(response:CompletionsResponse, args:CompletionsArguments) {
 		// server.listVariablesCommand(args.text,)
 		// response.body = {targets: }
-		server.listVariablesCommand(args.text,struct -> {
+		server.listVariablesCommand(args.text, struct -> {
 			response.success = true;
 			response.body = {
 				targets: []
 			};
-			for(foundField in struct.completions){
+			for (foundField in struct.completions) {
 				response.body.targets.push({
 					label: foundField.field,
 					type: foundField.field_type,
-					start: args.column-struct.fuzzyFieldLength
+					start: args.column - struct.fuzzyFieldLength
 				});
 			}
 			sendResponse(response);
 		});
 	}
+
 	// Launch the BF!!!
 	override function launchRequest(response:LaunchResponse, args:LaunchRequestArguments) {
 		final args:FNFLaunchRequestArguments = cast args;
+		final io:SerialCallbacks = {
+			onExit: () -> {
+				sendEvent(new vscode.debugAdapter.DebugSession.TerminatedEvent(false));
+			},
+			onStderr: data -> {
+				sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(data.toString("utf-8"), Stderr));
+			},
+			onStdout: data -> {
+				sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(data.toString("utf-8"), Stdout));
+			}
+		};
 		launchArgs = args;
-		platform = new LocalPlatform(args);
-		platform.onExit = () -> {
-			sendEvent(new vscode.debugAdapter.DebugSession.TerminatedEvent(false));
-		}
-		// if (launchArgs.trace) {
-		// 	haxe.Log.trace = traceToOutput;
-		// }
+		platform = args.isMobile ? new AndroidPlatform(args, io) : new LocalPlatform(args, io);
 
+		// if (launchArgs.trace) {
+		haxe.Log.trace = traceToOutput;
+		// }
 
 		// for (key in args.haxeExecutable.env.keys())
 		// 	env[key] = args.haxeExecutable.env[key];
 
 		server = new DebugServer(launchArgs.trace);
+		server.onEvent = event -> {
+			if(event.event == "trace" && event.params.length > 0){
+				sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(event.params[0]+"\n", Stdout));
+			}
+		}
 		server.start();
 
 		// function onConnected(socket) {
@@ -128,28 +131,30 @@ class FunkinDebugger extends DebugSession  {
 
 		// 	socket.on(SocketEvent.Error, error -> trace('Socket error: $error'));
 
-
 		// }
+		onProcessTerminate = () -> {
+			platform.close();
+		}
 
-		
-		platform.installDebugServerMod();
-		platform.start();
-		executePostLaunchActions(function() {
+		if (!platform.isDebugServerPresent())
+			platform.installDebugServerMod();
+		var success = platform.start();
+		if(success){
+
+			executePostLaunchActions(function() {
 				sendEvent(new vscode.debugAdapter.DebugSession.InitializedEvent());
 				sendResponse(response);
 				// if (args.stopOnEntry) {
-				// 	sendEvent(new vscode.debugAdapter.DebugSession.StoppedEvent("entry", 0));
-				// }
-		});
-
-	}
-
-	function onStdout(data:Buffer) {
-		sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(data.toString("utf-8"), Stdout));
-	}
-
-	function onStderr(data:Buffer) {
-		sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(data.toString("utf-8"), Stderr));
+					// 	sendEvent(new vscode.debugAdapter.DebugSession.StoppedEvent("entry", 0));
+					// }
+				});
+		}
+		else{
+			response.success = false;
+			response.message = "FNF instance did not start successfully!";
+			sendResponse(response);
+			Sys.exit(1);
+		}
 	}
 
 	override function disconnectRequest(response:DisconnectResponse, args:DisconnectArguments) {
@@ -158,11 +163,10 @@ class FunkinDebugger extends DebugSession  {
 		// 		sendEvent(new vscode.debugAdapter.DebugSession.ThreadEvent("exited", id));
 		// 	}
 		// }
-		if(onProcessTerminate != null){
+		if (onProcessTerminate != null) {
 			onProcessTerminate();
 			onProcessTerminate = null;
-		}
-		else{
+		} else {
 			response.success = false;
 			response.message = "No Kill hook found!";
 		}
@@ -180,7 +184,7 @@ class FunkinDebugger extends DebugSession  {
 		sendResponse(response);
 	}
 
-		function traceToOutput(value:Dynamic, ?infos:haxe.PosInfos) {
+	function traceToOutput(value:Dynamic, ?infos:haxe.PosInfos) {
 		var msg = Std.string(value);
 		if (infos != null && infos.customParams != null) {
 			msg += " " + infos.customParams.join(" ");
@@ -188,5 +192,4 @@ class FunkinDebugger extends DebugSession  {
 		msg += "\n";
 		sendEvent(new vscode.debugAdapter.DebugSession.OutputEvent(msg));
 	}
-
 }

@@ -6,7 +6,6 @@ import vscode.Disposable;
 import mikolka.vscode.providers.StartupInit;
 import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
-import mikolka.vscode.providers.mode1.TaskRegistry;
 import mikolka.vscode.providers.mode1.DebuggerSetup;
 
 typedef ModeCheck = (vscode.ExtensionContext -> Thenable<Array<vscode.Uri>>);

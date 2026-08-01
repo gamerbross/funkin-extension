@@ -1,5 +1,7 @@
 package mikolka;
 
+import haxe.Log;
+import funkin.Assets;
 import haxe.ds.StringMap;
 import haxe.io.Bytes;
 import haxe.io.BytesBuffer;
@@ -40,9 +42,14 @@ class FunkServer extends ScriptedModule
   {
     reference = ModStore.register("funkin-compiler-socket", new Socket());
     FlxG.plugins.removeAllByType(ReloadAssetsDebugPlugin);
-    if (!reference.connected) reference.connect("127.0.0.1", 3004);
+    var ipTarget:String = "127.0.0.1";
+    if(FlxG.onMobile){
+      ipTarget = Assets.getText("server.txt").replace("\n", "");
+      Log.trace = traceToSocket;
+    }
+    if (!reference.connected) reference.connect(ipTarget, 3004);
     super.onCreate(event);
-    // SandboxedFileUtil is broken
+    
   }
 
   override function onUpdate(event:UpdateScriptEvent)
@@ -122,6 +129,10 @@ class FunkServer extends ScriptedModule
     reference.flush();
   }
 
+  function traceToSocket(v:Dynamic, ?infos:PosInfos):Void {
+    if (!reference.connected) return;
+		sendEvent("trace", [Log.formatOutput(v, infos)], -1);
+	}
   function getRet(obj:Dynamic, fuzzyName:String)
   {
     var completions = [];
@@ -131,7 +142,7 @@ class FunkServer extends ScriptedModule
 
     if (Std.isOfType(obj, StringMap))
     {
-      var strArray = cast(obj, StringMap<Dynamic>);
+      var strArray = obj;
       mpLookup = strArray.keys();
       mpGetter = (varName:String) -> strArray.get(varName);
     }
@@ -214,7 +225,7 @@ class FunkServer extends ScriptedModule
     return getRet(leftObj, inspectedVarName);
   }
 
-  function ExecuteCommandCall(values:Array<Dynamic>)
+  function ExecuteCommandCall(values:Array<Dynamic>):Dynamic
   {
     var leftObj:Dynamic = null;
     var assign_target = null;
@@ -280,43 +291,51 @@ class FunkServer extends ScriptedModule
             {
               case ")": {
                   var ret_value = null;
-                  switch (method_args.length)
+                  try
                   {
-                    case 0: ret_value = leftObj();
-                    case 1: ret_value = leftObj(method_args[0]);
-                    case 2: ret_value = leftObj(method_args[0], method_args[1]);
-                    default: ret_value = leftObj(method_args[0], method_args[1], method_args[2]);
+                    switch (method_args.length)
+                    {
+                      case 0: ret_value = leftObj();
+                      case 1: ret_value = leftObj(method_args[0]);
+                      case 2: ret_value = leftObj(method_args[0], method_args[1]);
+                      default: ret_value = leftObj(method_args[0], method_args[1], method_args[2]);
+                      
+                    }
+                    return {"isError": "false", "msg": Json.stringify(ret_value)};
                   }
-                  return {"isError": "false", "msg": Json.stringify(ret_value)};
+                  catch (x:Exception)
+                  {
+                    return {"isError": "true", "msg": x.message};
+                  }
                 }
             }
           }
       }
-    }
-    if (leftObj != null)
-    {
-      try
-      {
-        return {
-          "isError": "false",
-          msg: Json.stringify(leftObj),
-        }
-      }
-      catch (x:Exception)
+      if (leftObj != null)
       {
         try
         {
           return {
             "isError": "false",
-            msg: Json.stringify(ReflectUtil.getAnonymousFieldsOf(leftObj)),
+            msg: Json.stringify(leftObj),
           }
         }
         catch (x:Exception)
         {
-          return {"isError": "true", "msg": "Unparsable value! " + x.message};
+          try
+          {
+            return {
+              "isError": "false",
+              msg: Json.stringify(ReflectUtil.getAnonymousFieldsOf(leftObj)),
+            }
+          }
+          catch (x:Exception)
+          {
+            return {"isError": "true", "msg": "Unparsable value! " + x.message};
+          }
         }
       }
+      return {"isError": "true", "msg": "Incomplete command / Value is null"};
     }
-    return {"isError": "true", "msg": "Incomplete command / Value is null"};
   }
 }

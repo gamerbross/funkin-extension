@@ -1,9 +1,11 @@
 package runner.targets;
 
+import js.node.Buffer;
+
 interface TargetPlatform {
-    dynamic function onExit():Void;
+    function isDebugServerPresent():Bool;
     function installDebugServerMod():Void;
-    function start():Void;
+    function start():Bool;
     function close():Void;
 }
 typedef SerialCallbacks = {

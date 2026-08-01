@@ -4,7 +4,9 @@ import haxe.io.Path;
 using StringTools;
 
 class FunkinPaths {
-
+    public static function getDebugModPath():String {
+		    return Path.join([Path.directory(Sys.programPath()),"../debug-mod"]);
+    }
     public static function getModFolderPath(game_cwd:String):String {
         if(ismacOSApp(game_cwd))
             return Path.join([game_cwd,"Contents","Resources", "mods"])
