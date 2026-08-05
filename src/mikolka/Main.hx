@@ -52,28 +52,31 @@ class Main {
 			}
 		));
 		modules.activateGlobal = context -> {
-			var startup = new StartupInit(context);
-
+			
 			var result = [
 				new DiagnosticRegistry(context), 
-				startup,
-
-				new CommandRegistry(context),
-				new NewCommand(context),
-				new SetHaxelibCommand(context),
-				new SetupCommand(context),
-
+				
+				
 				new VsHaxeProvider(context),
 				new DebuggerSetup(context),
-
+				
 				new AdbTask(context),
 				new FunkTask(context),
 			];
-
-			startup.runStartupChecks();
+			
 			return result;
 		}
-
+		var startup = new StartupInit(context);
+		
+		modules.standbyProviders = [
+			startup,
+			new CommandRegistry(context),
+			new NewCommand(context),
+			new SetHaxelibCommand(context),
+			new SetupCommand(context),
+			
+		];
+		startup.runStartupChecks();
 		modules.scanForModeChanges(context);
 	}
 }

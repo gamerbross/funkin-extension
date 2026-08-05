@@ -49,6 +49,7 @@ class ModeManager {
 	private var _modes:Map<String, IMode> = new Map();
 	private var _activeModes:Map<String, Array<DisposableProvider>> = new Map();
 	private var _globalProviders:Null<Array<DisposableProvider>> = null;
+	public var standbyProviders:Null<Array<DisposableProvider>> = [];
 
     public function new() {
         
@@ -79,7 +80,9 @@ class ModeManager {
 			});
 		}
 	}
-
+	function name() {
+		
+	}
 	function _checkGlobalHook(context:vscode.ExtensionContext):Void {
 		if ((mapLength(_activeModes) > 0) && _globalProviders == null) {
 			_globalProviders = activateGlobal(context);

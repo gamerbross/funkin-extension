@@ -72,13 +72,19 @@ class SetupCommand extends DisposableCommand {
 			try {
 				ZipTools.extractZip(File.read(path), haxelib_path);
 				var manifest = new ManifestParser(haxelib_path);
-				var installTasks = manifest.buildTaskList(writeLine);
-				if (VsCodeConfig.instance.DEBUG) {
-					writeLine('[DEBUG] Built ${installTasks.length} install tasks.');
-					writeLine('[DEBUG] Starting from stage ${manifest.installStage}');
+				//TODO Replace with proper version management once we implement more versions
+				if(manifest.manifest.version == "1.0.0"){
+					var installTasks = manifest.buildTaskList(writeLine);
+					if (VsCodeConfig.instance.DEBUG) {
+						writeLine('[DEBUG] Built ${installTasks.length} install tasks.');
+						writeLine('[DEBUG] Starting from stage ${manifest.installStage}');
+					}
+					_ctx.appendManyTasks(installTasks);
+					_resolve();
 				}
-				_ctx.appendManyTasks(installTasks);
-				_resolve();
+				else {
+					_deny("Incompatible fcpkg format. Please update the extension!");
+				}
 			} catch (x:Exception) {
 				_deny("Unpacking fcpkg zip failed! " + x.message);
 			}

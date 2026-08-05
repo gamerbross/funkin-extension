@@ -29,7 +29,7 @@
 		}
 	},
 	"engines": {
-		"vscode": "^1.4.0"
+		"vscode": "^1.74.0"
 	},
 	"extensionDependencies": [
 		"nadako.vshaxe"
@@ -89,7 +89,7 @@
 			{
 				"command": "mikolka.new",
 				"category": "Funkin compiler",
-				"title": "Make new project"
+				"title": "Make new project (legacy)"
 			},
 			{
 				"command": "mikolka.setHaxelib",
@@ -111,60 +111,68 @@
 			},
 			{
 				"fileMatch": [
-					"**/_merge/data/*.json"
+					"**/_merge/**/*.json"
 				],
 				"url": "./assets/jsonc/_merge.json"
 			},
 			{
 				"fileMatch": [
+					"**/ui/story-mode/levels/*.json",
 					"**/data/levels/*.json"
 				],
 				"url": "./assets/jsonc/data/levels.json"
 			},
 			{
 				"fileMatch": [
-					"**/data/notestyles/*.json"
+					"**/data/notestyles/*.json",
+					"**/gameplay/notestyles/*/*.json"
 				],
 				"url": "./assets/jsonc/data/notestyles.json"
 			},
 			{
 				"fileMatch": [
-					"**/data/stages/*.json"
+					"**/data/stages/*.json",
+					"**/gameplay/stages/*/*.json"
 				],
 				"url": "./assets/jsonc/data/stages.json"
 			},
 			{
 				"fileMatch": [
-					"**/data/characters/*.json"
+					"**/data/characters/*.json",
+					"**/gameplay/characters/*/*.json"
 				],
 				"url": "./assets/jsonc/data/characters.json"
 			},
 			{
 				"fileMatch": [
-					"**/data/players/*.json"
+					"**/data/players/*.json",
+					"**/gameplay/playable-characters/*/*.json"
 				],
 				"url": "./assets/jsonc/data/players.json"
 			},			
 			{
 				"fileMatch": [
-					"**/data/songs/*/*-chart*.json"
+					"**/data/songs/*/*-chart*.json",
+					"**/gameplay/songs/*/*-chart*.json"
 				],
 				"url": "./assets/jsonc/data/songs/chart.json"
 			},			{
 				"fileMatch": [
-					"**/data/songs/*/*-metadata*.json"
+					"**/data/songs/*/*-metadata*.json",
+					"**/songs/*/*-metadata*.json"
 				],
 				"url": "./assets/jsonc/data/songs/metadata.json"
 			},
 			{
 				"fileMatch": [
-					"**/data/ui/freeplay/albums/*.json"
+					"**/ui/freeplay/albums/*.json"
 				],
 				"url": "./assets/jsonc/data/freeplay/albums.json"
 			},
 			{
 				"fileMatch": [
-					"**/data/ui/freeplay/styles/*.json"
+					"**/ui/freeplay/styles/*/*.json",
+					"**/ui/freeplay/styles/*.json"
 				],
 				"url": "./assets/jsonc/data/freeplay/styles.json"
 			},
@@ -176,25 +184,25 @@
 			},
 			{
 				"fileMatch": [
-					"**/data/dialogue/speakers/*.json"
+					"**/dialogue/speakers/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/speaker.json"
 			},			
 			{
 				"fileMatch": [
-					"**/data/dialogue/boxes/*.json"
+					"**/dialogue/boxes/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/dialogue_box.json"
 			},			
 			{
 				"fileMatch": [
-					"**/data/dialogue/conversations/*.json"
+					"**/dialogue/conversations/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/conversation.json"
 			},
 			{
 				"fileMatch": [
-					"**/music/*/*.json"
+					"**/*-metadata.json"
 				],
 				"url": "./assets/jsonc/music/music-metadata.json"
 			}
@@ -236,7 +244,7 @@
 					"packageName": {
 						"type": "string",
 						"default": "me.funkin.fnf",
-						"description": "The package name of FNF mobile to copy the files into. Custom FNF instances not fully implemented yet!"
+						"description": "The package name of FNF mobile to copy the files into."
 					}
 				}
 			}
@@ -260,7 +268,7 @@
 							},
 							"execName": {
 								"type": "string",
-								"description": "Name of the executable."
+								"description": "Name of the executable. (if 'isMobile' is set to true, put here a package name instead, like 'me.funkin.fnf')"
 							},
 							"args": {
 								"type": "array",

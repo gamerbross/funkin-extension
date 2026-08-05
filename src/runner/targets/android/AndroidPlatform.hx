@@ -1,9 +1,6 @@
 package runner.targets.android;
 
 import haxe.io.Path;
-import sys.FileSystem;
-import sys.io.FileSeek;
-import runner.vslice.FunkinPaths;
 import runner.targets.TargetPlatform.SerialCallbacks;
 
 
@@ -16,21 +13,21 @@ class AndroidPlatform implements TargetPlatform {
     public function new(args:FNFLaunchRequestArguments,io:SerialCallbacks) {
         this.args = args;
         this.io = io;
-        adb = new AdbTools(io);
+        adb = new AdbTools(io,args.execName);
     }
 
     public function installDebugServerMod():Void{
         adb.makeSupportMod();
     }   
 	public function isDebugServerPresent():Bool{
-        return adb.spawnSyncProcess('ls ${Path.join([AdbTools.mods_path,"debug-mod"])} > /dev/null') == 0;
+        return adb.spawnSyncProcess('ls ${Path.join([adb.mods_path,"debug-mod"])} > /dev/null') == 0;
     }
     public function start():Bool{
         adb.dropServerIPMemo();
-        return adb.spawnSyncProcess(AdbTools.RUN_FNF,null) == 0;
+        return adb.spawnSyncProcess(adb.RUN_FNF,null) == 0;
     }
     public function close():Void{
-        adb.spawnSyncProcess(AdbTools.STOP_FNF,null);
+        adb.spawnSyncProcess(adb.STOP_FNF,null);
         io.onExit();
     }
 }

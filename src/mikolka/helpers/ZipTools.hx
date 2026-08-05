@@ -1,9 +1,8 @@
 package mikolka.helpers;
 
-import haxe.zip.Tools;
+import haxe.zip.Uncompress;
 import haxe.io.Path;
 import haxe.io.Input;
-import sys.io.FileInput;
 import sys.io.File;
 import haxe.zip.Reader;
 import haxe.io.Output;
@@ -51,7 +50,7 @@ class ZipTools {
 				FileSystem.createDirectory(Path.join([target,node.fileName]));
 			}
 			else {
-				Tools.uncompress(node);
+				uncompress(node);
 				File.saveBytes(Path.join([target,node.fileName]),node.data);
 			}
 		}
@@ -68,4 +67,17 @@ class ZipTools {
             crc32: haxe.crypto.Crc32.make(Bytes.alloc(0))
           }
         }
+	private static function uncompress(f:Entry) {
+		if( !f.compressed )
+			return;
+
+		var c = new Uncompress(-15);
+		var s = haxe.io.Bytes.alloc(f.fileSize);
+		var r = c.execute(f.data,0,s,0);
+		c.close();
+
+		f.compressed = false;
+		f.dataSize = f.fileSize;
+		f.data = s;
+	}
 }

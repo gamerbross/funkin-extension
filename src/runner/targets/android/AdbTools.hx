@@ -9,14 +9,17 @@ import js.node.child_process.ChildProcess as ChildProcessObject;
 import js.node.ChildProcess;
 
 class AdbTools {
-	public static final mods_path:String = "/sdcard/Android/data/me.funkin.fnf/files/mods";
-	public static final RUN_FNF:String = "am start -W -a android.intent.action.VIEW -c android.intent.category.DEFAULT -n me.funkin.fnf/.MainActivity";
-	public static final STOP_FNF:String = "am force-stop me.funkin.fnf";
+	public final mods_path:String;
+	public final RUN_FNF:String;
+	public final STOP_FNF:String;
 
 	private final io:SerialCallbacks;
 
-	public function new(io:SerialCallbacks) {
+	public function new(io:SerialCallbacks,packageName:String) {
 		this.io = io;
+		mods_path = '/sdcard/Android/data/${packageName}/files/mods';
+		RUN_FNF = 'am start -W -a android.intent.action.VIEW -c android.intent.category.DEFAULT -n ${packageName}/.MainActivity';
+		STOP_FNF = 'am force-stop ${packageName}';
 	}
 
 	public function makeSupportMod() {

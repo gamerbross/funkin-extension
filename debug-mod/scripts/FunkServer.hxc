@@ -3,10 +3,7 @@ package mikolka;
 import haxe.Log;
 import funkin.Assets;
 import haxe.ds.StringMap;
-import haxe.io.Bytes;
 import haxe.io.BytesBuffer;
-import haxe.io.BytesInput;
-import openfl.utils.ByteArray;
 import haxe.Exception;
 import funkin.modding.module.ModuleHandler;
 import funkin.modding.ModStore;
@@ -43,6 +40,7 @@ class FunkServer extends ScriptedModule
     reference = ModStore.register("funkin-compiler-socket", new Socket());
     FlxG.plugins.removeAllByType(ReloadAssetsDebugPlugin);
     var ipTarget:String = "127.0.0.1";
+
     if(FlxG.onMobile){
       ipTarget = Assets.getText("server.txt").replace("\n", "");
       Log.trace = traceToSocket;
@@ -77,6 +75,7 @@ class FunkServer extends ScriptedModule
     {
       if (values.length == 0)
       {
+
         sendEvent("execute_resp", ["true", "No command given!"], id);
         return;
       }

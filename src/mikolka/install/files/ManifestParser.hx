@@ -41,7 +41,7 @@ class ManifestParser {
     static var STAGE_FILE_PATCH_DONE = 6;
     static var STAGE_COMPLETE = 7;
 
-    var manifest:Null<Manifest>;
+    public var manifest:Null<Manifest>;
     var haxelib_repo:String;
 
     public var installStage(get,null):Int;

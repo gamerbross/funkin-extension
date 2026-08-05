@@ -98,8 +98,14 @@ class DebuggerSetup extends DisposableProvider {
 	 */
 	public function requestStaticConfiguration(project_game_folder:String, base:Dynamic):FNFLaunchRequestArguments {
 		trace("AYO!!");
-		if (base.execName == null)
-			base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
+		if (base.isMobile == null)
+			base.isMobile = false;
+		if (base.execName == null){
+			if(base.isMobile)
+				base.execName = "me.funkin.fnf";
+			else 
+				base.execName = Sys.systemName() == "Windows" ? "Funkin.exe" : "Funkin";
+		}
 		if (base.cmd_prefix == null)
 			base.cmd_prefix = "";
 		if (base.args == null)
@@ -107,7 +113,7 @@ class DebuggerSetup extends DisposableProvider {
 		if (base.trace == null)
 			base.trace = VsCodeConfig.instance.DEBUG;
 		if (base.attachDebugger == null)
-			base.attachDebugger = true;
+			base.attachDebugger = true;		
 		if (base.cwd == null)
 			base.cwd = VsCodeConfig.instance.GAME_PATH;
 		trace(base.preLaunchTask);
