@@ -1,17 +1,13 @@
 package mikolka.vscode.providers.tasks;
 
-import vscode.Disposable;
 import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.config.VsCodeConfig;
 import js.lib.Promise;
-import js.lib.Promise.Thenable;
 import haxe.io.Path;
 import mikolka.commands.CompileTask;
-import vscode.Pseudoterminal;
 import mikolka.vscode.definitions.tasks.FunkTaskDefinition;
 import vscode.ProviderResult;
 import vscode.CancellationToken;
-import vscode.TaskProvider;
 import vscode.Task;
 import vscode.TaskScope;
 import vscode.CustomExecution;
@@ -83,8 +79,11 @@ class FunkTask extends DisposableProvider {
 	static function resolveTask(task:Task, token:CancellationToken):ProviderResult<Task> {
 		trace("Resolving partial task");
 
-		if (task.execution == null)
-			task.execution = getModCompileTask();
+		if (task.execution == null){
+			var completeTask = new Task(task.definition,TaskScope.Workspace, "Compile current V-Slice mod", "Funk",getModCompileTask(),null);
+			return completeTask;
+		}
 		return task;
 	}
+
 }

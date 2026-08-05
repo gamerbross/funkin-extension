@@ -41,8 +41,14 @@ class ManifestParser {
     static var STAGE_FILE_PATCH_DONE = 6;
     static var STAGE_COMPLETE = 7;
 
-    public var manifest:Null<Manifest>;
+    var manifest:Null<Manifest>;
     var haxelib_repo:String;
+
+    public var installJsonVersion(get,null):String;
+    function get_installJsonVersion():String {
+        if(manifest == null) return "1.0.0";
+        return manifest.version;
+    }
 
     public var installStage(get,null):Int;
     function get_installStage():Int {

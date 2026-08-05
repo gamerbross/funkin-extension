@@ -32,8 +32,8 @@ class AdbServer {
     public static function assureModsFolderIsWritable(packageName:String):Null<Bool> {
         var mods_path = getModsPath(packageName);
         var currentPermission = Process.resolveCommand('$PERMISSIONS $mods_path');
-        if(!currentPermission.startsWith("277")){
-            if(currentPermission.startsWith("275")){
+        if(!(currentPermission.startsWith("277") || currentPermission.startsWith("77"))){
+            if(currentPermission.startsWith("275") || currentPermission.startsWith("75")){
                 var parent_dir = Path.join([mods_path,".."]);
                 var bak_dir = Path.join([parent_dir,"mods-bak"]);
                 Process.resolveCommand('$ADB mv $mods_path $bak_dir');

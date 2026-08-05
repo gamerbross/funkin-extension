@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin Compiler",
-	"version": "0.7.1",
+	"version": "0.7.2",
 	"description": "A simple extension to develop mods and content made for the game \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
 	"categories": [
 		"Programming Languages",
@@ -178,25 +178,29 @@
 			},
 			{
 				"fileMatch": [
-					"**/data/stickerpacks/*.json"
+					"**/data/stickerpacks/*.json",
+					"**/ui/loading/stickers/stickerpacks/*.json"
 				],
 				"url": "./assets/jsonc/data/stickerpacks.json"
 			},
 			{
 				"fileMatch": [
-					"**/dialogue/speakers/*.json"
+					"**/dialogue/speakers/*.json",
+					"**/dialogue/speakers/*/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/speaker.json"
 			},			
 			{
 				"fileMatch": [
-					"**/dialogue/boxes/*.json"
+					"**/dialogue/boxes/*.json",
+					"**/dialogue/boxes/*/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/dialogue_box.json"
 			},			
 			{
 				"fileMatch": [
-					"**/dialogue/conversations/*.json"
+					"**/dialogue/conversations/*.json",
+					"**/dialogue/conversations/*/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/conversation.json"
 			},

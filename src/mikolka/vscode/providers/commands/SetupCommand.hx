@@ -73,7 +73,7 @@ class SetupCommand extends DisposableCommand {
 				ZipTools.extractZip(File.read(path), haxelib_path);
 				var manifest = new ManifestParser(haxelib_path);
 				//TODO Replace with proper version management once we implement more versions
-				if(manifest.manifest.version == "1.0.0"){
+				if(manifest.installJsonVersion == "1.0.0"){
 					var installTasks = manifest.buildTaskList(writeLine);
 					if (VsCodeConfig.instance.DEBUG) {
 						writeLine('[DEBUG] Built ${installTasks.length} install tasks.');

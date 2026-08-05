@@ -1,67 +1,63 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "definitions": {
-    "path": {
-      "description": "A JSON Pointer path.",
-      "pattern": "^#?(|(/([^/~]|~[01])*)*)$",
-      "type": "string"
-    }
-  },
+  "title": "JSON schema for JSONPatch files",
+  "type": "array",
   "id": "https://json.schemastore.org/json-patch.json",
-  "items": {
-    "oneOf": [
-      {
-        "additionalProperties": false,
-        "required": ["value", "op", "path"],
-        "properties": {
-          "path": {
-            "$ref": "#/definitions/path"
-          },
-          "op": {
-            "description": "The operation to perform.",
-            "type": "string",
-            "enum": ["add", "replace", "test"]
-          },
-          "value": {
-            "description": "The value to add, replace or test."
-          }
-        }
+  "definitions": {
+    "jsonPointer": {
+      "description": "A JSON Pointer path.",
+      "type": "string",
+      "pattern": "^#?(|(/([^/~]|~[01])*)*)$"
+    },
+    "opAddReplaceTest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op", "path"],
+      "properties": {
+        "path": { "$ref": "#/definitions/jsonPointer" },
+        "op": {
+          "type": "string",
+          "enum": ["add", "replace", "test"]
+        },
+        "value": {}
       },
-      {
-        "additionalProperties": false,
-        "required": ["op", "path"],
-        "properties": {
-          "path": {
-            "$ref": "#/definitions/path"
-          },
-          "op": {
-            "description": "The operation to perform.",
-            "type": "string",
-            "enum": ["remove"]
-          }
+      "allOf": [
+        {
+          "required": ["value"]
         }
-      },
-      {
-        "additionalProperties": false,
-        "required": ["from", "op", "path"],
-        "properties": {
-          "path": {
-            "$ref": "#/definitions/path"
-          },
-          "op": {
-            "description": "The operation to perform.",
-            "type": "string",
-            "enum": ["move", "copy"]
-          },
-          "from": {
-            "$ref": "#/definitions/path",
-            "description": "A JSON Pointer path pointing to the location to move/copy from.",
-            "pattern": "^#?(|(/([^/~]|~[01])*)*)$"
-          }
+      ]
+    },
+    "opRemove": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op", "path"],
+      "properties": {
+        "path": { "$ref": "#/definitions/jsonPointer" },
+        "op": {
+          "type": "string",
+          "enum": ["remove"]
         }
       }
-    ]
+    },
+    "opMoveCopy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op", "path", "from"],
+      "properties": {
+        "path": { "$ref": "#/definitions/jsonPointer" },
+        "op": {
+          "type": "string",
+          "enum": ["move", "copy"]
+        },
+        "from": { "$ref": "#/definitions/jsonPointer" }
+      }
+    }
   },
-  "title": "JSON schema for JSONPatch files",
-  "type": "array"
+  "items": {
+    "oneOf": [
+      { "$ref": "#/definitions/opAddReplaceTest" },
+      { "$ref": "#/definitions/opRemove" },
+      { "$ref": "#/definitions/opMoveCopy" }
+    ]
+  }
 }
