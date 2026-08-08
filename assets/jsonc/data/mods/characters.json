@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mod Menu Custom Character Configuration",
+  "description": "Schema for defining custom character properties in the mod menu",
+  "type": "object",
+  "required": ["animations"],
+  "additionalProperties": false,
+  "properties": {
+    "renderType": {
+      "type": "string",
+      "enum": ["sparrow", "packer", "animateatlas"],
+      "description": "The render type for the character asset"
+    },
+    "scale": {
+      "type": "number",
+      "minimum": 0,
+      "default": 1.0,
+      "description": "Size of the character relative to the original size (e.g., 2.0 makes it twice as big)"
+    },
+    "offsets": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number"
+      },
+      "default": [0, 0],
+      "description": "Global offset to the character's position in pixels [horizontal, vertical]"
+    },
+    "atlasSettings": {
+      "type": "object",
+      "description": "Settings for the texture atlas (only available for animateatlas render type)"
+    },
+    "animations": {
+      "type": "array",
+      "minItems": 1,
+      "description": "List of animation data objects for the character",
+      "items": {
+        "type": "object",
+        "required": ["name", "prefix"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": ["idle", "electrocuted", "crispy", "crispy-loop"],
+            "description": "Animation name used by the game"
+          },
+          "prefix": {
+            "type": "string",
+            "description": "Animation frame prefix in the sprite asset"
+          },
+          "looped": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the animation should loop"
+          }
+        }
+      }
+    },
+    "hasCustomWires": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the character has custom wire animations"
+    },
+    "useSmallWire": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use the small wire variant (used for Pinhead) instead of the regular one"
+    },
+    "smokeOffsets": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number"
+      },
+      "default": [0, 0],
+      "description": "Offsets for the character's smoke trail during the crispy animation [horizontal, vertical]"
+    },
+    "smokeScale": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "number",
+        "minimum": 0
+      },
+      "default": [0.5, 0.5],
+      "description": "Scale of the character's smoke trail during the crispy animation [x-scale, y-scale]"
+    }
+  }
+}

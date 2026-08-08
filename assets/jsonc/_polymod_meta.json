@@ -8,6 +8,11 @@
       "description": "A readable name for the mod.",
       "minLength": 1
     },
+    "id": {
+      "type": "string",
+      "description": "A unique id to identify your mod. Used by the mod menu mostly.",
+      "minLength": 1
+    },
     "description": {
       "description": "A readable description for the mod.",
       "type": "string",

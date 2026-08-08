@@ -54,7 +54,7 @@ class DiagnosticRegistry extends DisposableProvider {
 	
 		var fileName = Path.withoutDirectory(file.fileName);
 		if(fileName.charCodeAt(0)>=97 && fileName.charCodeAt(0)<=122 && textMetadata.classNameRange != null){
-			
+			//@see https://github.com/HaxeFoundation/haxe/blob/4d9a9fd7367d650da673c7ef6e699798ec900645/src/compiler/displayProcessing.ml#L99
 			warnings.push(new Diagnostic(textMetadata.classNameRange, 
 				'Haxe source file should start with an capital letter!', Warning));
 		}

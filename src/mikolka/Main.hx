@@ -1,11 +1,12 @@
 package mikolka;
 
+import mikolka.mode1.NewCommand;
+import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.ModeManager.FilePatternMode;
 import mikolka.vscode.providers.commands.*;
 import mikolka.vscode.providers.StartupInit;
 import mikolka.vscode.providers.tasks.AdbTask;
-import mikolka.vscode.providers.tasks.FunkTask;
-import mikolka.vscode.providers.mode1.DebuggerSetup;
+import mikolka.mode1.FunkTask;
 import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
@@ -44,7 +45,7 @@ class Main {
 		));		
 		modules.registerMode(new FilePatternMode(
 			FUNKIN_ASSETS,
-			"exclude/data/credits.json",
+			"exclude/ui/credits/credits.json",
 			context -> {
 				trace("Mode3 activate");
 				// return providers for mode2 as you add them

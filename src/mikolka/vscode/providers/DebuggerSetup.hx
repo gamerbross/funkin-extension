@@ -1,4 +1,4 @@
-package mikolka.vscode.providers.mode1;
+package mikolka.vscode.providers;
 
 import mikolka.config.FunkCfg;
 import vscode.Disposable;

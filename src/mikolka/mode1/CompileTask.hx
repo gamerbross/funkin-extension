@@ -1,8 +1,8 @@
-package mikolka.commands;
+package mikolka.mode1;
 
 import mikolka.config.MetadataParser;
 import mikolka.install.files.ManifestParser;
-import mikolka.vscode.providers.mode1.DebuggerSetup;
+import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.FunkinPaths;
 import mikolka.config.FunkCfg;
 import mikolka.helpers.LangStrings;

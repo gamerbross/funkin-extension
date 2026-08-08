@@ -1,10 +1,10 @@
-package mikolka.vscode.providers.tasks;
+package mikolka.mode1;
 
 import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.config.VsCodeConfig;
 import js.lib.Promise;
 import haxe.io.Path;
-import mikolka.commands.CompileTask;
+import mikolka.mode1.CompileTask;
 import mikolka.vscode.definitions.tasks.FunkTaskDefinition;
 import vscode.ProviderResult;
 import vscode.CancellationToken;

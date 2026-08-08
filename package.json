@@ -1,9 +1,9 @@
 {
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
-	"displayName": "Funkin Compiler",
+	"displayName": "Funkin IDE",
 	"version": "0.7.2",
-	"description": "A simple extension to develop mods and content made for the game \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
+	"description": "A simple extension to develop mods and content made for the \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
 	"categories": [
 		"Programming Languages",
 		"Formatters",
@@ -26,6 +26,10 @@
 		"virtualWorkspaces": {
 			"supported": false,
 			"description": "It doesn't work"
+		},
+		"untrustedWorkspaces": {
+			"supported": "limited",
+			"description": ""
 		}
 	},
 	"engines": {
@@ -37,7 +41,7 @@
 	"activationEvents": [
 		"workspaceContains:./funk.cfg",
 		"workspaceContains:./_polymod_meta.json",
-		"workspaceContains:./exclude/data/credits.json"
+		"workspaceContains:./exclude/ui/credits/credits.json"
 	],
 	"files": [
 		"bin",
@@ -50,17 +54,12 @@
 	"contributes": {
 		"configuration": [
 			{
-				"title": "Funkin compiler",
+				"title": "Funkin IDE",
 				"properties": {
 					"funkinCompiler.gamePath": {
 						"description": "A path to your FNF V-Slice instance. It is recommended to use relative paths here, but absolute should also work.",
 						"type": "string",
 						"default": ""
-					},
-					"funkinCompiler.modName": {
-						"description": "Name of the mod folder to compile your mod into.",
-						"type": "string",
-						"default": "workbench"
 					},
 					"funkinCompiler.debug": {
 						"description": "Enable debug utilities and additional output.",
@@ -108,6 +107,12 @@
 					"**/_polymod_meta.json"
 				],
 				"url": "./assets/jsonc/_polymod_meta.json"
+			},
+			{
+				"fileMatch": [
+					"**/ui/mods/characters/*.json"
+				],
+				"url": "./assets/jsonc/data/mods/characters.json"
 			},
 			{
 				"fileMatch": [
@@ -237,8 +242,6 @@
 			{
 				"type": "funk-mobile",
 				"required": [
-					"modName",
-					"packageName"
 				],
 				"properties": {
 					"modName": {
@@ -249,6 +252,17 @@
 						"type": "string",
 						"default": "me.funkin.fnf",
 						"description": "The package name of FNF mobile to copy the files into."
+					}
+				}
+			},
+			{
+				"type": "funk-pc",
+				"required": [
+				],
+				"properties": {
+					"modName": {
+						"type": "string",
+						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!"
 					}
 				}
 			}
