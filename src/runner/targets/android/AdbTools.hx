@@ -5,7 +5,6 @@ import runner.vslice.FunkinPaths;
 import js.node.Buffer;
 import runner.targets.TargetPlatform.SerialCallbacks;
 import haxe.io.Path;
-import js.node.child_process.ChildProcess as ChildProcessObject;
 import js.node.ChildProcess;
 
 class AdbTools {

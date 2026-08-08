@@ -1,7 +1,6 @@
 package runner.targets.desktop;
 
 import sys.io.File;
-import haxe.zip.Entry;
 import haxe.io.Path;
 import sys.FileSystem;
 

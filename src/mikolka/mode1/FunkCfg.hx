@@ -1,4 +1,4 @@
-package mikolka.config;
+package mikolka.mode1;
 
 import haxe.io.Path;
 import sys.FileSystem;
@@ -38,7 +38,6 @@ class FunkCfg {
     public static function loadFile(cfg_path:String = "") {
         if(!FileSystem.exists(cfg_path)) {
             Sys.println("No config! Creating a new one.");
-            saveFile(cfg_path,DEFAULT_MAP);
             return DEFAULT_MAP;
         }
 

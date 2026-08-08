@@ -1,4 +1,4 @@
-package mikolka.programs;
+package mikolka.mode1.programs;
 
 import mikolka.config.MetadataParser.Metadata;
 import mikolka.vscode.ui.Interaction;

@@ -1,5 +1,6 @@
 package mikolka;
 
+import mikolka.vscode.providers.tasks.PCCopyTask;
 import mikolka.mode1.NewCommand;
 import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.ModeManager.FilePatternMode;
@@ -24,33 +25,17 @@ class Main {
 		modules = new ModeManager();
 		modules.registerMode(new FilePatternMode(
 			FUNK_PROJECT,
-			"funk.cfg",
-			context -> {
-				trace("Mode1 activate");
-				
-				return [];
-			},
-			providers -> trace("Mode1 deactivated")
+			"funk.cfg"
 		));
 
 		// Mode2
 		modules.registerMode(new FilePatternMode(
 			VSLICE_MOD,
-			"_polymod_meta.json",
-			context -> {
-				trace("Mode2 activate");
-				// return providers for mode2 as you add them
-				return [];
-			}
+			"_polymod_meta.json"
 		));		
 		modules.registerMode(new FilePatternMode(
 			FUNKIN_ASSETS,
-			"exclude/ui/credits/credits.json",
-			context -> {
-				trace("Mode3 activate");
-				// return providers for mode2 as you add them
-				return [];
-			}
+			"exclude/ui/credits/credits.json"
 		));
 		modules.activateGlobal = context -> {
 			
@@ -63,6 +48,7 @@ class Main {
 				
 				new AdbTask(context),
 				new FunkTask(context),
+				new PCCopyTask(context),
 			];
 			
 			return result;

@@ -1,7 +1,5 @@
 package mikolka.vscode.providers;
 
-import mikolka.config.FunkCfg;
-import vscode.Disposable;
 import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.helpers.FunkinPaths;
 import sys.FileSystem;
@@ -118,7 +116,7 @@ class DebuggerSetup extends DisposableProvider {
 			base.cwd = VsCodeConfig.instance.GAME_PATH;
 		trace(base.preLaunchTask);
 		if (base.preLaunchTask == Lib.undefined)
-			base.preLaunchTask = Main.modules.isModeActive(Main.FUNK_PROJECT) ? "Funk: Compile current V-Slice mod" : "";
+			base.preLaunchTask = "";
 
 		var isCwdRelative = StringTools.startsWith(base.cwd, ".");
 		if (isCwdRelative)

@@ -1,6 +1,5 @@
 package mikolka.install.chips;
 
-import sys.FileSystem;
 import mikolka.install.backend.TaskChips;
 
 class MiscEnvChecks {

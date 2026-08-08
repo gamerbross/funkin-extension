@@ -1,6 +1,5 @@
 package runner.server;
 
-import vscode.debugAdapter.DebugSession.CompletionItem;
 import runner.vslice.HaxeSyntaxParser;
 import js.Lib;
 import runner.vslice.SupportModDto.CompletionResult;

@@ -32,7 +32,7 @@ class FunkTask extends DisposableProvider {
 			// Pulling the config in case the tasks missed those
 			var vscodeConfig = VsCodeConfig.instance;
 			if (manifest.modName == null || manifest.modName == "")
-				manifest.modName = vscodeConfig.MOD_NAME;
+				manifest.modName = "workbench";
 
 			if (manifest.gamePath == null || manifest.gamePath == "")
 				manifest.gamePath = vscodeConfig.GAME_PATH;
@@ -41,7 +41,6 @@ class FunkTask extends DisposableProvider {
 				manifest.copyToGame = true;
 
 			trace(manifest);
-			trace(vscodeConfig.MOD_NAME);
 
 			if (Vscode.workspace.workspaceFolders == null || Vscode.workspace.workspaceFolders.length == 0) {
 				reject("No folder seems to be opened! This is not supported!");

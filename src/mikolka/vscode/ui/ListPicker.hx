@@ -3,10 +3,9 @@ package mikolka.vscode.ui;
 import vscode.Uri;
 import haxe.Json;
 import haxe.Exception;
-import js.html.Request;
 import haxe.Http;
 import mikolka.config.VsCodeConfig;
-import vscode.ThemeIcon;
+
 import vscode.QuickPickItem;
 
 using mikolka.utils.UIUtils;

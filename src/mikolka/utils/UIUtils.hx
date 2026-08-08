@@ -3,11 +3,10 @@ package mikolka.utils;
 import vscode.Event;
 import vscode.QuickInputButton;
 import haxe.ds.ReadOnlyArray;
-import vscode.QuickInput;
 import haxe.DynamicAccess;
 import vscode.ThemeIcon;
 import mikolka.vscode.ui.Interaction.QuickInputActionBtn;
-import vscode.InputBox;
+
 
 typedef ButtonBox = {
 

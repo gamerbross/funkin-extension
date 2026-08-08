@@ -2,7 +2,6 @@ package runner.targets.desktop;
 
 import haxe.io.Path;
 import sys.FileSystem;
-import sys.io.FileSeek;
 import runner.vslice.FunkinPaths;
 import runner.targets.TargetPlatform.SerialCallbacks;
 import js.node.child_process.ChildProcess;

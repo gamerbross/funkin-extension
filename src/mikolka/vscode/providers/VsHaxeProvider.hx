@@ -6,7 +6,7 @@ import sys.FileSystem;
 import haxe.io.Path;
 import sys.io.File;
 import mikolka.vscode.definitions.DisposableProvider;
-import vscode.Disposable;
+
 using StringTools;
 
 class VsHaxeProvider extends DisposableProvider {

@@ -1,6 +1,5 @@
 package mikolka.install.chips;
 
-import mikolka.install.files.ManifestParser.Manifest;
 import haxe.DynamicAccess;
 import haxe.io.Path;
 import mikolka.install.backend.TaskChips;

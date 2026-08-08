@@ -1,6 +1,5 @@
 package mikolka.install.files;
 
-import js.lib.RegExp;
 import haxe.Exception;
 import haxe.io.Path;
 import sys.FileSystem;

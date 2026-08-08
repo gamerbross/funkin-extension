@@ -1,6 +1,5 @@
 package runner.targets.android;
 
-import js.lib.Object;
 import js.node.Os;
 
 class NetUtil {

@@ -9,10 +9,7 @@ class VsCodeConfig {
     private function new() {
         projectConfig = Vscode.workspace.getConfiguration();
     }
-    public var MOD_NAME(get,null):String;
-    function get_MOD_NAME():String {
-        return projectConfig.get("funkinCompiler.modName","workbench");
-    }    
+
     public var FCPKG_SOURCES(get,null):Array<String>;
     function get_FCPKG_SOURCES():Array<String> {
         return projectConfig.get("funkinCompiler.fcpkgSources",[""]);

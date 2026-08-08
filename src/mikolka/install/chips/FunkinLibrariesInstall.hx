@@ -1,10 +1,8 @@
 package mikolka.install.chips;
 
 import haxe.io.Path;
-import haxe.io.Input;
 import sys.FileSystem;
 import sys.io.File;
-import mikolka.install.backend.TaskChips.ChipTask;
 import mikolka.install.backend.TaskChips;
 import mikolka.install.files.HmmParser;
 

@@ -3,12 +3,10 @@ package mikolka.install.files;
 import haxe.DynamicAccess;
 import mikolka.install.backend.TaskChips.ChipTask;
 import haxe.Exception;
-import haxe.ValueException;
 import haxe.io.Path;
 import sys.io.File;
 import sys.FileSystem;
 import haxe.Json;
-import haxe.ds.StringMap;
 
 import mikolka.install.chips.*;
 

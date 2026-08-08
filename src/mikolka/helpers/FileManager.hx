@@ -1,9 +1,10 @@
 package mikolka.helpers;
 
-import sys.io.File;
-import haxe.zip.Entry;
+
+import js.node.Fs;
 import haxe.io.Path;
 import sys.FileSystem;
+import sys.io.File as SysFile;
 
 class FileManager {
 	public static function deleteDirRecursively(path:String):Void {
@@ -41,7 +42,7 @@ class FileManager {
 	}
 	public static function safelyCopyFile(from:String, to:String) {
 		FileSystem.createDirectory(Path.directory(to));
-		File.copy(from, to);
+		SysFile.copy(from, to);
 	}
 
 	#if vscode
@@ -80,8 +81,27 @@ class FileManager {
 		FileSystem.createDirectory(from);
 		FileManager.scanDirectory(from, s -> {
 			FileSystem.createDirectory(Path.join([to, Path.directory(s)]));
-			File.copy('$from/$s', Path.join([to, s]));
+			SysFile.copy('$from/$s', Path.join([to, s]));
 		}, s -> {});
+	}
+	public static function syncRec(from:String, to:String,onFileCopied:String -> Void = null) {
+
+			FileSystem.createDirectory(from);
+			FileManager.scanDirectory(from, s -> {
+				var sourcePath = '$from/$s';
+				var targetPath = Path.join([to, s]);
+				var shouldCopy = true;
+				if(FileSystem.exists(targetPath)){
+					var sourceProbe:Date = Fs.statSync(sourcePath).mtime;
+					var targetProbe:Date = Fs.statSync(targetPath).mtime;
+					shouldCopy = sourceProbe.getTime() > targetProbe.getTime();
+				}
+				if(shouldCopy){
+					if(onFileCopied != null) onFileCopied(s);
+					FileSystem.createDirectory(Path.join([to, Path.directory(s)]));
+					SysFile.copy(sourcePath, targetPath);
+				}
+			}, s -> {});
 	}
 	public static function moveRec(from:String, to:String):Void {
 		FileSystem.createDirectory(from);

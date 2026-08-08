@@ -6,9 +6,10 @@ using StringTools;
 class AdbServer {
     private static final PERMISSIONS:String = "adb shell stat -c '%a'";
     private static final ADB:String = "adb shell";
-	public static function pushFiles(source:String, target:String, inSync:Bool = false,onInput:String -> Void,onComplete:Void -> Void) {
+	public static function pushFiles(source:String, target:String, inSync:Bool = false,onProgress:String -> Void,onComplete:Void -> Void) {
 		var cmd = new StringBuf();
 		cmd.add("adb push ");
+        cmd.add("-p ");
 		if (inSync)
 			cmd.add("--sync ");
 		cmd.addChar('"'.code);
@@ -18,9 +19,9 @@ class AdbServer {
 		cmd.add(target);
 		cmd.add('/"');
 
-        onInput('>>> $cmd \n');
+        onProgress('>>> $cmd \n');
 
-        Process.runCommand(cmd.toString(),null,onInput,onComplete);
+        Process.runCommand(cmd.toString(),null,onProgress,onComplete);
 	}
     public static function isAdbReady():Bool {
         return Process.checkCommand("adb get-state",null,"The Android device/adb doesn't seem to be ready!");

@@ -2,20 +2,13 @@ package mikolka.helpers;
 
 import js.lib.Promise;
 import mikolka.vscode.definitions.DisposableProvider;
-import vscode.Disposable;
-import mikolka.vscode.providers.StartupInit;
-import mikolka.vscode.providers.VsHaxeProvider;
-import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
-import mikolka.vscode.providers.DebuggerSetup;
+
 
 typedef ModeCheck = (vscode.ExtensionContext -> Thenable<Array<vscode.Uri>>);
 
 interface IMode {
 	function id():String;
 	// Called when mode becomes active; return providers to manage
-	function activate(context:vscode.ExtensionContext):Array<DisposableProvider>;
-	// Called when mode is deactivated with previously returned providers
-	function deactivate(providers:Array<DisposableProvider>):Void;
 	// How to detect presence of this mode in a workspace
 	function detector():ModeCheck;
 }
@@ -23,22 +16,13 @@ interface IMode {
 class FilePatternMode implements IMode {
 	var _id:String;
 	var _pattern:String;
-	var _activator:Array<DisposableProvider>->Void;
-	var _factory:vscode.ExtensionContext->Array<DisposableProvider>;
 
-	public function new(id:String, pattern:String, factory:vscode.ExtensionContext->Array<DisposableProvider>, deactivator:Array<DisposableProvider>->Void = null) {
+	public function new(id:String, pattern:String) {
 		_id = id;
 		_pattern = pattern;
-		_factory = factory;
-		_activator = deactivator == null ? ((_) -> {}) : deactivator;
 	}
 
 	public function id() return _id;
-	public function activate(context:vscode.ExtensionContext) return _factory(context);
-	public function deactivate(providers:Array<DisposableProvider>) {
-		for (p in providers) p.dispose();
-		_activator(providers);
-	}
 	public function detector() {
 		return (context) -> Vscode.workspace.findFiles(_pattern);
 	}
@@ -47,7 +31,7 @@ class FilePatternMode implements IMode {
 class ModeManager {
 
 	private var _modes:Map<String, IMode> = new Map();
-	private var _activeModes:Map<String, Array<DisposableProvider>> = new Map();
+	private var _activeModes:Array<String> = new Array();
 	private var _globalProviders:Null<Array<DisposableProvider>> = null;
 	public var standbyProviders:Null<Array<DisposableProvider>> = [];
 
@@ -67,13 +51,11 @@ class ModeManager {
 			var mode = _modes.get(modeId);
 			mode.detector()(context).then(files -> {
 				var active = files.length > 0;
-				var currentlyActive = _activeModes.exists(modeId);
+				var currentlyActive = _activeModes.contains(modeId);
 				if (active && !currentlyActive) {
-					var provs = mode.activate(context);
-					_activeModes.set(modeId, provs);
+					_activeModes.push(modeId);
 				} else if (!active && currentlyActive) {
-					var old = _activeModes.get(modeId);
-					mode.deactivate(old);
+
 					_activeModes.remove(modeId);
 				}
 				_checkGlobalHook(context);
@@ -84,20 +66,13 @@ class ModeManager {
 		
 	}
 	function _checkGlobalHook(context:vscode.ExtensionContext):Void {
-		if ((mapLength(_activeModes) > 0) && _globalProviders == null) {
+		if (((_activeModes.length) > 0) && _globalProviders == null) {
 			_globalProviders = activateGlobal(context);
-		} else if ((mapLength(_activeModes) == 0) && _globalProviders != null) {
+		} else if (_activeModes.length == 0 && _globalProviders != null) {
 			for (x in _globalProviders) x.dispose();
 			_globalProviders = null;
 		}
 	}
-    function mapLength(it:Map<Any,Any>):Int {
-        var i = 0;
-        for (x in it.keys()){
-            i = i+1;
-        }
-        return i;
-    }
 
 	public dynamic function activateGlobal(context:vscode.ExtensionContext):Array<DisposableProvider> {
         return [];
