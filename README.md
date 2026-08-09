@@ -5,10 +5,10 @@
     <img src="assets/icon.png" alt="Logo" width="300" height="300">
   </a>
 
-<h3 align="center">Funkin Compiler</h3>
+<h3 align="center">Funkin IDE</h3>
 
   <p align="center">
-    A simple extension to both develop and compile V-Slice mods in a more comfortable environment than a notepad.
+    An extension aiming to provide a complete enviroment for making making and working on mods for Friday Night Funkin'
     <br />
     <br />
     ·
@@ -20,21 +20,19 @@
 
 #### It's more or less implementation of [this](https://github.com/FunkinCrew/Funkin/issues/5199) suggestion.
 
-<h2 align="center">This extension is still in beta</h2>
 
-### Funkin Compiler can work in multiple "modes"
-- #### As a framework for the project of your V-Slice mod (mode 1)
+### Funkin Compiler can work in two exviroments
 
 > [!CAUTION]
-> This feature does not support new mod format introduced in 0.9.0 version of Friday Night Funkin' and as such will be removed in the next major update of this extension. Make sure to migrate by compiling your mod and using the output of it for further development.
+> Mode 1 (Funkin Compiler project) does not support new mod format introduced in 0.9.0 version of Friday Night Funkin' and as such will be removed in the next major update of this extension. Make sure to migrate by compiling your mod and using the output of it for further development.
 
-  This mode is recommended if you want to create **new** mods to Friday Night Funkin. It's the most complete one!
-- #### As an editor to existing V-Slice mods (mode 2)
+- #### As an editor to new/existing V-Slice mods
+
+  To create a new V-Slice mod, run the `Funkin compiler: Make new project` command in a empty folder.
 
   Opening such mod will allow you to either make quick edits more easily, or develop your existing mod (If you decide against migrating it to a project)
-
   As no code pre-processing is done here, some suggestions given by haxe might be wrong, so watch out!
-- #### As a tool to contribute the the Friday Night Funkin "assets" repository (mode 3)
+- #### As a tool to contribute the the Friday Night Funkin "assets" repository
 
   If you feel like contributing your time to the development of the game, opening "assets" folder with this extension will provide you with the same tooling as if you were making a mod.
 
@@ -212,14 +210,6 @@ If you get the "Startup warning" about Funkin compiler not being configured corr
 - Click ``Yes``
 - Select folder you chose when running the `Funkin: Setup Funkin compiler` command
 - Click ``Cancel`` when asked about non-clean haxelib folder.
-## How to use
-
-#### Making a new project (mode 1)
-
-> [!CAUTION]
-> This feature is deprecated and likely to be removed in the upcoming update.
-
-To create a new project, run the `Funkin compiler: Make new project` command in a empty folder.
 
 ### Additions for launch configuration
 

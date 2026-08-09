@@ -2,8 +2,8 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin IDE",
-	"version": "0.7.2",
-	"description": "A simple extension to develop mods and content made for the \"Friday Night Funkin'\" in a more comfortable environment than a notepad",
+	"version": "0.7.3",
+	"description": "A complete enviroment for making \"Friday Night Funkin'\" (V-Slice) mods",
 	"categories": [
 		"Programming Languages",
 		"Formatters",
@@ -90,7 +90,7 @@
 			{
 				"command": "mikolka.new",
 				"category": "Funkin compiler",
-				"title": "Make new project (legacy)"
+				"title": "Make new project"
 			},
 			{
 				"command": "mikolka.setHaxelib",

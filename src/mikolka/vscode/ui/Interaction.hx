@@ -71,7 +71,7 @@ class Interaction {
 		box.placeholder = "Enter a path to a directory (or use the folder button to pick one)";
 		box.configureSelectFileButton("Pick a folder",null,false,s -> {
 			box.value = s;
-		},true,true);
+		},true,allowAppBundles);
 		box.onDidAccept(e -> {
 			acceptedValue = true;
 			next(box.value);
