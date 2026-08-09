@@ -18,6 +18,9 @@
   </p>
 </div>
 
+
+
+### Prevoisly known as "Funkin Compiler"
 #### It's more or less implementation of [this](https://github.com/FunkinCrew/Funkin/issues/5199) suggestion.
 
 
