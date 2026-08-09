@@ -8,7 +8,7 @@
 <h3 align="center">Funkin IDE</h3>
 
   <p align="center">
-    An extension aiming to provide a complete enviroment for making making and working on mods for Friday Night Funkin'
+    An extension aiming to provide a complete environment for working on mods for Friday Night Funkin'
     <br />
     <br />
     ·
@@ -50,7 +50,7 @@ It can also be customized with additional configuration options. We'll look at t
 - `attachDebugger`: If enabled, adds the "debug" mod to your instance before starting it.
 - `cmd_prefix`: Prefix for the launch command. The only practical use for it is launching a Windows instance of the game using "wine" on Linux.
 
-To start, in `Run and Debug` click "create a launch.json file", from the menu select `Run the FNF: V-SLice instance`. Now you should have a basic configuration that will lauch FNF version native to your platform.
+To start, in `Run and Debug` click "create a launch.json file", from the menu select `Run the FNF: V-Slice instance`. Now you should have a basic configuration that will launch FNF version native to your platform.
 
 Here's how you can further customize your launch configuration:
 
