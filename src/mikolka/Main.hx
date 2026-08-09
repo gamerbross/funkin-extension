@@ -1,7 +1,6 @@
 package mikolka;
 
 import mikolka.vscode.providers.tasks.PCCopyTask;
-import mikolka.mode1.NewCommand;
 import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.ModeManager.FilePatternMode;
 import mikolka.vscode.providers.commands.*;

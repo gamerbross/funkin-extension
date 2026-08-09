@@ -74,7 +74,9 @@
 					"funkinCompiler.fcpkgSources": {
 						"description": "List of sources providing fcPkg manifests",
 						"type": "array",
-						"default": ["https://raw.githubusercontent.com/FunkinCompiler/fcpkg-cdn/refs/heads/master/full-sources.json"]
+						"default": [
+							"https://raw.githubusercontent.com/FunkinCompiler/fcpkg-cdn/refs/heads/master/full-sources.json"
+						]
 					}
 				}
 			}
@@ -154,14 +156,15 @@
 					"**/gameplay/playable-characters/*/*.json"
 				],
 				"url": "./assets/jsonc/data/players.json"
-			},			
+			},
 			{
 				"fileMatch": [
 					"**/data/songs/*/*-chart*.json",
 					"**/gameplay/songs/*/*-chart*.json"
 				],
 				"url": "./assets/jsonc/data/songs/chart.json"
-			},			{
+			},
+			{
 				"fileMatch": [
 					"**/data/songs/*/*-metadata*.json",
 					"**/songs/*/*-metadata*.json"
@@ -194,14 +197,14 @@
 					"**/dialogue/speakers/*/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/speaker.json"
-			},			
+			},
 			{
 				"fileMatch": [
 					"**/dialogue/boxes/*.json",
 					"**/dialogue/boxes/*/*.json"
 				],
 				"url": "./assets/jsonc/data/dialogue/dialogue_box.json"
-			},			
+			},
 			{
 				"fileMatch": [
 					"**/dialogue/conversations/*.json",
@@ -241,8 +244,7 @@
 			},
 			{
 				"type": "funk-mobile",
-				"required": [
-				],
+				"required": [],
 				"properties": {
 					"modName": {
 						"type": "string",
@@ -257,8 +259,7 @@
 			},
 			{
 				"type": "funk-pc",
-				"required": [
-				],
+				"required": [],
 				"properties": {
 					"modName": {
 						"type": "string",
@@ -299,7 +300,7 @@
 								"type": "boolean",
 								"description": "Traces some other output.",
 								"default": true
-							},							
+							},
 							"isMobile": {
 								"type": "boolean",
 								"description": "If true, rund the debugger on the connected android device instead (via adb)",

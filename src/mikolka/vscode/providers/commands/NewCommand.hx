@@ -1,4 +1,4 @@
-package mikolka.mode1;
+package mikolka.vscode.providers.commands;
 
 import mikolka.vscode.definitions.DisposableCommand;
 import vscode.Uri;

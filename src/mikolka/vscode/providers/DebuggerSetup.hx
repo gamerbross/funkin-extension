@@ -54,7 +54,7 @@ class DebuggerSetup extends DisposableProvider {
 						Interaction.displayInformation("Path updated! Try launching the game again.");
 					}, () -> {
 						Interaction.displayError("Operation cancelled!");
-					});
+					},true);
 					return js.Lib.undefined;
 				}
 			}

@@ -31,23 +31,30 @@ typedef ButtonBox = {
 class UIUtils {
     
     public static function configureSelectFileButton(item:ButtonBox,title:String,filters:DynamicAccess<Array<String>>
-            ,pickingFile:Bool,onSelect:String->Void,makeBusy:Bool = false) {
+            ,pickingFile:Bool,onSelect:String->Void,makeBusy:Bool = false,allowAppBundles:Bool = false) {
         var buttons:Array<QuickInputActionBtn> = [{
 			tooltip: "Browse",
 			iconPath: ThemeIcon.Folder,
 			action: () -> {
 				if(makeBusy) item.busy = true;
-				Vscode.window.showOpenDialog({
-					canSelectFolders: !pickingFile,
-					canSelectFiles: pickingFile,
-                    filters: filters,
-                    title: title
-				}).then(folders -> {
-					if (folders != null && folders.length > 0) {
-						onSelect(folders[0].fsPath);
-					}
-					if(makeBusy) item.busy = false;
-				});
+				var dialog_filters = filters;
+				var dialog_files = pickingFile;
+				if(Sys.systemName() == "Mac" && allowAppBundles){
+					dialog_files = true;
+					dialog_filters = {"Mac OS app":["*.app"]};
+				}
+					Vscode.window.showOpenDialog({
+						canSelectFolders: !pickingFile,
+						canSelectFiles: dialog_files,
+						filters: dialog_filters,
+						title: title
+					}).then(folders -> {
+						if (folders != null && folders.length > 0) {
+							onSelect(folders[0].fsPath);
+						}
+						if(makeBusy) item.busy = false;
+					});
+				
 			}
 		}];
         item.buttons = buttons;

@@ -4,8 +4,15 @@
     {
       "type": "funkin-run-game",
       "request": "launch",
-      "name": "Compile & Run FNF mod",
-      "preLaunchTask": "Funk: Compile current V-Slice mod"
+      "name": "Copy & Run PC FNF",
+      "preLaunchTask": "Funk: Copy this V-Slice mod to local FNF"
+    },
+    {
+      "type": "funkin-run-game",
+      "request": "launch",
+      "name": "Copy & Run Mobile FNF",
+      "isMobile": true,
+      "preLaunchTask": "Funk ADB: Copy this V-Slice mod to mobile"
     },
     {
       "type": "funkin-run-game",

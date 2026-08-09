@@ -1,5 +1,6 @@
 package mikolka.vscode.ui;
 
+import haxe.DynamicAccess;
 import vscode.QuickInputButton;
 import vscode.QuickPickItem;
 import js.lib.Promise;
@@ -62,13 +63,37 @@ class Interaction {
 		});
 		box.show();
 	}
-	public static function requestDirectory(prompt:String,initialValue:String,next:(inputPath:String) -> Void,onCancel:Void -> Void) {
+	public static function requestDirectory(prompt:String,initialValue:String,next:(inputPath:String) -> Void,onCancel:Void -> Void,allowAppBundles:Bool = false) {
 		var box = Vscode.window.createInputBox();
 		var acceptedValue = false;
 		box.prompt = prompt;
 		box.value = initialValue;
 		box.placeholder = "Enter a path to a directory (or use the folder button to pick one)";
 		box.configureSelectFileButton("Pick a folder",null,false,s -> {
+			box.value = s;
+		},true,true);
+		box.onDidAccept(e -> {
+			acceptedValue = true;
+			next(box.value);
+			box.dispose();
+		});
+		box.ignoreFocusOut = true;
+		box.onDidHide(e -> {
+			if(!acceptedValue) {
+				onCancel();
+				box.dispose();
+			}
+		});
+		box.show();
+	}
+
+	public static function request(prompt:String,initialValue:String,next:(inputPath:String) -> Void,onCancel:Void -> Void) {
+		var box = Vscode.window.createInputBox();
+		var acceptedValue = false;
+		box.prompt = prompt;
+		box.value = initialValue;
+		box.placeholder = "Enter a path to a directory (or use the folder button to pick one)";
+		box.configureSelectFileButton("Pick a folder",{"mac":["*.app"]},false,s -> {
 			box.value = s;
 		},true);
 		box.onDidAccept(e -> {

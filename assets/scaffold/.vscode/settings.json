@@ -69,12 +69,6 @@
   // Automatically enforce Linux style line endings.
   "files.eol": "\n",
 
-  "haxe.displayPort": "auto",
-  "haxe.enableCompilationServer": false,
-  "haxe.enableServerView": true,
-  "haxe.displayServer": {
-    "arguments": ["-v"]
-  },
   // Fix file associations for HScript.
   "files.associations": {
     "*.hxp": "haxe",

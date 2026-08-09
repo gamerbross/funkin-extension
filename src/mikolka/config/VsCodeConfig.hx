@@ -20,8 +20,9 @@ class VsCodeConfig {
     }    
 
     public var GAME_PATH(get,set):String;
+    private var _game_path:String = null;
     function get_GAME_PATH():String {
-        return projectConfig.get("funkinCompiler.gamePath","../funkinGame/");
+        return _game_path ?? projectConfig.get("funkinCompiler.gamePath","../funkinGame/");
     }
 
     // Cache the value in case Vscode lags behind with the update
@@ -36,6 +37,7 @@ class VsCodeConfig {
         return value;
     }
     function set_GAME_PATH(value:String):String {
+        _game_path = value;
         projectConfig.update("funkinCompiler.gamePath",value,true);
         return value;
     }
