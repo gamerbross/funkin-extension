@@ -6,6 +6,7 @@
 -lib vscode 
 -lib vscode-debugadapter 
 -lib vshaxe
+--dce full
 -js bin/main.js 
 # -D COMPILER_DEBUG_INSTALL
 mikolka.Main

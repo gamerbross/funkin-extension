@@ -5,7 +5,7 @@ import mikolka.vscode.ui.Interaction;
 
 class Process {
 	public static function runCurl(sourceUrl:String,target_file:String,cwd:Null<String> = null,onInput:String -> Void,onComplete:Void -> Void) {
-		runCommand('curl -L -o ${target_file} ${sourceUrl}',cwd,onInput,onComplete);
+		runCommand('curl',['-L', '-o' ,target_file.shellPath(), sourceUrl],cwd,onInput,onComplete);
 	}
 	public static function checkCommand(execName:String,cwd:Null<String> = null):Bool {
 		trace(cwd);
@@ -32,9 +32,9 @@ class Process {
 		}
 		return code == 0;
     }
-	public static function runCommand(execName:String,cwd:Null<String> = null,onInput:String -> Void,onComplete:Void -> Void) {
+	public static function runCommand(execName:String,args:Array<String> = null,cwd:Null<String> = null,onInput:String -> Void,onComplete:Void -> Void) {
 		trace(cwd);
-        var proc = ChildProcess.spawn(execName,{
+        var proc = ChildProcess.spawn(execName,args,{
 			cwd: cwd,
 			stdio: Pipe,
 			shell: true

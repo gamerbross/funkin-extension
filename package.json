@@ -299,31 +299,32 @@
 					}
 				],
 				"configurationSnippets": [
-				    {
-					"type": "funkin-run-game",
-					"request": "launch",
-					"name": "Copy & Run PC FNF",
-					"preLaunchTask": "Funk: Copy this V-Slice mod to local FNF"
+					{
+						"type": "funkin-run-game",
+						"request": "launch",
+						"name": "Copy & Run PC FNF",
+						"preLaunchTask": "Funk: Copy this V-Slice mod to local FNF"
 					},
 					{
-					"type": "funkin-run-game",
-					"request": "launch",
-					"name": "Copy & Run Mobile FNF",
-					"isMobile": true,
-					"preLaunchTask": "Funk ADB: Copy this V-Slice mod to mobile"
+						"type": "funkin-run-game",
+						"request": "launch",
+						"name": "Copy & Run Mobile FNF",
+						"isMobile": true,
+						"preLaunchTask": "Funk ADB: Copy this V-Slice mod to mobile"
 					},
 					{
-					"type": "funkin-run-game",
-					"request": "launch",
-					"name": "Just run FNF",
-					"preLaunchTask": ""
+						"type": "funkin-run-game",
+						"request": "launch",
+						"name": "Just run FNF",
+						"preLaunchTask": ""
 					}
 				]
 			}
 		]
 	},
 	"dependencies": {
-		"vscode-debugadapter": "^1.51.0"
+		"vscode-debugadapter": "^1.51.0",
+		"vscode-debugprotocol": "^1.51.0"
 	},
 	"extensionPack": [
 		"gert7.srt-subrip"

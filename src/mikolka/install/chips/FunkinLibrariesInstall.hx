@@ -60,7 +60,10 @@ class FunkinLibrariesInstall {
 	}
 
 	function installLibraryFromHaxelib(libraryName:String,version:String,resolve:Void->Void){
-		runSetupCommand('haxelib install ${libraryName} ${version} --always --quiet --skip-dependencies', resolve);
+		var args = ["install",libraryName,version,"--always","--quiet","--skip-dependencies"];
+		writeLine("   > haxelib " + args.join(" "));
+		var cwd = localCwd ?? Sys.getCwd();
+		Process.runCommand("haxelib",args, cwd, writeLine, resolve);
 	}
 	function installLibraryFromGithub(repoName:String,commitHash:String,libraryName:String,resolve:Void->Void, deny:String->Void) {
 		runCurlCommand('https://codeload.github.com/${repoName}/zip/${commitHash}','temp.zip',() -> {
@@ -83,11 +86,7 @@ class FunkinLibrariesInstall {
 			}
 		});
 	}
-	function runSetupCommand(cmd:String, next:Void->Void) {
-		writeLine("   > " + cmd);
-		var cwd = localCwd ?? Sys.getCwd();
-		Process.runCommand(cmd, cwd, writeLine, next);
-	}
+
 	function runCurlCommand(source:String,target:String, next:Void->Void) {
 		writeLine('   > curl -L -o ${target} ${source}');
 		var cwd = localCwd ?? Sys.getCwd();

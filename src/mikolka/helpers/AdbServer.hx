@@ -7,21 +7,15 @@ class AdbServer {
     private static final PERMISSIONS:String = "adb shell stat -c '%a'";
     private static final ADB:String = "adb shell";
 	public static function pushFiles(source:String, target:String, inSync:Bool = false,onProgress:String -> Void,onComplete:Void -> Void) {
-		var cmd = new StringBuf();
-		cmd.add("adb push ");
-        cmd.add("-p ");
+		var cmd = ["push","-p"];
 		if (inSync)
-			cmd.add("--sync ");
-		cmd.addChar('"'.code);
-		cmd.add(source);
-		cmd.add('/." '); // Copy content, NOT the dir itself
-		cmd.addChar('"'.code);
-		cmd.add(target);
-		cmd.add('/"');
+			cmd.push("--sync ");
+		cmd.push('$source/.'.shellPath());
+		cmd.push('$target/'.shellPath());
 
-        onProgress('>>> $cmd \n');
+        onProgress('>>> adb ${cmd.join(" ")} \n');
 
-        Process.runCommand(cmd.toString(),null,onProgress,onComplete);
+        Process.runCommand("adb",cmd,null,onProgress,onComplete);
 	}
     public static function isAdbReady():Bool {
         return Process.checkCommand("adb get-state",null);

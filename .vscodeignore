@@ -1,0 +1,10 @@
+.haxelib
+.vscode
+node_modules
+readme-images
+*.hxml
+*.vsix
+src
+package-lock.json
+.env
+.DS_Store

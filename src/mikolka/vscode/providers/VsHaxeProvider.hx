@@ -110,9 +110,12 @@ class VsHaxeProvider extends DisposableProvider {
 				return;
 			}
 			var target_file = Path.join([store.getTempPath(), "haxe.zip"]);
-			Process.runCurl('https://github.com/FunkinCompiler/haxe-bin/releases/download/4.3.7/${system_part}.zip', target_file, null, s -> {}, () -> {
+			var curl_out = new StringBuf();
+			Process.runCurl('https://github.com/FunkinCompiler/haxe-bin/releases/download/4.3.7/${system_part}.zip', target_file, null, s -> {
+				curl_out.add(s);
+			}, () -> {
 				if (!FileSystem.exists(target_file)) {
-					onError("Failed to download custom Haxe. Try again later.");
+					onError("Failed to download custom Haxe: "+curl_out.toString());
 					return;
 				}
 				ZipTools.extractZip(File.read(target_file), store.getCustomHaxeRootPath());
