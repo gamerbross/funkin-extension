@@ -24,7 +24,7 @@ class AdbServer {
         Process.runCommand(cmd.toString(),null,onProgress,onComplete);
 	}
     public static function isAdbReady():Bool {
-        return Process.checkCommand("adb get-state",null,"The Android device/adb doesn't seem to be ready!");
+        return Process.checkCommand("adb get-state",null);
     }
     public static inline function getModsPath(packageName:String):String {
         return '/sdcard/Android/data/$packageName/files/mods';

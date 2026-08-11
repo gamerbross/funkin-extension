@@ -6,7 +6,6 @@ import mikolka.helpers.ModeManager.FilePatternMode;
 import mikolka.vscode.providers.commands.*;
 import mikolka.vscode.providers.StartupInit;
 import mikolka.vscode.providers.tasks.AdbTask;
-import mikolka.mode1.FunkTask;
 import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
@@ -46,7 +45,6 @@ class Main {
 				new DebuggerSetup(context),
 				
 				new AdbTask(context),
-				new FunkTask(context),
 				new PCCopyTask(context),
 			];
 			

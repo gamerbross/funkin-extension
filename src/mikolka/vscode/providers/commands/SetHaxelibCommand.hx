@@ -6,15 +6,14 @@ import mikolka.config.VsCodeConfig;
 import mikolka.config.MetadataParser;
 import mikolka.vscode.ui.ListPicker.ListItem;
 import haxe.io.Path;
-import mikolka.config.FcpkgManager;
 
 class SetHaxelibCommand extends DisposableCommand {
 
-    var fcpkg:FcpkgManager;
+    var fcpkg:ExternalStorageTools;
     var cfg:VsCodeConfig;
     public function new(context:vscode.ExtensionContext) {
 		super(context);
-        fcpkg = new FcpkgManager(context);
+        fcpkg = context.getGlobalStore();
         cfg = VsCodeConfig.instance;
         addDisposable(makeCommand("setHaxelib", context, command_setHaxelib));
     }

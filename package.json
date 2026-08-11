@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin IDE",
-	"version": "0.7.3",
+	"version": "0.8.0-rc1",
 	"description": "A complete environment for making \"Friday Night Funkin'\" (V-Slice) mods!",
 	"categories": [
 		"Programming Languages",
@@ -46,7 +46,6 @@
 	"files": [
 		"bin",
 		"assets",
-		"node_modules",
 		"debug-mod",
 		"LICENSE.md"
 	],
@@ -221,28 +220,6 @@
 		],
 		"taskDefinitions": [
 			{
-				"type": "funk",
-				"required": [
-					"modName",
-					"gamePath"
-				],
-				"properties": {
-					"modName": {
-						"type": "string",
-						"description": "THe name to use for the mod. If you have the mod with the same name, this task will override it!"
-					},
-					"gamePath": {
-						"type": "string",
-						"description": "THe path to your game. Only relative paths are supported for now."
-					},
-					"copyToGame": {
-						"type": "boolean",
-						"default": true,
-						"description": "If false, the mod will be only compiled in the 'export' folder without copying it oner to your V-Slice instance. Neat!"
-					}
-				}
-			},
-			{
 				"type": "funk-mobile",
 				"required": [],
 				"properties": {
@@ -322,17 +299,24 @@
 					}
 				],
 				"configurationSnippets": [
-					{
-						"name": "Start FNF without compiling",
-						"type": "funkin-run-game",
-						"request": "launch",
-						"preLaunchTask": ""
+				    {
+					"type": "funkin-run-game",
+					"request": "launch",
+					"name": "Copy & Run PC FNF",
+					"preLaunchTask": "Funk: Copy this V-Slice mod to local FNF"
 					},
 					{
-						"name": "Compile & start FNF",
-						"type": "funkin-run-game",
-						"request": "launch",
-						"preLaunchTask": "Funk: Compile current V-Slice mod"
+					"type": "funkin-run-game",
+					"request": "launch",
+					"name": "Copy & Run Mobile FNF",
+					"isMobile": true,
+					"preLaunchTask": "Funk ADB: Copy this V-Slice mod to mobile"
+					},
+					{
+					"type": "funkin-run-game",
+					"request": "launch",
+					"name": "Just run FNF",
+					"preLaunchTask": ""
 					}
 				]
 			}

@@ -22,6 +22,9 @@ class Interaction {
 	public static function displayInformation(msg:String):Thenable<Any> {
 		return Vscode.window.showInformationMessage(msg);
 	}
+	public static function displayWarning(msg:String):Thenable<Any> {
+		return Vscode.window.showWarningMessage(msg);
+	}
 	public static function displayErrorAlert(title:String,message:String):Thenable<Any> {
 		return Vscode.window.showErrorMessage(title,{
 			modal: true,

@@ -10,16 +10,15 @@ import sys.io.File;
 import haxe.io.Path;
 import haxe.Exception;
 import mikolka.config.VsCodeConfig;
-import mikolka.config.FcpkgManager;
 import mikolka.vscode.definitions.DisposableCommand;
 
 class SetupCommand extends DisposableCommand {
 	var commandOutput:OutputChannel;
 
-	var fcpkg:FcpkgManager;
+	var fcpkg:ExternalStorageTools;
 
 	public function new(context:vscode.ExtensionContext) {
-		fcpkg = new FcpkgManager(context);
+		fcpkg = context.getGlobalStore();
 		commandOutput = Vscode.window.createOutputChannel("Funkin compiler");
 		super(context, makeCommand("setup", context, command_setup));
 	}
@@ -53,7 +52,7 @@ class SetupCommand extends DisposableCommand {
 	}
 
 	function chip_done(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		fcpkg.clearTempFcpkg();
+		fcpkg.clearTempPath();
 		writeLine("[SETUP] Setup done!");
 		resolve();
 	}
@@ -94,7 +93,7 @@ class SetupCommand extends DisposableCommand {
 
 	function downloadFcpkg(remote_source:Uri, onComplete:(fcpkgPath:String) -> Void) {
 		var name = Path.withoutExtension(Path.withoutDirectory(remote_source.path));
-		var download_path = fcpkg.getFcpkgTempPath();
+		var download_path = fcpkg.getTempPath();
 
 		Process.runCurl(remote_source.toString(),'${name}.fcpkg', download_path, writeLine,
 			onComplete.bind(Path.join([download_path, '${name}.fcpkg'])));

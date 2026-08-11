@@ -7,7 +7,7 @@ class Process {
 	public static function runCurl(sourceUrl:String,target_file:String,cwd:Null<String> = null,onInput:String -> Void,onComplete:Void -> Void) {
 		runCommand('curl -L -o ${target_file} ${sourceUrl}',cwd,onInput,onComplete);
 	}
-	public static function checkCommand(execName:String,cwd:Null<String> = null,errTitle:String = "Error checking command"):Bool {
+	public static function checkCommand(execName:String,cwd:Null<String> = null):Bool {
 		trace(cwd);
         var proc = ChildProcess.spawnSync(execName,{
 			cwd: cwd,
