@@ -1,7 +1,6 @@
 .haxelib
 .vscode
 readme-images
-node_modules
 *.hxml
 *.vsix
 src

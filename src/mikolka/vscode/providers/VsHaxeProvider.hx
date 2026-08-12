@@ -128,8 +128,9 @@ class VsHaxeProvider extends DisposableProvider {
                 }
 				store.setHaxeVersion("1.0.0");
 				store.clearTempPath();
-				onValid();
+				
 			});
 		}
+		onValid();
 	}
 }
