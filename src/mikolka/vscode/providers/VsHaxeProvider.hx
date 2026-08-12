@@ -50,7 +50,8 @@ class VsHaxeProvider extends DisposableProvider {
 					var file = Sys.systemName() == "Windows" ? "haxe.exe" : "haxe";
 
 					provideInstallation({
-						haxeExecutable: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), file])
+						haxeExecutable: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), file]),
+						standardLibraryPath: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), "std"])
 					});
 				}, error -> {
 					Interaction.displayError(error);
@@ -89,11 +90,11 @@ class VsHaxeProvider extends DisposableProvider {
 				Vscode.commands.executeCommand("workbench.action.reloadWindow");
 			}, () -> {});
 	}
-
+	public static final HAXE_VERSION:String = "v1";
 	private function checkVshaxeHaxelib(context:vscode.ExtensionContext, onValid:Void->Void, onError:String->Void) {
 		var store = context.getGlobalStore();
 		var current_version = store.getHaxeVersion();
-		if (current_version != "1.0.0" && current_version != null) {
+		if (current_version != HAXE_VERSION && current_version != null) {
 			store.clearCustomHaxe();
 			current_version = null;
 		}
@@ -126,7 +127,7 @@ class VsHaxeProvider extends DisposableProvider {
 						return;
 					}
                 }
-				store.setHaxeVersion("1.0.0");
+				store.setHaxeVersion(HAXE_VERSION);
 				store.clearTempPath();
 				
 			});

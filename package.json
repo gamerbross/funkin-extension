@@ -326,6 +326,18 @@
 		"vscode-debugadapter": "^1.51.0",
 		"vscode-debugprotocol": "^1.51.0"
 	},
+	"devDependencies": {
+		"@vercel/ncc": "^0.33.4"
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run haxe && npm run bundle-runner && npm run bundle-main",
+		"test":"npm run haxe && npm run bundle-debug-runner && npm run bundle-debug-main",
+		"haxe": "haxe ./extension.hxml && haxe ./funkin-runner.hxml",
+		"bundle-main":"npx ncc build bin/main.js -m -o . -q && mv index.js ./bin/main.js",
+		"bundle-runner":"npx ncc build bin/funkin-runner.js -m -o . -q && mv index.js ./bin/funkin-runner.js",
+		"bundle-debug-main":"npx ncc build bin/main.js -o . -q && mv index.js ./bin/main.js",
+		"bundle-debug-runner":"npx ncc build bin/funkin-runner.js -o . -q && mv index.js ./bin/funkin-runner.js"
+	},
 	"extensionPack": [
 		"gert7.srt-subrip"
 	]

@@ -13,7 +13,7 @@
       "autoAttachChildProcesses": true,
       "trace": true,
       "debugWebviews": true,
-      "preLaunchTask": "hxml: extension.hxml",
+      "preLaunchTask": "Build extension",
 
       "outFiles": ["${workspaceFolder}/*.js"]
     },
@@ -26,7 +26,7 @@
       "stopOnEntry": false,
       "sourceMaps": true,
       "autoAttachChildProcesses": true,
-      "preLaunchTask": "hxml: extension.hxml",
+      "preLaunchTask": "Build extension",
 
       "outFiles": ["${workspaceFolder}/*.js"]
     },
@@ -36,7 +36,6 @@
       "name": "Pack Extension",
       "command": "vsce package",
       "cwd": "${workspaceFolder}",
-      "preLaunchTask": "hxml: extension.hxml"
     }
   ]
 }

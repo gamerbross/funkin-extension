@@ -6,7 +6,9 @@
 -D haxe-next
 -lib vscode 
 -lib vshaxe
+-lib thx.semver
 -lib vscode-debugadapter 
 # -D COMPILER_DEBUG_INSTALL
 -main mikolka.Main
 -js vs-extension-js-file.js
+
