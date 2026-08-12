@@ -4,5 +4,6 @@
 -D js-es=6
 -lib vscode-debugadapter 
 -js bin/funkin-runner.js 
+--dce full
 --main runner.Main
 runner.Main

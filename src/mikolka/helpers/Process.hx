@@ -22,7 +22,7 @@ class Process {
     }
 
 	public static function setHaxelibPath(path:String):Bool {
-        var proc = ChildProcess.spawnSync("haxelib setup",[path],{
+        var proc = ChildProcess.spawnSync("haxelib setup",[path.shellPath()],{
 			stdio: Pipe,
 			shell: true
 		});
