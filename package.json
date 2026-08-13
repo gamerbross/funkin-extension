@@ -105,38 +105,43 @@
 		"jsonValidation": [
 			{
 				"fileMatch": [
-					"**/_polymod_meta.json"
-				],
-				"url": "./assets/jsonc/_polymod_meta.json"
-			},
-			{
-				"fileMatch": [
-					"**/ui/mods/characters/*.json"
-				],
-				"url": "./assets/jsonc/data/mods/characters.json"
-			},
-			{
-				"fileMatch": [
 					"**/_merge/**/*.json"
 				],
 				"url": "./assets/jsonc/_merge.json"
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
+					"**/_polymod_meta.json"
+				],
+				"url": "./assets/jsonc/_polymod_meta.json"
+			},
+			{
+				"fileMatch": [
+					"!**/_merge/**/*.json",
+					"**/ui/mods/characters/*.json"
+				],
+				"url": "./assets/jsonc/data/mods/characters.json"
+			},
+			{
+				"fileMatch": [
 					"**/ui/story-mode/levels/*.json",
-					"**/data/levels/*.json"
+					"**/data/levels/*.json",
+					"!**/_merge/**/*.json"
 				],
 				"url": "./assets/jsonc/data/levels.json"
 			},
 			{
 				"fileMatch": [
 					"**/data/notestyles/*.json",
-					"**/gameplay/notestyles/*/*.json"
+					"**/gameplay/notestyles/*/*.json",
+					"!**/_merge/**/*.json"
 				],
 				"url": "./assets/jsonc/data/notestyles.json"
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/data/stages/*.json",
 					"**/gameplay/stages/*/*.json"
 				],
@@ -144,6 +149,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/data/characters/*.json",
 					"**/gameplay/characters/*/*.json"
 				],
@@ -151,6 +157,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/data/players/*.json",
 					"**/gameplay/playable-characters/*/*.json"
 				],
@@ -158,6 +165,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/data/songs/*/*-chart*.json",
 					"**/gameplay/songs/*/*-chart*.json"
 				],
@@ -165,6 +173,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/data/songs/*/*-metadata*.json",
 					"**/songs/*/*-metadata*.json"
 				],
@@ -178,6 +187,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/ui/freeplay/styles/*/*.json",
 					"**/ui/freeplay/styles/*.json"
 				],
@@ -185,6 +195,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/data/stickerpacks/*.json",
 					"**/ui/loading/stickers/stickerpacks/*.json"
 				],
@@ -192,6 +203,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/dialogue/speakers/*.json",
 					"**/dialogue/speakers/*/*.json"
 				],
@@ -199,6 +211,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/dialogue/boxes/*.json",
 					"**/dialogue/boxes/*/*.json"
 				],
@@ -206,6 +219,7 @@
 			},
 			{
 				"fileMatch": [
+					"!**/_merge/**/*.json",
 					"**/dialogue/conversations/*.json",
 					"**/dialogue/conversations/*/*.json"
 				],
@@ -339,6 +353,7 @@
 		"bundle-debug-runner":"npx ncc build bin/funkin-runner.js -o . -q && mv index.js ./bin/funkin-runner.js"
 	},
 	"extensionPack": [
-		"gert7.srt-subrip"
+		"gert7.srt-subrip",
+		"dtoplak.vscode-glsllint"
 	]
 }

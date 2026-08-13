@@ -7,6 +7,7 @@ import sys.FileSystem;
 class FileManager {
 	public static function deleteDirRecursively(path:String):Void {
 		scanDirectory(path, s -> FileSystem.deleteFile(Path.join([path, s])), s -> FileSystem.deleteDirectory(Path.join([path, s])));
+		FileSystem.deleteDirectory(path);
 	}
 
 	public static function isManifestPresent(modAssetsDir:String):Bool {

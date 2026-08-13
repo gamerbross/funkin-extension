@@ -33,7 +33,8 @@ class Language {
     public static inline final PICK_FILE_BUTTON:String = "Pick a file";
     public static inline final PICK_FOLDER_BUTTON:String = "Pick a folder";
 
-    public static inline final STARTUP_RUNNING_INFO:String = "Funkin Compiler is now running!";
+    public static inline final STARTUP_RUNNING_INFO:String = "Funkin IDE is up! If you enjoy using this extension, be sure to share it with others!";
+
     public static inline final SELECT_FNF_INSTANCE_TO_LAUNCH:String = "Select FNF instance to launch";
     public static inline final PATH_UPDATED_TRY_AGAIN:String = "Path updated! Try launching the game again.";
     public static inline final OPERATION_CANCELLED:String = "Operation cancelled!";

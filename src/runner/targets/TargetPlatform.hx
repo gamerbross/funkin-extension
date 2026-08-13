@@ -5,6 +5,7 @@ import js.node.Buffer;
 interface TargetPlatform {
     function isDebugServerPresent():Bool;
     function installDebugServerMod():Void;
+    function removeDebugServerMod():Void;
     function start():Bool;
     function close():Void;
 }

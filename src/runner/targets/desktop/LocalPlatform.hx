@@ -60,4 +60,8 @@ class LocalPlatform implements TargetPlatform {
 		
 		return proc;
 	}
+
+	public function removeDebugServerMod() {
+		FileManager.deleteDirRecursively(Path.join([FunkinPaths.getModFolderPath(args.cwd), "debug"]));
+	}
 }

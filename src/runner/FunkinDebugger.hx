@@ -120,6 +120,7 @@ class FunkinDebugger extends DebugSession {
 
 		// }
 		onProcessTerminate = () -> {
+			platform.removeDebugServerMod();
 			platform.close();
 		}
 

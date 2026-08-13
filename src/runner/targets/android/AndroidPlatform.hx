@@ -30,4 +30,8 @@ class AndroidPlatform implements TargetPlatform {
         adb.spawnSyncProcess(adb.STOP_FNF,null);
         io.onExit();
     }
+
+    public function removeDebugServerMod() {
+        adb.spawnSyncProcess('rm -r "${Path.join([adb.mods_path, "debug-mod"])}');
+    }
 }
