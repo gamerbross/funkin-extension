@@ -55,7 +55,7 @@ class MetadataParser {
             return result;
         }
         catch(x:Exception){
-            Interaction.displayError("Failed to read metadata for current FcPkg: "+x.message);
+            Interaction.displayError(Language.failedToReadMetadata(x.message));
             return base;
         }
 

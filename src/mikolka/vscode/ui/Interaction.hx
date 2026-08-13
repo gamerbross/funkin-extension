@@ -37,7 +37,7 @@ class Interaction {
 		Vscode.window.showInputBox({
 			title: prompt
 		}).then(next,(out) ->{
-			displayError("Action canceled!");
+			displayError(Language.ACTION_CANCELED);
 		});
 	}
 	public static function requestFile(prompt:String,initialValue:String,fileFormatName:String,fileExtension:String
@@ -46,8 +46,8 @@ class Interaction {
 		var acceptedValue = false;
 		box.prompt = prompt;
 		box.value = initialValue;
-		box.placeholder = "Enter a path to a file (or use the folder button to pick one)";
-		box.configureSelectFileButton("Pick a file",{
+		box.placeholder = Language.FILE_INPUT_PLACEHOLDER;
+		box.configureSelectFileButton(Language.PICK_FILE_BUTTON,{
 			'${fileFormatName}': [fileExtension]
 		},true,s -> {
 			box.value = s;
@@ -71,8 +71,8 @@ class Interaction {
 		var acceptedValue = false;
 		box.prompt = prompt;
 		box.value = initialValue;
-		box.placeholder = "Enter a path to a directory (or use the folder button to pick one)";
-		box.configureSelectFileButton("Pick a folder",null,false,s -> {
+		box.placeholder = Language.DIRECTORY_INPUT_PLACEHOLDER;
+		box.configureSelectFileButton(Language.PICK_FOLDER_BUTTON,null,false,s -> {
 			box.value = s;
 		},true,allowAppBundles);
 		box.onDidAccept(e -> {
@@ -95,8 +95,8 @@ class Interaction {
 		var acceptedValue = false;
 		box.prompt = prompt;
 		box.value = initialValue;
-		box.placeholder = "Enter a path to a directory (or use the folder button to pick one)";
-		box.configureSelectFileButton("Pick a folder",{"mac":["*.app"]},false,s -> {
+		box.placeholder = Language.DIRECTORY_INPUT_PLACEHOLDER;
+		box.configureSelectFileButton(Language.PICK_FOLDER_BUTTON,{"mac":["*.app"]},false,s -> {
 			box.value = s;
 		},true);
 		box.onDidAccept(e -> {
@@ -121,7 +121,7 @@ class Interaction {
 			else if(result == "No"){
 				onNo();
 			}
-			else Interaction.displayError("Action aborted!");
+			else Interaction.displayError(Language.ACTION_ABORTED);
 		});
 	}
 }

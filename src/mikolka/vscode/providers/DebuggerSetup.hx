@@ -14,13 +14,6 @@ typedef FNFLaunchRequestArguments = DebugConfiguration & {
 	var execName:String;
 	var args:Array<String>;
 	var isMobile:Bool;
-	// final stopOnEntry:Bool;
-	// final haxeExecutable:{
-	// 	final executable:String;
-	// 	final env:DynamicAccess<String>;
-	// };
-	// final mergeScopes:Bool;
-	// final showGeneratedVariables:Bool;
 	var trace:Bool; // if set to true sends trace messages as DebugSession.OutputEvents
 }
 
@@ -37,7 +30,7 @@ class DebuggerSetup extends DisposableProvider {
 				var project_folder = folder?.uri.fsPath;
 
 				if (project_folder == null) {
-					Interaction.displayError("Running FNF without a folder! This will likely fail!");
+					Interaction.displayError(Language.RUNNING_FNF_WITHOUT_FOLDER);
 				}
 				var fnfCgf:FNFLaunchRequestArguments = cast debugConfiguration;
 				var hasCwd = fnfCgf.cwd != null;
@@ -49,11 +42,11 @@ class DebuggerSetup extends DisposableProvider {
 					return null;
 				else {
 					var vscodeCfg = VsCodeConfig.instance;
-					Interaction.requestDirectory("Select FNF instance to launch", vscodeCfg.GAME_PATH, inputPath -> {
+					Interaction.requestDirectory(Language.SELECT_FNF_INSTANCE_TO_LAUNCH, vscodeCfg.GAME_PATH, inputPath -> {
 						vscodeCfg.GAME_PATH = inputPath;
-						Interaction.displayInformation("Path updated! Try launching the game again.");
+						Interaction.displayInformation(Language.PATH_UPDATED_TRY_AGAIN);
 					}, () -> {
-						Interaction.displayError("Operation cancelled!");
+						Interaction.displayError(Language.OPERATION_CANCELLED);
 					},true);
 					return js.Lib.undefined;
 				}
@@ -76,13 +69,13 @@ class DebuggerSetup extends DisposableProvider {
 		var folder = Vscode.workspace?.workspaceFolders[0];
 
 		if (folder == null) {
-			Interaction.displayErrorAlert("Cannot start the game", "You need to open a folder before starting it!");
+			Interaction.displayErrorAlert(Language.CANNOT_START_GAME_TITLE, Language.CANNOT_START_GAME_DETAIL);
 			return;
 		}
 
 		Vscode.debug.startDebugging(folder, config).then((success) -> {
 			if (!success) {
-				Vscode.window.showErrorMessage("Funkin failed to funk!", {modal: true});
+				Vscode.window.showErrorMessage(Language.FNF_FAILED_TO_FUNK, {modal: true});
 			}
 		});
 	}

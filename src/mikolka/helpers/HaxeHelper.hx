@@ -32,11 +32,11 @@ class HaxeHelper {
 
 		if (current_version == null) {
             if(installationStarted){
-                onError("There is a pending installation!");
+				onError(Language.HAXE_INSTALL_PENDING);
                 return;
             }
             installationStarted = true;
-			Interaction.displayInformation("Funkin IDE Haxe installation started!");
+			Interaction.displayInformation(Language.FUNKIN_IDE_HAXE_INSTALL_STARTED);
 			var system_part:Null<String> = switch (Sys.systemName()) {
 				case "Windows": "windows-x64";
 				case "Linux": "linux-x64";
@@ -44,7 +44,7 @@ class HaxeHelper {
 				case _: null;
 			};
 			if (system_part == null) {
-				onError("Unknown OS. Funkin IDE Haxe will not be available!");
+				onError(Language.HAXE_INSTALL_UNKNOWN_OS);
                 installationStarted = false;
 				return;
 			}
@@ -54,7 +54,7 @@ class HaxeHelper {
 				curl_out.add(s);
 			}, () -> {
 				if (!FileSystem.exists(target_file)) {
-					onError("Failed to download custom Haxe: "+curl_out.toString());
+					onError(Language.failedToDownloadCustomHaxe(curl_out.toString()));
                     installationStarted = false;
 					return;
 				}
@@ -63,7 +63,7 @@ class HaxeHelper {
                     var success = Process.checkCommand('chmod +x "${Path.join([store.getCustomHaxeRootPath(),"haxe"])}"',null);
                     success = success && Process.checkCommand('chmod +x "${Path.join([store.getCustomHaxeRootPath(),"haxelib"])}"',null);
                     if(!success) {
-						onError("Failed to make haxe executable!");
+						onError(Language.HAXE_INSTALL_MAKE_EXECUTABLE_FAILED);
                         installationStarted = false;
 						return;
 					}

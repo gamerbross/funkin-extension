@@ -68,7 +68,7 @@ class VsHaxeProvider extends DisposableProvider {
 		var user_repo = Path.removeTrailingSlashes(VsCodeConfig.instance.HAXELIB_PATH);
 
 		if (haxelib_repo != user_repo) {
-			Vscode.window.showWarningMessage(LangStrings.STARTUP_SETUP_DIFFERENT_HAXELIB, "Yes", "No").then(s -> {
+			Vscode.window.showWarningMessage(Language.STARTUP_SETUP_DIFFERENT_HAXELIB, "Yes", "No").then(s -> {
 				if (s == "Yes") {
 					Vscode.commands.executeCommand("mikolka.setHaxelib");
 				};
@@ -88,9 +88,8 @@ class VsHaxeProvider extends DisposableProvider {
 
 		if (FileSystem.exists(jsBakPath))
 			return;
-		Interaction.requestConfirmation("Funkin Compiler",
-			"Looks like you don't have a patch applied to 'vshaxe language server' yet!\n" +
-			"The program will now add support for .hxc files to it.\n\nDo you want to proceed?",
+		Interaction.requestConfirmation(Language.VSHAXE_PATCH_PROMPT_TITLE,
+				Language.VSHAXE_PATCH_PROMPT,
 			() -> {
 				final jsScriptPath = Path.join([jsPath, "server.js"]);
 				// Make a backup

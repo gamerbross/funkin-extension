@@ -16,9 +16,9 @@ class MiscEnvChecks {
 		resolve();
 	}
 	public function checkCurl(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		writeLine(LangStrings.MSG_SETUP_CHECKING_CURL);
+		writeLine(Language.MSG_SETUP_CHECKING_CURL);
 		if (!Process.checkCommand("curl -V"))
-			deny(LangStrings.SETUP_CURL_ERROR);
+			deny(Language.SETUP_CURL_ERROR);
 		else
 			resolve();
 	}

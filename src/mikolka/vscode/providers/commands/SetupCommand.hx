@@ -53,7 +53,7 @@ class SetupCommand extends DisposableCommand {
 	}
 
 	function onSetupDone(_:Dynamic) {
-		Interaction.displayInformation("Funkin setup completed successfully!").then(_ -> {
+		Interaction.displayInformation(Language.FUNKIN_SETUP_COMPLETED_SUCCESSFULLY).then(_ -> {
 			commandOutput.hide();
 		});
 	}

@@ -46,8 +46,8 @@ class ListPicker {
         return ext;
 	}
     public static function pickHaxelibFolder(options:Array<ListItem>, onOptionSelection:(x:Null<String>) -> Void,onManualEntry:(path:String) -> Void) {
-        var window = makePickItem("Select Funkin package to use",options,onOptionSelection);
-        window.configureSelectFileButton("Select haxelib folder",null,false,s -> {
+		var window = makePickItem(Language.SELECT_FUNKIN_PACKAGE_TO_USE,options,onOptionSelection);
+		window.configureSelectFileButton(Language.SELECT_HAXELIB_FOLDER,null,false,s -> {
             window.dispose();
             onManualEntry(s);
         });
@@ -102,7 +102,7 @@ class ListPicker {
             }
             ext.dispose();
         });
-        ext.configureSelectFileButton("Select .fcpkg file",{"Funkin Compiler package":["fcpkg"]},true,fsPath -> {
+		ext.configureSelectFileButton(Language.SELECT_FCPKG_FILE,{"Funkin Compiler package":["fcpkg"]},true,fsPath -> {
             var result = Uri.file(fsPath);
 			ext.dispose();
 			onResult(result);

@@ -10,7 +10,7 @@ import mikolka.vscode.providers.VsHaxeProvider;
 import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
 class Main {
-	public static final FUNK_PROJECT = "mode1";
+
 	public static final VSLICE_MOD = "mode2";
 	public static final FUNKIN_ASSETS = "mode3";
 	public static var modules:ModeManager;
@@ -21,10 +21,6 @@ class Main {
 	static function activate(context:vscode.ExtensionContext) {
 		trace("Active");
 		modules = new ModeManager();
-		modules.registerMode(new FilePatternMode(
-			FUNK_PROJECT,
-			"funk.cfg"
-		));
 
 		// Mode2
 		modules.registerMode(new FilePatternMode(
@@ -54,7 +50,7 @@ class Main {
 		
 		modules.standbyProviders = [
 			startup,
-			new CommandRegistry(context),
+			new HaxelibsFolderCommand(context),
 			new NewCommand(context),
 			new SetHaxelibCommand(context),
 			new SetupCommand(context),

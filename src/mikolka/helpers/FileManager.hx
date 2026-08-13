@@ -67,7 +67,7 @@ class FileManager {
 				onResult(folder.uri.fsPath);
 			case folders:
 				final options = {
-					placeHolder: LangStrings.UTILS_SELECT_WORKSPACE_FOLDER,
+					placeHolder: Language.UTILS_SELECT_WORKSPACE_FOLDER,
 				}
 				Vscode.window.showWorkspaceFolderPick(options).then(function(folder) {
 					if (folder == null)

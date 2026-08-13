@@ -5,6 +5,8 @@
   "properties": {
     "version": {
       "type": "string",
+      "default":"1.1.0",
+      "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
       "description": "Semantic version for dialogue box data."
     },
     "name": {
@@ -15,10 +17,26 @@
       "type": "string",
       "description": "The asset path for the sprite to use (static or spritesheet)."
     },
-    "flipX": { "type": "boolean", "default": false },
-    "flipY": { "type": "boolean", "default": false },
-    "isPixel": { "type": "boolean", "default": false },
-    "scale": { "type": "number", "default": 1.0 },
+    "flipX": { 
+      "type": "boolean", 
+      "description": "Whether to horizontally flip the dialogue box sprite.",
+      "default": false 
+    },
+    "flipY": { 
+      "type": "boolean", 
+      "default": false ,
+      "description": "Whether to vertically flip the dialogue box sprite."
+    },
+    "isPixel": { 
+      "type": "boolean", 
+      "default": false ,
+      "description": "Is this a pixel-style dialogue box? Disables anti-aliasing."
+    },
+    "scale": { 
+      "type": "number", 
+      "default": 1.0 ,
+      "description": "Multiplies the size of the dialogue box sprite."
+    },
     "offsets": {
       "type": "array",
       "items": { "type": "number" },
@@ -45,7 +63,11 @@
           "default": "#000000",
           "description": "Hex color string (e.g. #FF0000)"
         },
-        "fontFamily": { "type": "string", "default": "Arial" },
+        "fontFamily": { 
+          "type": "string", 
+          "default": "Arial", 
+          "description": "The font to use for the text." 
+        },
         "shadowColor": { "type": "string", "description": "Color for the text shadow. Use 'transparent' to disable." },
         "shadowWidth": { "type": "integer", "default": 0 }
       },

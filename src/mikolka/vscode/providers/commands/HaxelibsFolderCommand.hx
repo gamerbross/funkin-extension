@@ -3,7 +3,7 @@ package mikolka.vscode.providers.commands;
 import vscode.Uri;
 import mikolka.vscode.definitions.DisposableCommand;
 
-class CommandRegistry extends DisposableCommand {
+class HaxelibsFolderCommand extends DisposableCommand {
 
 	public function new(context:vscode.ExtensionContext) {
 		super(context);

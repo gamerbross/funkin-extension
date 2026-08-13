@@ -52,11 +52,11 @@ class AdbTask extends DisposableProvider {
 					if (AdbServer.isAdbReady()) {
 						var status = AdbServer.assureModsFolderIsWritable(packageName);
 						if (status == null)
-							Interaction.displayErrorAlert("FNF Mobile Error",
-								"The 'mods' folder of the FNF mobile instance doesn't seem to me accessible. Try running the game or create it!");
+								Interaction.displayErrorAlert(Language.FNF_MOBILE_ERROR_TITLE,
+									Language.FNF_MOBILE_MODS_NOT_ACCESSIBLE);
 						else {
 							if (status)
-								Interaction.displayInformation("The 'mods' folder had to be re-created. Existing mods were moved to 'mods-bak'");
+										Interaction.displayInformation(Language.FNF_MOBILE_MODS_RECREATED);
 							AdbServer.pushFiles(full_project_path, Path.join([AdbServer.getModsPath(packageName), modName]), true, struct.writeLine,
 								struct.onComplete);
 						}

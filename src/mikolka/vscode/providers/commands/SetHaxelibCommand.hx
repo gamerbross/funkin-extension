@@ -23,12 +23,12 @@ class SetHaxelibCommand extends DisposableCommand {
 	function command_setHaxelib() {
 		var folder_list = fcpkg.getInstalledHaxelibs();
 		if (folder_list.length == 0)
-			Interaction.displayError("No Fcpkg package was installed!");
+			Interaction.displayError(Language.NO_FCPKG_PACKAGE_INSTALLED);
 		else {
 			var base_list:Array<ListItem> = makeHaxelibList(folder_list);
 			if (cfg.HAXELIB_PATH != "")
 				base_list.insert(0, {
-					label: "Use previous",
+					label: Language.USE_PREVIOUS,
 					id: "last",
 					onSelect: setConfigHaxelib,
 					detail: cfg.HAXELIB_PATH
@@ -71,7 +71,7 @@ class SetHaxelibCommand extends DisposableCommand {
 		HaxeHelper.checkVshaxeHaxelib(ctx, () -> {
 			var result = Process.setHaxelibPath(full_path);
 			if (!result)
-				Interaction.displayError("Failed to set haxelib path!");
+				Interaction.displayError(Language.FAILED_TO_SET_HAXELIB_PATH);
 			else {
 				cfg.HAXELIB_PATH = full_path;
 				trace(full_path);

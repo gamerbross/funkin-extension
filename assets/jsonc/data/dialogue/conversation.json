@@ -5,113 +5,118 @@
   "properties": {
     "version": {
       "type": "string",
-      "description": "The version number for the speaker file format.",
+      "description": "The version number for the conversation file format.",
       "default": "1.0.0",
       "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+",
       "minLength": 1
     },
-    "music": {
-      "type": "object",
-      "description": "A readable name for the speaker.",
-      "properties": {
-        "asset": {
-            "type": "string",
-            "description": "The path to the music you want to play for the duration of this dialogue",
-            "minLength": 1
-        },
-        "fadeTime": {
-            "type": "number",
-            "description": "The time for the music to fully fade in",
-            "default": 0.0
-        },
-        "looped": {
-            "type": "boolean",
-            "description": "If true, the song will play in loop, otherwise it plays only once",
-            "default": false
-        }
-      },
-      "required":["asset"]
-    },    
     "backdrop": {
       "type": "object",
-      "description": "A readable name for the speaker.",
+      "description": "Data on the backdrop for the conversation, behind the dialogue box.",
       "properties": {
-        "asset": {
-            "type": "string",
-            "description": "The path to the music you want to play for the duration of this dialogue",
-            "minLength": 1
+        "type": {
+          "type": "string",
+          "description": "The type of backdrop to use.",
+          "enum": ["solid"],
+          "minLength": 1
         },
         "fadeTime": {
-            "type": "number",
-            "description": "The time for the music to fully fade in",
-            "default": 0.0
+          "type": "number",
+          "description": "The time for the backdrop to fully fade in",
+          "default": 0.0
         },
-        "looped": {
-            "type": "boolean",
-            "description": "If true, the song will play in loop, otherwise it plays only once",
-            "default": false
+        "color": {
+          "type": "string",
+          "description": "The color of the backdrop."
         }
       },
-      "required":["asset"]
+      "required": ["type"]
     },
-    "animations": {
+    "outro": {
+      "type": "object",
+      "description": "Data on the outro for the conversation.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of outro to use.",
+          "enum": ["none", "fade"],
+          "minLength": 1
+        },
+        "fadeTime": {
+          "type": "number",
+          "description": "The time to fully fade out (if applicable).",
+          "default": 0.0
+        }
+      }
+    },
+    "music": {
+      "type": "object",
+      "description": "Data for the music to be played.",
+      "properties": {
+        "asset": {
+          "type": "string",
+          "description": "The path to the music you want to play for the duration of this dialogue",
+          "minLength": 1
+        },
+        "fadeTime": {
+          "type": "number",
+          "description": "The time for the music to fully fade in",
+          "default": 0.0
+        },
+        "looped": {
+          "type": "boolean",
+          "description": "If true, the song will play in loop, otherwise it plays only once",
+          "default": false
+        }
+      },
+      "required": ["asset"]
+    },
+
+    "dialogue": {
       "type": "array",
       "uniqueItems": true,
       "items": {
         "required": [
-          "name"
+          "speaker",
+          "speakerAnimation",
+          "box",
+          "boxAnimation",
+          "text"
         ],
         "properties": {
-          "offsets": {
-            "type": "array",
-            "default": [
-              0,
-              0
-            ],
-            "description": "Offset from the speaker's real position when playing this animation."
+          "speaker": {
+            "default": false,
+            "description": "Which speaker is speaking.",
+            "type": "string"
           },
-          "flipY": {
+          "speakerAnimation": {
             "default": false,
             "description": "Whethever to flip Y axis of this speaker when playing this animation.",
-            "type": "boolean"
+            "type": "string"
           },
-          "frameRate": {
-            "type": "number",
-            "default": 24,
-            "description": "How many frames to play of this animation in 1 second."
+          "box": {
+            "description": "Which dialogue box to use for this line of dialogue.",
+            "type": "string"
           },
-          "prefix": {
-            "type": "string",
-            "description": "Prefix of all frames making up this animations. Optional for 'Packer' props.",
-            "minLength": 1
+          "boxAnimation": {
+            "description": "Which animation to play for the dialogue box.",
+            "type": "string"
           },
-          "name": {
-            "type": "string",
-            "description": "A name of this speaker's animation.",
-            "minLength": 1
-          },
-          "looped": {
-            "default": false,
-            "description": "Whethever this animation should repeat itself after it finishes.",
-            "type": "boolean"
-          },
-          "flipX": {
-            "default": false,
-            "description": "Whethever to flip X axis of this speaker when playing this animation",
-            "type": "boolean"
-          },
-          "frameIndices": {
+          "text": {
             "type": "array",
-            "default": [],
-            "description": "A list of frame numbers to use for this animation. Empty list will use all available frames."
+            "description": "The text that will display for this line of dialogue. When the user advances the dialogue, the next entry in the array will concatenate on.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "speed": {
+            "type": "number",
+            "default": 1.0,
+            "description": "The relative speed at which text gets \"typed out\".Setting `speed` to `1.5` would make it look like the character is speaking quickly, and setting `speed` to `0.5` would make it look like the character is emphasizing each word."
           }
         }
       }
     }
   },
-  "required": [
-    "name",
-    "version",
-    "assetPath"
-  ]
+  "required": ["dialogue", "version"]
 }
