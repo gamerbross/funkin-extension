@@ -10,8 +10,7 @@ class MiscEnvChecks {
 	var writeLine:String->Void;
 
 	public function testEnvironment(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		ctx.appendManyTasks([
-			checkHaxe, 
+		ctx.appendManyTasks([ 
 			checkCurl
 		]);
 		resolve();
@@ -24,12 +23,5 @@ class MiscEnvChecks {
 			resolve();
 	}
 
-	public function checkHaxe(resolve:Void->Void, deny:String->Void, ctx:TaskChips) {
-		writeLine(LangStrings.MSG_SETUP_CHECKING_HAXE);
-		if (!Process.checkCommand("haxe --version"))
-			deny(LangStrings.SETUP_HAXE_ERROR);
-		else
-			resolve();
-	}
 
 }

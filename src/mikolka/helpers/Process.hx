@@ -22,7 +22,7 @@ class Process {
     }
 
 	public static function setHaxelibPath(path:String):Bool {
-        var proc = ChildProcess.spawnSync("haxelib setup",[path.shellPath()],{
+        var proc = ChildProcess.spawnSync(HaxeHelper.getHaxelibExecutable(),["setup",path.shellPath()],{
 			stdio: Pipe,
 			shell: true
 		});
@@ -47,15 +47,6 @@ class Process {
 		});
     }
 
-	public static function isPureHaxelib():Bool {
-        var proc = ChildProcess.spawnSync("haxelib list",{
-			stdio: Pipe,
-			shell: true
-		});
-		var code = proc.status;
-		var out = Std.string(proc.stdout);
-		return code == 0 && out.length == 0;
-    }
 	public static function resolveCommand(command:String):String {
 		trace("*>> "+command);
         var proc = ChildProcess.spawnSync(command,{

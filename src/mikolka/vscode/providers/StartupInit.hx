@@ -31,22 +31,6 @@ class StartupInit extends DisposableProvider {
             return;
         }
 
-        var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand("haxelib config").replace("\n", ""));
-        var user_repo = Path.removeTrailingSlashes(cfg.HAXELIB_PATH);
-
-        if(haxelib_repo != user_repo){
-             Vscode.window.showWarningMessage(LangStrings.STARTUP_SETUP_DIFFERENT_HAXELIB,"Yes","No").then(s ->{
-                if(s == "Yes") {
-                    Vscode.commands.executeCommand("mikolka.setHaxelib");
-                };
-            });
-            return;
-        }
-        else{
-            var metadata_path = Path.join([haxelib_repo,"metadata.json"]);
-            if(!FileSystem.exists(metadata_path))
-                File.copy(ctx.asAbsolutePath("./assets/default.json"),metadata_path);
-        }
         Vscode.window.showInformationMessage("Funkin Compiler is now running!");
         //
     }

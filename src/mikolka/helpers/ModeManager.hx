@@ -62,9 +62,7 @@ class ModeManager {
 			});
 		}
 	}
-	function name() {
-		
-	}
+
 	function _checkGlobalHook(context:vscode.ExtensionContext):Void {
 		if (((_activeModes.length) > 0) && _globalProviders == null) {
 			_globalProviders = activateGlobal(context);

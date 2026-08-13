@@ -11,14 +11,16 @@ import haxe.io.Path;
 import haxe.Exception;
 import mikolka.config.VsCodeConfig;
 import mikolka.vscode.definitions.DisposableCommand;
+import thx.semver.Version;
 
 class SetupCommand extends DisposableCommand {
 	var commandOutput:OutputChannel;
-
+	var context:vscode.ExtensionContext;
 	var fcpkg:ExternalStorageTools;
 
 	public function new(context:vscode.ExtensionContext) {
 		fcpkg = context.getGlobalStore();
+		this.context = context;
 		commandOutput = Vscode.window.createOutputChannel("Funkin compiler");
 		super(context, makeCommand("setup", context, command_setup));
 	}
@@ -32,9 +34,14 @@ class SetupCommand extends DisposableCommand {
 		writeLine(initMsg);
 	}
 	private function command_setup() {
+		HaxeHelper.checkVshaxeHaxelib(context, () -> {
+			var taskResult = TaskChips.runChips([pickHaxelibRepo]);
+			taskResult.then(onSetupDone, onSetupFail);
+		},(reason) ->{
+			onSetupFail(reason);
+		});
 		// var console = Out
-		var taskResult = TaskChips.runChips([pickHaxelibRepo]);
-		taskResult.then(onSetupDone, onSetupFail);
+
 	}
 
 	function onSetupFail(reason:String) {
@@ -72,7 +79,7 @@ class SetupCommand extends DisposableCommand {
 				ZipTools.extractZip(File.read(path), haxelib_path);
 				var manifest = new ManifestParser(haxelib_path);
 				//TODO Replace with proper version management once we implement more versions
-				if(manifest.installJsonVersion == "1.0.0"){
+				if(manifest.installJsonVersion <= ManifestParser.MANIFEST_VERSION){
 					var installTasks = manifest.buildTaskList(writeLine);
 					if (VsCodeConfig.instance.DEBUG) {
 						writeLine('[DEBUG] Built ${installTasks.length} install tasks.');

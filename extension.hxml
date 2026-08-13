@@ -5,6 +5,7 @@
 -D haxe-next
 -lib vscode 
 -lib vscode-debugadapter 
+-lib thx.semver
 -lib vshaxe
 --dce full
 -js bin/main.js 

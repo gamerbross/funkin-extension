@@ -1,5 +1,6 @@
 package mikolka.install.files;
 
+import thx.semver.Version;
 import haxe.DynamicAccess;
 import mikolka.install.backend.TaskChips.ChipTask;
 import haxe.Exception;
@@ -30,6 +31,8 @@ typedef Manifest = {
 }
 
 class ManifestParser {
+    public static final MANIFEST_VERSION:Version = Version.stringToVersion("1.0.0");
+
     static var STAGE_DRAFT = 0;
     static var STAGE_FNF_DOWNLOADED = 1;
     static var STAGE_HAXELIB_DOWNLOADED = 2;
@@ -42,10 +45,10 @@ class ManifestParser {
     var manifest:Null<Manifest>;
     var haxelib_repo:String;
 
-    public var installJsonVersion(get,null):String;
-    function get_installJsonVersion():String {
-        if(manifest == null) return "1.0.0";
-        return manifest.version;
+    public var installJsonVersion(get,null):Version;
+    function get_installJsonVersion():Version {
+        if(manifest == null) return MANIFEST_VERSION;
+        return Version.stringToVersion(manifest.version);
     }
 
     public var installStage(get,null):Int;

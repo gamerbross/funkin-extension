@@ -16,10 +16,7 @@ class VsHaxeProvider extends DisposableProvider {
 	private var haveIAskedAboutHxc:Bool = false;
 
 	public function new(context:vscode.ExtensionContext) {
-		Vscode.extensions.getExtension("nadako.vshaxe").activate().then((x) -> {
-			trace(Vscode.extensions.getExtension("nadako.vshaxe").extensionPath);
-			onVshaxeActive(context);
-		});
+		HaxeHelper.activate(onVshaxeActive.bind(context));
 
 		super(context, Vscode.window.onDidChangeActiveTextEditor(e -> {
 			if (e.document.fileName.endsWith(".hxc") && !haveIAskedAboutHxc) {
@@ -46,13 +43,17 @@ class VsHaxeProvider extends DisposableProvider {
 		}));
 		addDisposable(haxeApi.registerHaxeInstallationProvider("Funkin IDE Haxe", {
 			activate: provideInstallation -> {
-				checkVshaxeHaxelib(context, () -> {
-					var file = Sys.systemName() == "Windows" ? "haxe.exe" : "haxe";
+				HaxeHelper.checkVshaxeHaxelib(context, () -> {
+					var haxe_file = Sys.systemName() == "Windows" ? "haxe.exe" : "haxe";
+					var haxelib_file = Sys.systemName() == "Windows" ? "haxelib.exe" : "haxelib";
 
+					var haxelib_path = Path.join([context.getGlobalStore().getCustomHaxeRootPath(), haxelib_file]);
 					provideInstallation({
-						haxeExecutable: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), file]),
-						standardLibraryPath: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), "std"])
+						haxeExecutable: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), haxe_file]),
+						standardLibraryPath: Path.join([context.getGlobalStore().getCustomHaxeRootPath(), "std"]),
+						haxelibExecutable: haxelib_path
 					});
+					checkCurrentHaxelib(haxelib_path);
 				}, error -> {
 					Interaction.displayError(error);
 					provideInstallation({});
@@ -62,9 +63,22 @@ class VsHaxeProvider extends DisposableProvider {
 		}));
 	}
 
+	private function checkCurrentHaxelib(haxelib_exec:String) {
+		var haxelib_repo = Path.removeTrailingSlashes(Process.resolveCommand('${haxelib_exec.shellPath()} config').replace("\n", ""));
+		var user_repo = Path.removeTrailingSlashes(VsCodeConfig.instance.HAXELIB_PATH);
+
+		if (haxelib_repo != user_repo) {
+			Vscode.window.showWarningMessage(LangStrings.STARTUP_SETUP_DIFFERENT_HAXELIB, "Yes", "No").then(s -> {
+				if (s == "Yes") {
+					Vscode.commands.executeCommand("mikolka.setHaxelib");
+				};
+			});
+			return;
+		}
+	}
+
 	/**
 		Checks and asks to apply a patch for the .hxc files.
-
 		This also makes a backup in case anything goes wrong.
 	**/
 	private function checkVshaxePatch() {
@@ -89,49 +103,5 @@ class VsHaxeProvider extends DisposableProvider {
 				File.saveContent(jsScriptPath, vshaxeJsServerCode);
 				Vscode.commands.executeCommand("workbench.action.reloadWindow");
 			}, () -> {});
-	}
-	public static final HAXE_VERSION:String = "v1";
-	private function checkVshaxeHaxelib(context:vscode.ExtensionContext, onValid:Void->Void, onError:String->Void) {
-		var store = context.getGlobalStore();
-		var current_version = store.getHaxeVersion();
-		if (current_version != HAXE_VERSION && current_version != null) {
-			store.clearCustomHaxe();
-			current_version = null;
-		}
-		if (current_version == null) {
-			Interaction.displayInformation("Funkin IDE Haxe installation started!");
-			var system_part:Null<String> = switch (Sys.systemName()) {
-				case "Windows": "windows-x64";
-				case "Linux": "linux-x64";
-				case "Mac": "mac-arm";
-				case _: null;
-			};
-			if (system_part == null) {
-				onError("Unknown OS. Funkin IDE Haxe will not be available!");
-				return;
-			}
-			var target_file = Path.join([store.getTempPath(), "haxe.zip"]);
-			var curl_out = new StringBuf();
-			Process.runCurl('https://github.com/FunkinCompiler/haxe-bin/releases/download/4.3.7/${system_part}.zip', target_file, null, s -> {
-				curl_out.add(s);
-			}, () -> {
-				if (!FileSystem.exists(target_file)) {
-					onError("Failed to download custom Haxe: "+curl_out.toString());
-					return;
-				}
-				ZipTools.extractZip(File.read(target_file), store.getCustomHaxeRootPath());
-                if(Sys.systemName() != "Windows") {
-                    var success = Process.checkCommand('chmod +x "${Path.join([store.getCustomHaxeRootPath(),"haxe"])}"',null);
-                    if(!success) {
-						onError("Failed to make haxe executable!");
-						return;
-					}
-                }
-				store.setHaxeVersion(HAXE_VERSION);
-				store.clearTempPath();
-				
-			});
-		}
-		onValid();
 	}
 }
