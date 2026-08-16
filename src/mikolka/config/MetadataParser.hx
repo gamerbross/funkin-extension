@@ -13,18 +13,6 @@ typedef Metadata = {
     version:String,
     description:String,
     hxmlFile:Null<String>,
-    // Once enabled strips "package" line at the beginning of each file
-	// (you still need that line even if you disable that)
-	stripPackage:Bool,
-
-	// Allows you to utilise haxe's safe casts, like "cast (obj,type)"
-	convertCasts:Bool,
-
-	// Fixes imports not being recognised by polymod (especially enums)
-	convertImports:Bool,
-
-	// Allows you to utilise mock calls to polymod to fix missing method error
-	mockPolymodCalls:Bool,
     importBlacklist:DynamicAccess<String>
 }
 
@@ -39,12 +27,8 @@ class MetadataParser {
         var path = VsCodeConfig.instance.HAXELIB_PATH;
         var base:Metadata = {
             name: "No name",
-            version: "1.0.0",
+            version: Main.MANIFEST_VERSION,
             description: "No description",
-            mockPolymodCalls: true,
-            convertImports: true,
-            convertCasts: true,
-            stripPackage: false,
             hxmlFile:null,
             importBlacklist: new DynamicAccess<String>()
         };

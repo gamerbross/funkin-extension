@@ -1,6 +1,5 @@
 package mikolka.helpers;
 
-import vshaxe.HaxeInstallation;
 import sys.io.File;
 import sys.FileSystem;
 import haxe.io.Path;

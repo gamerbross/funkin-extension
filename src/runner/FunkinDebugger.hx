@@ -61,8 +61,6 @@ class FunkinDebugger extends DebugSession {
 	}
 
 	override function completionsRequest(response:CompletionsResponse, args:CompletionsArguments) {
-		// server.listVariablesCommand(args.text,)
-		// response.body = {targets: }
 		server.listVariablesCommand(args.text, struct -> {
 			response.success = true;
 			response.body = {
@@ -95,13 +93,7 @@ class FunkinDebugger extends DebugSession {
 		};
 		launchArgs = args;
 		platform = args.isMobile ? new AndroidPlatform(args, io) : new LocalPlatform(args, io);
-
-		// if (launchArgs.trace) {
 		haxe.Log.trace = traceToOutput;
-		// }
-
-		// for (key in args.haxeExecutable.env.keys())
-		// 	env[key] = args.haxeExecutable.env[key];
 
 		server = new DebugServer(launchArgs.trace);
 		server.onEvent = event -> {
@@ -111,14 +103,6 @@ class FunkinDebugger extends DebugSession {
 		}
 		server.start();
 
-		// function onConnected(socket) {
-		// 	trace("Haxe connected!");
-		// 	connection = new Connection(socket);
-		// 	connection.onEvent = onEvent;
-
-		// 	socket.on(SocketEvent.Error, error -> trace('Socket error: $error'));
-
-		// }
 		onProcessTerminate = () -> {
 			platform.removeDebugServerMod();
 			platform.close();
@@ -132,9 +116,6 @@ class FunkinDebugger extends DebugSession {
 			executePostLaunchActions(function() {
 				sendEvent(new vscode.debugAdapter.DebugSession.InitializedEvent());
 				sendResponse(response);
-				// if (args.stopOnEntry) {
-					// 	sendEvent(new vscode.debugAdapter.DebugSession.StoppedEvent("entry", 0));
-					// }
 				});
 		}
 		else{
@@ -146,11 +127,6 @@ class FunkinDebugger extends DebugSession {
 	}
 
 	override function disconnectRequest(response:DisconnectResponse, args:DisconnectArguments) {
-		// for (id => alive in threads) {
-		// 	if (alive) {
-		// 		sendEvent(new vscode.debugAdapter.DebugSession.ThreadEvent("exited", id));
-		// 	}
-		// }
 		if (onProcessTerminate != null) {
 			onProcessTerminate();
 			onProcessTerminate = null;

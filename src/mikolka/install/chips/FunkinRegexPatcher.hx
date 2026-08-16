@@ -7,10 +7,6 @@ import sys.io.File;
 
 using StringTools;
 
-// Patcher
-// !! make sure to put "polymodExecFunc" in Module.hx
-// !! THIS IS NOT AUTOMATIC
-//"haxe -main CodePatcher --interp  "
 class FunkinRegexPatcher
 {
     var full_code_path:String;

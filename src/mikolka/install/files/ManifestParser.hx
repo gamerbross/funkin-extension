@@ -31,7 +31,7 @@ typedef Manifest = {
 }
 
 class ManifestParser {
-    public static final MANIFEST_VERSION:Version = Version.stringToVersion("1.0.0");
+
 
     static var STAGE_DRAFT = 0;
     static var STAGE_FNF_DOWNLOADED = 1;
@@ -47,7 +47,7 @@ class ManifestParser {
 
     public var installJsonVersion(get,null):Version;
     function get_installJsonVersion():Version {
-        if(manifest == null) return MANIFEST_VERSION;
+        if(manifest == null) return Main.MANIFEST_VERSION;
         return Version.stringToVersion(manifest.version);
     }
 
@@ -86,7 +86,7 @@ class ManifestParser {
             nodes.push(codePatch.patchFnfCode);
         }
         if(manifest.installStage < STAGE_FILE_PATCH_DONE){
-            var regexp = new ClassReplaceChip(this.manifest.fullReplaceableFiles, haxelib_repo);
+            var regexp = new ClassReplaceChip(this.manifest.fullReplaceableFiles, haxelib_repo,writeLine);
             nodes.push(regexp.task);
             nodes.push(FileTaskChips.consumeInstallFiles(haxelib_repo,manifest.fullReplaceableFiles));
         }

@@ -1,5 +1,6 @@
 package mikolka;
 
+import thx.semver.Version;
 import mikolka.vscode.providers.tasks.PCCopyTask;
 import mikolka.vscode.providers.DebuggerSetup;
 import mikolka.helpers.ModeManager.FilePatternMode;
@@ -11,6 +12,9 @@ import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
 class Main {
 
+	public static final INSTALL_VERSION:Version = Version.stringToVersion("1.0.0");
+	public static final MANIFEST_VERSION:String = "1.1.0";
+
 	public static final VSLICE_MOD = "mode2";
 	public static final FUNKIN_ASSETS = "mode3";
 	public static var modules:ModeManager;
@@ -21,7 +25,6 @@ class Main {
 	static function activate(context:vscode.ExtensionContext) {
 		trace("Active");
 		modules = new ModeManager();
-
 		// Mode2
 		modules.registerMode(new FilePatternMode(
 			VSLICE_MOD,
@@ -35,11 +38,8 @@ class Main {
 			
 			var result = [
 				new DiagnosticRegistry(context), 
-				
-				
 				new VsHaxeProvider(context),
 				new DebuggerSetup(context),
-				
 				new AdbTask(context),
 				new PCCopyTask(context),
 			];

@@ -46,7 +46,6 @@ class LocalPlatform implements TargetPlatform {
 
     function spawnProcess(cmd:String,cwd:String,env:Null<haxe.DynamicAccess<String>>) {	
 		Sys.println(cwd+" >>> " + cmd);
-		//final port = server.address().port;
 
 		proc = ChildProcess.spawn(cmd,null,{
 			cwd: cwd,

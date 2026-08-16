@@ -20,7 +20,6 @@ class DiagnosticRegistry extends DisposableProvider {
 	 * This has all currently blacklisted classes from use
 	 **/
 	var importRegex:Map<EReg,String>;
-
 	var problemsReporter:DiagnosticCollection;
 	var config:Metadata;
 
@@ -39,6 +38,7 @@ class DiagnosticRegistry extends DisposableProvider {
 		super.dispose();
 		problemsReporter.dispose();
 	}
+	
 	/**
 	 * Request a given file to be checked against any known blacklisted imports
 	 * 
@@ -51,14 +51,6 @@ class DiagnosticRegistry extends DisposableProvider {
 		var text = file.getText();
 		var textMetadata = new SourceFileAnalyst(text);
 		var warnings = new Array<Diagnostic>();
-	
-		var fileName = Path.withoutDirectory(file.fileName);
-		if(fileName.charCodeAt(0)>=97 && fileName.charCodeAt(0)<=122 && textMetadata.classNameRange != null){
-			//@see https://github.com/HaxeFoundation/haxe/blob/4d9a9fd7367d650da673c7ef6e699798ec900645/src/compiler/displayProcessing.ml#L99
-			warnings.push(new Diagnostic(textMetadata.classNameRange, 
-				'Haxe source file should start with an capital letter!', Warning));
-		}
-
 
 		for (importLine in textMetadata.importLines) {
 			var warningMsg = findBlacklistClause(importLine.importName);

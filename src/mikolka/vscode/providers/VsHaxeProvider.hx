@@ -82,7 +82,6 @@ class VsHaxeProvider extends DisposableProvider {
 		This also makes a backup in case anything goes wrong.
 	**/
 	private function checkVshaxePatch() {
-		//
 		final jsPath = Path.join([Vscode.extensions.getExtension("nadako.vshaxe").extensionPath, "server/bin/"]);
 		final jsBakPath = Path.join([jsPath, "server.js.bak"]);
 
