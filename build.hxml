@@ -2,6 +2,7 @@
 # Use the other 2 to compile
 -cp src
 -cp src/funkin-runner
+
 -D analyzer-optimize
 -D haxe-next
 -lib vscode 

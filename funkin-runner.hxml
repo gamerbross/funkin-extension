@@ -1,4 +1,5 @@
 --class-path src
+
 --macro include("runner")
 -D analyzer-optimize
 -D js-es=6

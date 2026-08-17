@@ -7,7 +7,7 @@ abstract class DisposableProvider {
     private var extensionSubscriptions:Array<{function dispose():Void;}>;
     public function new(context:vscode.ExtensionContext,...hook:Disposable) {
         extensionSubscriptions = context.subscriptions;
-        for(x in hook) addDisposable(x);
+        hook.forEach(addDisposable);
         
     }
     private function addDisposable(item:Disposable) {
@@ -15,9 +15,9 @@ abstract class DisposableProvider {
         extensionSubscriptions.push(item);
     }
     public function dispose():Void{
-        for(x in disposables){
+        disposables.forEach(x -> {
             extensionSubscriptions.remove(x);
             x.dispose();
-        }
+        });
     }
 }

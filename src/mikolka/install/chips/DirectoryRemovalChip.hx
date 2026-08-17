@@ -11,10 +11,10 @@ class DirectoryRemovalChip {
         this.haxelib_path = haxelib_path;
     }
     public function task(resolve:Void->Void, deny:String->Void,ctx:TaskChips) {
-        for (item in directoriesToRemove) {
+        directoriesToRemove.forEach(item -> {
             var full_dir = Path.join([haxelib_path,item]);
             FileManager.deleteDirRecursively(full_dir);
-        }
+        });
         resolve();
     }
 }

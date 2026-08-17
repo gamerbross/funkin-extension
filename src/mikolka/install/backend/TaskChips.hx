@@ -29,9 +29,7 @@ class TaskChips {
         taskInsertPos++;
     }   
     public function appendManyTasks(tasks:Array<ChipTask>) {
-        for (task in tasks){
-            appendTask(task);
-        }
+        tasks.forEach(appendTask);
     }
     private function runChipStep() {
         var nextTask = taskChips.shift();

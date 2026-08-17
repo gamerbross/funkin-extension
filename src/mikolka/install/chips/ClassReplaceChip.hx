@@ -1,5 +1,6 @@
 package mikolka.install.chips;
 
+import sys.FileSystem;
 import sys.io.File;
 import haxe.io.Path;
 import mikolka.install.backend.TaskChips;
@@ -26,6 +27,11 @@ class ClassReplaceChip {
         if(filename.endsWith(".patch")){
             var sourceFileName = filename.substring(0,filename.length-(".patch".length));
             var patchFile = filename;
+
+            if(!FileSystem.exists(Path.join([haxelib_path,sourceFileName]))){
+                writeLine('Patch file ${patchFile} doesn\'t have a file to patch! Ignoring it...');
+                return;
+            }
             var sourceContent = File.getContent(Path.join([haxelib_path,sourceFileName]));
             var patchContent = File.getContent(Path.join([haxelib_path,haxePatchesPath,patchFile]));
 
@@ -36,11 +42,15 @@ class ClassReplaceChip {
                 File.saveContent(Path.join([haxelib_path,sourceFileName]),replaceContent);
             }
             else {
-                writeLine('patch file ${patchFile} doesn\'t have a valid patch! It will be ignored.');
+                writeLine('Patch file ${patchFile} doesn\'t have a valid patch! It will be ignored.');
             }
         }
         else {
             var sourceFile = Path.join([haxelib_path,filename]);
+            if(!FileSystem.exists(sourceFile)){
+                writeLine('File ${filename} doesn\'t have a file to replace! Ignoring it...');
+                return;
+            }
             var replacePatchFile = File.getContent(Path.join([haxelib_path,haxePatchesPath,filename]));
 
             File.saveContent(sourceFile, replacePatchFile);

@@ -60,7 +60,7 @@ class HmmParser {
 		var hmm = readHmmFile();
 		if (hmm == null)
 			return null;
-		return hmm.map(s -> {
+		return hmm.mapInto(s -> {
 			var kind = switch (s.type) {
 				case "haxelib": HAXELIB;
 				case "git": GITHUB;

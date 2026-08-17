@@ -25,14 +25,14 @@ class FileManager {
 		var fullPath = Path.join([prefix, path]);
 		if (FileSystem.exists(fullPath) && FileSystem.isDirectory(fullPath)) {
 			var entries = FileSystem.readDirectory(fullPath);
-			for (entry in entries) {
+			entries.forEach(entry -> {
 				if (FileSystem.isDirectory(fullPath + '/' + entry)) {
 					scanDirectory(prefix, onFile, onDir, path + "/" + entry);
 					onDir(path + '/' + entry);
 				} else {
 					onFile(path + '/' + entry);
 				}
-			}
+			});
 		}
 	}
 

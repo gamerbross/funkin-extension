@@ -67,7 +67,7 @@ class ModeManager {
 		if (((_activeModes.length) > 0) && _globalProviders == null) {
 			_globalProviders = activateGlobal(context);
 		} else if (_activeModes.length == 0 && _globalProviders != null) {
-			for (x in _globalProviders) x.dispose();
+			_globalProviders.forEach(x -> x.dispose());
 			_globalProviders = null;
 		}
 	}

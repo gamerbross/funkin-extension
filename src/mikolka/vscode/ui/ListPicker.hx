@@ -61,13 +61,14 @@ class ListPicker {
         ext.ignoreFocusOut = true;
 		ext.title = title;
 
-		var remoteRequests = VsCodeConfig.instance.FCPKG_SOURCES.map(s -> new Http(s));
+		var remoteRequests = VsCodeConfig.instance.FCPKG_SOURCES.mapInto(s -> new Http(s));
+
 		if (remoteRequests.length > 0){
 			ext.busy = true;
 			ext.totalSteps = remoteRequests.length;
 			ext.step = 0;
 	
-			for (http in remoteRequests) {
+			remoteRequests.forEach(http -> {
 				http.onError = msg -> {
 					ext.step += 1;
 					trace('For source ${http.url}:  ${msg}');
@@ -90,7 +91,7 @@ class ListPicker {
 				}
 	
 				http.request();
-			}
+			});
 		}
         ext.onDidAccept(_ -> {
             if(ext.selectedItems.length == 0){

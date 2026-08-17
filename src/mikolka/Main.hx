@@ -12,7 +12,7 @@ import mikolka.vscode.providers.diagnostics.DiagnosticRegistry;
 
 class Main {
 
-	public static final INSTALL_VERSION:Version = Version.stringToVersion("1.0.0");
+	public static final INSTALL_VERSION:Version = Version.stringToVersion("1.1.0");
 	public static final MANIFEST_VERSION:String = "1.1.0";
 
 	public static final VSLICE_MOD = "mode2";

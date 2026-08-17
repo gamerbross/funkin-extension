@@ -40,7 +40,7 @@ class SetHaxelibCommand extends DisposableCommand {
 	}
 
 	function makeHaxelibList(folders:Array<String>):Array<ListItem> {
-		return folders.map(folder_name -> {
+		return folders.mapInto(folder_name -> {
 			var full_path = Path.join([fcpkg.getHaxelibRootPath(), folder_name]);
 			var meta:Metadata = null;
 			try {

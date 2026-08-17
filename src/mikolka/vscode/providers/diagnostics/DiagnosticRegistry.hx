@@ -51,15 +51,15 @@ class DiagnosticRegistry extends DisposableProvider {
 		var text = file.getText();
 		var textMetadata = new SourceFileAnalyst(text);
 		var warnings = new Array<Diagnostic>();
-
-		for (importLine in textMetadata.importLines) {
+		
+		textMetadata.importLines.forEach(importLine -> {
 			var warningMsg = findBlacklistClause(importLine.importName);
 			if (warningMsg == null)
-				continue;
+				return;
 
 			var range = new Range(importLine.position, 0, importLine.position, importLine.line.length);
 			warnings.push(new Diagnostic(range, 'Blacklisted import: ${warningMsg}', Warning));
-		}
+		});
 		problemsReporter.set(file.uri, warnings);
 	}
 

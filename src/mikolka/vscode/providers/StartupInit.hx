@@ -1,10 +1,6 @@
 package mikolka.vscode.providers;
 
-import sys.FileSystem;
-import sys.io.File;
 import mikolka.vscode.definitions.DisposableProvider;
-import haxe.io.Path;
-import mikolka.helpers.Process;
 import mikolka.config.VsCodeConfig;
 using StringTools;
 
