@@ -26,9 +26,6 @@
 
 ### Funkin Compiler can work in two exviroments
 
-> [!CAUTION]
-> Mode 1 (Funkin Compiler project) does not support new mod format introduced in 0.9.0 version of Friday Night Funkin' and as such will be removed in the next major update of this extension. Make sure to migrate by compiling your mod and using the output of it for further development.
-
 - #### As an editor to new/existing V-Slice mods
 
   To create a new V-Slice mod, run the `Funkin compiler: Make new project` command in a empty folder.
