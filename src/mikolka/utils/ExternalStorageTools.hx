@@ -42,7 +42,7 @@ class ExternalStorageTools {
     public function getInstalledHaxelibs():Array<String> {
         var base_path = getHaxelibRootPath();
         var base_list = FileSystem.readDirectory(base_path);
-        return base_list.filter(s -> FileSystem.isDirectory(Path.join([base_path,s])));
+        return base_list.filterInto(s -> FileSystem.isDirectory(Path.join([base_path,s])));
     }
 
     public function getHaxeVersion():Null<String> {

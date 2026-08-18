@@ -42,7 +42,7 @@ class FunkinLibrariesInstall {
 			writeLine("[SETUP] Reading dependencies..");
 			writeLine("CWD: " + localCwd);
 			if(libs == null) _deny("Pulling library info failed!");
-			else for(installLib in libs){
+			else libs.forEach(installLib -> {
 				ctx.appendTask((resolve, deny, ctx) -> {
 
 					switch (installLib.type){
@@ -54,7 +54,7 @@ class FunkinLibrariesInstall {
 							deny("Unknown library: "+installLib.haxeLibraryName);
 					}
 				});
-			}
+			});
 			_resolve();
 		};
 	}

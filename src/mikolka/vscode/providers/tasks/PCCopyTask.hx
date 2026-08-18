@@ -1,7 +1,8 @@
 package mikolka.vscode.providers.tasks;
 
+import shared.FunkinPaths;
 import js.Lib;
-import mikolka.helpers.FileManager;
+import shared.FileManager;
 import mikolka.vscode.definitions.tasks.AdbCopyTaskDefinition;
 import mikolka.vscode.definitions.DisposableProvider;
 import mikolka.config.VsCodeConfig;
@@ -45,6 +46,8 @@ class PCCopyTask extends DisposableProvider {
 				accept(OutputTerminal.makeTerminal(struct -> {
                     FileManager.syncRec(full_project_path,Path.join([modsFolder,modName]),file -> {
 						struct.writeLine('Copied: '+file);
+					},file ->{
+						struct.writeLine('Removed: '+file);
 					});
 				}));
 			}

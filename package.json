@@ -2,7 +2,7 @@
 	"name": "funkin-compiler",
 	"publisher": "mikolka9144",
 	"displayName": "Funkin IDE",
-	"version": "0.8.1",
+	"version": "0.8.2",
 	"description": "A complete environment for making \"Friday Night Funkin'\" (V-Slice) mods!",
 	"categories": [
 		"Programming Languages",
@@ -336,23 +336,24 @@
 		]
 	},
 	"dependencies": {
-		"@vscode/debugadapter": "^1.68.0",
-		"@vscode/debugprotocol": "^1.68.0"
+		"vscode-debugadapter": "^1.48.0",
+		"vscode-debugprotocol": "^1.48.0"
 	},
 	"devDependencies": {
 		"@vercel/ncc": "^0.33.4",
-		"uglifyjs":"^3.19.3"
+		"uglify-js":"^3.19.3"
 	},
 	"scripts": {
+		"publish": "vsce publish && ovsx publish",
 		"vscode:prepublish": "npm run haxe && npm run bundle && npm run pack",
-		"test":"npm run haxe && npm run bundle-debug-runner && npm run bundle-debug-main",
+		"test": "npm run haxe && npm run bundle-debug-runner && npm run bundle-debug-main",
 		"haxe": "haxe ./extension.hxml && haxe ./funkin-runner.hxml",
-		"bundle":"npm run bundle-runner && npm run bundle-main",
-		"bundle-main":"npx ncc build bin/main.js -o . -q && mv index.js ./bin/main.js",
-		"bundle-runner":"npx ncc build bin/funkin-runner.js -o . -q && mv index.js ./bin/funkin-runner.js",
-		"pack":"npm run pack-runner && npm run pack-main",
-		"pack-runner":"npx uglifyjs bin/funkin-runner.js -o bin/funkin-runner.js -m -c",
-		"pack-main":"npx uglifyjs bin/main.js -o bin/main.js -m -c"
+		"bundle": "npm run bundle-runner && npm run bundle-main",
+		"bundle-main": "npx ncc build bin/main.js -o . -q && mv index.js ./bin/main.js",
+		"bundle-runner": "npx ncc build bin/funkin-runner.js -o . -q && mv index.js ./bin/funkin-runner.js",
+		"pack": "npm run pack-runner && npm run pack-main",
+		"pack-runner": "npx uglify-js bin/funkin-runner.js -o bin/funkin-runner.js -m -c",
+		"pack-main": "npx uglify-js bin/main.js -o bin/main.js -m -c"
 	},
 	"extensionPack": [
 		"gert7.srt-subrip",

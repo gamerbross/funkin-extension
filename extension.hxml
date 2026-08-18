@@ -1,6 +1,7 @@
 -cp src
 
 --macro include("mikolka")
+--macro include("shared")
 -D analyzer-optimize
 -D js-es=6
 -D haxe-next

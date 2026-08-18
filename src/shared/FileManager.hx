@@ -1,10 +1,15 @@
-package mikolka.helpers;
-
+package shared;
 
 import js.node.Fs;
 import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File as SysFile;
+#if vscode
+import mikolka.helpers.Language;
+#end
+
+using shared.ShellUtils;
+
 
 class FileManager {
 	public static function deleteDirRecursively(path:String):Void {
@@ -85,10 +90,12 @@ class FileManager {
 			SysFile.copy('$from/$s', Path.join([to, s]));
 		}, s -> {});
 	}
-	public static function syncRec(from:String, to:String,onFileCopied:String -> Void = null) {
+	public static function syncRec(from:String, to:String,onFileCopied:String -> Void = null,onFIleRemoved:String -> Void) {
 
 			FileSystem.createDirectory(from);
 			FileManager.scanDirectory(from, s -> {
+				if(StringTools.contains(s,".git")) return;
+				
 				var sourcePath = '$from/$s';
 				var targetPath = Path.join([to, s]);
 				var shouldCopy = true;
@@ -103,6 +110,14 @@ class FileManager {
 					SysFile.copy(sourcePath, targetPath);
 				}
 			}, s -> {});
+			FileManager.scanDirectory(to,s ->{
+				var sourcePath = '$from/$s';
+				var targetPath = Path.join([to, s]);
+				if(!FileSystem.exists(sourcePath)){
+					FileSystem.deleteFile(targetPath);
+					onFIleRemoved(s);
+				}
+			},s ->{});
 	}
 	public static function moveRec(from:String, to:String):Void {
 		FileSystem.createDirectory(from);

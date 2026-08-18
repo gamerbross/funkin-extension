@@ -7,10 +7,10 @@ class NetUtil {
     var result:Array<String> = [];
 
     var ifaces:Dynamic = Os.networkInterfaces();
-    for (name in Reflect.fields(ifaces)) {
+    Reflect.fields(ifaces).forEach(name -> {
       var entries:Array<Dynamic> = cast Reflect.field(ifaces, name);
 
-      for (entry in entries) {
+      entries.forEach(entry -> {
         // typical fields: family, address, internal
         var family:String = entry.family;
         var address:String = entry.address;
@@ -20,8 +20,8 @@ class NetUtil {
         if (family == "IPv4" && !internal && address != null) {
           result.push(address);
         }
-      }
-    }
+      });
+    });
 
     return result;
   }

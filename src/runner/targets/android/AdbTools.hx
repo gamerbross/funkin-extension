@@ -1,7 +1,7 @@
 package runner.targets.android;
 
 import haxe.extern.EitherType;
-import runner.vslice.FunkinPaths;
+import shared.FunkinPaths;
 import js.node.Buffer;
 import runner.targets.TargetPlatform.SerialCallbacks;
 import haxe.io.Path;

@@ -1,7 +1,7 @@
 package mikolka.vscode.providers;
 
 import mikolka.vscode.definitions.DisposableProvider;
-import mikolka.helpers.FunkinPaths;
+import shared.FunkinPaths;
 import sys.FileSystem;
 import js.Lib;
 import mikolka.config.VsCodeConfig;

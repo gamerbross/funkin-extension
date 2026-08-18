@@ -1,8 +1,10 @@
 package runner.targets.desktop;
 
+import shared.FileManager;
+import shared.FunkinPaths;
 import haxe.io.Path;
 import sys.FileSystem;
-import runner.vslice.FunkinPaths;
+import shared.FunkinPaths;
 import runner.targets.TargetPlatform.SerialCallbacks;
 import js.node.child_process.ChildProcess;
 import js.node.stream.Readable.ReadableEvent;

@@ -66,7 +66,7 @@ class DebugServer {
     **/
     public function listVariablesCommand(partial_command:String, ?callback:CompletionResult->Void) {
         var tokens = HaxeSyntaxParser.parseExecCommand(partial_command);
-        if(partial_command.endsWith(" ") || tokens.filter(s -> s.type == Assign || s.type == Execute).length != 0) {
+        if(partial_command.endsWith(" ") || tokens.filterInto(s -> s.type == Assign || s.type == Execute).length != 0) {
             callback({completions: [],fuzzyFieldLength:0});
             return;
         }

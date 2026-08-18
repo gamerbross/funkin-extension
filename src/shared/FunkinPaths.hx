@@ -1,4 +1,4 @@
-package runner.vslice;
+package shared;
 
 import haxe.io.Path;
 using StringTools;

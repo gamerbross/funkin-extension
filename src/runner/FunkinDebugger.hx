@@ -66,13 +66,13 @@ class FunkinDebugger extends DebugSession {
 			response.body = {
 				targets: []
 			};
-			for (foundField in struct.completions) {
+			struct.completions.forEach(foundField -> {
 				response.body.targets.push({
 					label: foundField.field,
 					type: foundField.field_type,
 					start: args.column - struct.fuzzyFieldLength
 				});
-			}
+			});
 			sendResponse(response);
 		});
 	}

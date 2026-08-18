@@ -1,6 +1,7 @@
 --class-path src
 
 --macro include("runner")
+--macro include("shared")
 -D analyzer-optimize
 -D js-es=6
 -lib vscode-debugadapter 

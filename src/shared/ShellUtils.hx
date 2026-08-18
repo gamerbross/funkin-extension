@@ -1,4 +1,4 @@
-package mikolka.utils;
+package shared;
 
 import haxe.Rest;
 import haxe.extern.EitherType;
@@ -27,6 +27,13 @@ class ShellUtils {
 		return Syntax.code("{0}.map({1})",root,callback);
 		#else
 		return root.map(callback);
+		#end
+	}
+	public inline static function filterInto<A,B>(root:Array<A>,callback:A->Bool):Array<A> {
+		#if js
+		return Syntax.code("{0}.filter({1})",root,callback);
+		#else
+		return root.filter(callback);
 		#end
 	}
 }
